@@ -1,0 +1,6 @@
+() => {
+    let randomCookie = cookieJar[Math.floor(Math.random() * cookieJar.length)]
+    cookieJar.push(randomCookie)
+    cookieJar.pop()
+    return randomCookie
+  }

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href=""> -->
+    <style>
+      body {
+        /* background-color: blue; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start
+      }
+      form {
+        margin-top: 15%;
+      }
+      form > label {
+        margin-top: 15%;
+        line-height: 7rem;
+      }
+      .pokeball {
+        margin-top: 7rem;
+        border-radius: 50%;
+        background-image: url('/img/pokeball.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 85px;
+        width: 85px;
+        /* background-color: green; */
+      }
+      .send {
+        height: 65px;
+        width: 65px;
+        background-size: cover;
+        background-color: transparent;      /* VERY COOL these 2 transparent! */
+        border: 2px solid transparent;
+        background-repeat: no-repeat;
+        background-image: url('/img/rare_candy.png');
+      }
+      form {
+        transform: scale(2.0);
+      }
+      .catchemBox {
+        margin-top: 20em;
+      }
+      .gear {
+        margin-top: 300px;
+        height: 50px;
+        width: 50px;
+        background-image: url('/img/gear.png')
+      }
+      .tailWhip {
+        animation: swift 5s infinite
+      }
+      @keyframes swift { 
+        0% {
+        }
+        25% {
+        transform: rotate(45deg)
+      }
+        50% {
+        transform: rotate(90deg)
+      }
+        60% {
+        transform: rotate(135deg)
+        }
+        80% {
+        transform: rotate(180deg)
+        }
+        100% {
+          transform: rotate (360deg)
+        }
+      }
+      .catchemGrid {
+        margin-top: 5%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+      }
+      .gridBox {
+        margin: 10px;
+        padding: 10px;
+        height: 85px;
+        width: 85px;
+        /* background-color: violet; */
+        background-image: url('/img/openPokeball.png');
+        /* opacity: 0.1; */
+        /* background-size: cover;               .nonPretty.toggle() this very little error is a supporting statement to why I lucked out not having wireframes. I saw it coming that if this background was set to 0.1, then the $(this).append($ajaxPokeImgData)) would follow the same opacity. Correct. And there's probably a trick we could do with putting an overarching container, and having this 1 element be 90% / $(parent).container().contents().height()/.90 and had our data appending go around that falseBackground/90%parentContainerSizeDivChild. might sound nonrelevant but if you're into mbti/cognitive function: goes w/o saying coding is very Thinking based. It seems this very pretty accident is very perceiv-y type/adaptable-to-flexibility. Advantaged-by-uncertainty type situation. We could've toggled this on and off and both options have been nonDesign stylings. it luckily looks good, we can throw the whole plan out and use this accident to our advantage.    */
+        /* this almost looks like how something would look like in a game/ weapons/items shown in a box: seemingly-highlighted-by-actual-lights. Its not a white backdrop, it seems to be a gradient that looks almost like stage lighting.   */
+         background-repeat: no-repeat;
+      }
+      .alert-robot {
+        position: relative;
+        /* top: 15em; */
+      }
+      .haunter {
+        background-image: url('/img/haunter.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      /* form > input {
+        background-color: blue;
+      } */
+    </style>
+  </head>
+  <body>
+
+</html>
+
+<div class="catchemBox">
+  <div class="msgHolders">
+    <img src="/img/gear.png" class="gear">
+    <%- include('../partials/alerts.ejs') %>      
+    <!-- feel a bit silly having thi÷s outside of the catchembox wondering why it was so high. I'm still a little confused as to why { robot } is coming up down there and up here.  -->
+    <!-- <h1 class="alert-robot"> < %= robot %></h1>    -->
+
+  </div>
+
+
+      <div class="catchemGrid"></div>
+    </div>
+<!-- <div class="nonObserverScrollTarget"> -->
+  <form action="/auth/signup" method="POST">
+    <!-- would like to be able to do some hover/.hide()+.show() making a div for each input/label will help us get some separation. thinking of show.ejs data-appending/if(parent().children().textContent="<3pokeEjsVar<3") -->
+      <label id="labelemail" for="new-email">Email
+        <input class="realinput" id="emailinput" type="email" name="email"><br>
+      </label>
+            <label id="labelname" for="new-name">Name
+              <input class="realinput" id="nameinput" type="text" name="name"> <br>
+            </label>
+      <label id="passwordlabel" for="new-password">Password
+        <input class="realinput" id="passinput" type="password" name="password"> <br>
+      </label>
+    <!-- </div> -->
+
+      
+      <input type="submit" class="send" value="">   <!-- can ofcourse have this say value="signup" "submit" "Send" or so -->
+      
+</form>
+
+<!-- <p class="locationCheck"> hey </p> -->
+
+<footer>
+  <div class="pokeball"></div>
+</footer>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>   
+<script>
+    let truthBin = []
+    $('form').hide()
+    $('.pokeball').hide()
+  let height = $(document).height().toFixed()
+
+  
+  let gear = $('.gear')   // lucked out big time. flaticon.com had a grey gear in mind. The perfect red one popped up. I went to animate it. I thought the 360deg rotation would spin it forwards 360 degrees. it's going backwards. UPDATE: changed to -360 degrees just to check and it seems to still be going backwards. I love this idea and came up with it 3am. I was already done with everything besisdes any table associations and realized all that stuff will get in the way. Drilled some associations just for proof of concept. 
+  gear.addClass('tailWhip')
+
+  gear.on('hover', () => {
+    if (truthBin.includes("real-life")) {    
+      gear.hide()
+      $('.catchemBox').hide()
+      $('form').show()
+      $('.pokeball').show()
+    }
+  })
+
+
+  // setInterval(gridTimeout, "1000")
+  for (let i = 0; i < 9; i++) {
+    let gridBox = document.createElement("div")
+    $(gridBox).addClass("gridBox")
+    $('.catchemGrid').append(gridBox)
+  }
+
+  let types = ['normal', 'grass', 'electric', 'water', 'fire', 'psychic', 'fighting', 'ghost']   // just about the same function as pokemon.ejs except we're not validating our type with our backgroundImg on the bar above us. We're grabbing a random value, pushing it to the end and popping it so we cant access the same variable name we just used
+  // this came out without the 'ghost' until projectsProbabilityBias that there'd be a pressing urge to entertain the ghost context 
+  
+      // neat easter egg i suppose: with typePokemon[0]-[8] endpoint 
+      // this is almost a probability easter egg because it's the only one of its kind. the fighting[8] Its a from-the-game image that suggests it to be non-electric which is what our captcha will be based around. 
+  
+
+      // pretty difficult stuff here: noticed from /show.ejs how difficult .container.append($(data)) can be when specifying constraints against duplicates, outside of increasing padding-size hoping someone doesn't hover twice.
+      // without hornTooting should also mention: [i had in mind idea of this captcha system of verifying if $.ajaxtype/typePokemon--->$.ajaxpokemon/response.type = 'electric' <signupFORM>.show()   This quick captcha game I also considered doing as a 1by1 gridCellPopUp by gridCellpopUp was a great solution. I only decided to do it this way because on the original index.ejs res.render('pokemon') i wanted a 10 by 10 grid. So I wanted this .cssStyling format with grid. This style is of course way more themed to an expectable captcha where you'll have 6 or so images to choose from. SCREENARGUMENT: there is the 1) '/index apidata intersectionObserver screen 2) /pokemon types intersection observer. I felt that things would feel overly 1-SCREEN-ly if that makes sense. Also there's a repeating of that same spectrum but in the opposite way. During the same /pokemon page I wasn't sure what to do with the data container so it made sense to use the exact same screen, repeating again but smaller, ... Really seemed to luck out with the canvasScope of how: 1BIGSQUARESCREEN/monotonous with the css format it gets
+
+      // ****** will lastly say: got fooled Darn hard on /pokemon.ejs doing the:if('fire'bg && newType='fire') simple validation. fooledOnPremise: 1 variable can have multiple different values attached it. This might not be a solution: (Though considering we're on assumptionsProbabilityFavor based on the 1by1basedCapcha being good solution) We might be able to use a simple counter = 0 ; wholeCounter that will stay completely intact with 1 counter declaration.. specified separately only under the magic$(event.target) property of being able to attach variable declarations under the target.
+      // if (background == 'fire' && newType == 'fire') {
+
+
+      let gridCounter = 0;  // might be tired of seeing this be a solution but any one will do
+      let wholeCounter = [];
+
+      $('.gridBox').on('mouseenter', (event) => {        // i set getSprite() up to be a callback but looks like well need access to event parameters instead. 
+        $('.gridBox').removeClass('haunter')
+        gridCounter++
+        wholeCounter.push(gridCounter)
+        console.log(`wholeCountLen ${wholeCounter.length}`)
+        if (wholeCounter.length == 10) {
+          wholeCounter.splice(0, wholeCounter.length)
+          $('.gridBox').each( () => {
+            $('.gridBox').children().detach()
+          })
+        }
+
+        // console.log($(event.target).context.innerHTML.toString())
+        
+        const getSprite = () => {       // wow keeping this function for now. I wanted to use this array with all our types from pokemon.ejs. Instead were going to seed our database with some data and start off by grabbing our pokemon from the db to offset the workload of these ajax calls which we dont want firing over and over. Good thing Our randomPokeAjax function from page 1 saves new pokemon in the database and we start off with 3+ whichever pokemon.data is added from pokeapi to database on first intersection observer screen.
+          const randomType = types[Math.floor(Math.random() * types.length)]
+          // const randomType = types[types.lenth-1]
+          console.log(randomType);
+          if (randomType == 'ghost') {          
+            $('.gridBox').each( () => {
+              $('.gridBox').addClass('haunter')
+              $('.gridBox').children().detach()
+              // $('.gridBox').children().animate({   wish this worked to kind of fade our $(pokeImg) ghost sprite (the only that'd be left on the page bcuz .children().detach())  until you hover again)
+              //     opacity: 0.1
+              // }, "5000")
+            })
+          }
+          const getUrl = () => {
+            if (randomType == 'ghost') {
+            let ghosts = [ 'gengar', 'haunter', 'gastly' ]
+              let randomGhost = ghosts[Math.floor(Math.random() * ghosts.length)]
+              console.log(randomGhost)
+              return `https://pokeapi.co/api/v2/pokemon/gengar`
+            }
+              return `https://pokeapi.co/api/v2/type/${randomType}`
+            // let ajaxUrl = `https://pokeapi.co/api/v2/type/${randomType}`
+
+          }
+    // let ajaxUrl = `https://pokeapi.co/api/v2/type/psychic`
+        // types.push(randomType)  // the other array.deleteMe(randomType)) // what i thought you could do but can't types.pop(randomType) this adds to an array and then pops it which does nothing. i forgot on pokemon.ejs we ended up switching out from random functionality and grabbing the first element in the index and popping it 
+        // types.pop()
+    $.ajax({
+      method: 'GET',
+      url: getUrl(),
+      dataTypes: 'json'
+    }).done(  (typeData) => {
+      let typePokemon = typeData.pokemon // keep checking type pokemone. was using .length to loop through entire endpoint of respective type to randomType function output. No dice. too likely to retrieve id over 151. there are 1000.
+      lengthBracketNumbers = [0,1,2,3,4,6,7]
+      let anyNumber = lengthBracketNumbers[Math.floor(Math.random() * lengthBracketNumbers.length)]
+      let name = typePokemon[`${anyNumber}`].pokemon.name
+      let ajaxUrlForSprite = `https://pokeapi.co/api/v2/pokemon/${name}`
+      $.ajax({
+        method: 'GET',
+        url: ajaxUrlForSprite,
+        dataTypes: 'json',
+      }).done( (spritePokemon) => {
+        let sprite = spritePokemon.sprites.front_default
+        // console.log('sprite')
+        // console.log(sprite)
+        let pokemon = document.createElement('img') // can go down the div rabbit hole too
+        $(pokemon).attr('src', sprite)
+        $(pokemon).css("height", '90px')
+        $(pokemon).css("width", '90px')
+        // $(pokemon).addClass('sprite')
+        // console.log('randomType')
+        // console.log(randomType)
+       
+        // console.log("children")
+        $('cathcemGrid')
+        let gridLength = $('.gridBox').length-1
+
+          // console.log("heres the text")
+          
+          // if (!$(event.target.context.outerText)) {            // if (!$('#dblFrom').children().text().includes(`${doubleFrom[2].name}`)) {
+            // console.log($(event.target))
+
+            // if ($(event.target).children.length) {
+              // console.log($(event.target).children().length) 
+              if ($(event.target).children().length < 1) {  // 3 hrs to get to this. totally surprised. Was a 10 hour all day thing on the show.ejs page    very similar to this     if (!$('#dblFrom').children().text().includes(`${doubleFrom[2].name}`)) {
+                $(event.target).append($(pokemon)) //                     // this timestamp buried under fewExtraHrs---> 5 minutes (which is a good bit of little guessing around) into thinking you'd really go from .catchemGrid. All in all about 30 minutes to really get through here. Decent time it takes for a simple css syntax targeting issue. 
+              }
+      })
+    })
+
+    
+
+      let numberBin = []
+      // const grabPokemon = async () => {
+  
+        // const get1 = () => {      // hmm rather than use database pokemon as our reference point or loop through randomly... we can throw random numbers from like 1-3 or 5, and grab those random numbers [reusably] to grab typePokemon/endpoint[${reusableVariable}]
+        //   let randomTypePoke = typePokemon[Math.floor(Math.random() * typePokemon.length)]
+        //   console.log(randomTypePoke)
+        //   const dataUrl = randomTypePoke.pokemon.url  // used this alone first with our removeInt regex 
+        //   let preCleaner = dataUrl.slice(dataUrl.length-5)
+        //   // console.log(preCleaner)
+        //   var numberPattern = /\d+/g;   
+        //   numberFromurl =  preCleaner.match( numberPattern ).join([]);  // 2moveAheadChess: used the regex instead of using .splice and got tripped up removing the numbers from url not factoring in api/v2 ._/
+        //   console.log('numberFromurl')
+        //   console.log(numberFromurl)
+        //   return numberFromurl
+        // }
+
+        // this was a fun solutionPath to try to implement.
+      //   const check = () => {     // being one of the last things in this app this reminds me of the .ghostBtn gengar button. Our change of getting an ID much higher than 151 by using:  [Ajaxresponse/typeData.fullLengthOfAllPokemonId/Length]   This sounds like itll be so haphazard timing wise if we can't set constraints to this. Imagine doing this for 9 pokemon for the grid.
+      //   // console.log("check the first box")
+      //   console.log($('.gridBox:nth-child(1)'))
+      //   // if ($('.gridBox:nth-child(1)').children()) {
+      //     console.log("well heres the html")
+      //     console.log($('.gridBox'))
+      //     console.log($('.gridBox:nth-child(1)'[0].innerHTML)) // init {} there is n
+      //   if ($('.gridBox:nth-child(1)')[0].innerHTML) {    // firstly I incorrectly thought you could just run a conditional against the .children() [what i assumed to be the only child we gave it: the $(pokemon)] The good news is I didn't foresee us being able to directly see the /github.com/ajaxUrlImageData/
+      //   }
+      //   //   if (get1().includes('00')) {  // we have a little challenge where the id system is registering any non-original games with id's: 0480 or 0018 to show the bigger array. this works to our advantage as long as we dont need an algorithm/expression too big for an ife statement if thats even a thing.
+      //   //   // if  {           // phew didn't know you could do that. i even tried ${getSprite}
+      //   //   console.log('sure does')
+      //   //   // if (get1() > 035 && get1().length <4) {     ( get1().length < 4)  // check these few attempts I didn't even know get1() would really be so smooth to work with in terms of .length && friends but it is returning a string... shouldn't be too surprised  
+      //   // } else {    
+      //   //   if (get1() < 151) {     // realizing as I get this far instead of working with typeData.pokemon we can set a typeData.pokemon.length - ${bigNumber} to bring our working range down. Nice to get this far without having to and being forced to problem solve/overlook the bigger problem being the approach. 
+      //   //   console.log('weve got one')
+      //   // } else {
+      //   //   console.log("nope higher than 151")        // leaving this function to show why it can get the job done but we need to boringly/manually/nonalgorithmically work backwards from apiEndpoint[0] brackets and isolate our original game. This probability that we are so much more likely to find a non original game ID helps us set up the gengar button in the beginning because it buys the $(document).on('mousemove') probabilities' favor that you won't pull an original pokemon: and pulling 1 of the original ghosts: "GASTLY", 'HAUNTER", "GENGAR", is what triggers the ghost to apply spritebackground to .ghostBtn, and more importantly relocate, making the little gengar game. 
+      //   // }
+      //   //   }
+      // }
+      // check()
+        // console.log(numberFromurl)
+        // numberBin.push(numberFromUrl)
+      // }
+      // grabPokemon()         console.log("hey you're on me")
+  }
+        getSprite()
+      })
+
+      
+      let failCounter = 0; //  Jest
+      let    wholeFail = []
+      $('.gridBox').on('click', (event) => {   // this was a fun <2 minute mistake to realize we are still within hoverEvent scope: ([10]we have clicked!)     q?: why is my clickCounter and hoverCounter the same o.O                                    }) A: way downtown closing brackets 
+      console.log($(event.target))
+      console.log($(event.target)[0].currentSrc)
+      let prePullNumbers = $(event.target)[0].currentSrc
+
+      const steedOfTrust = /\d+/g;   // 
+        cleanNumberPull = prePullNumbers.match( steedOfTrust ).join([]);  
+        let lastAppAjax = `https://pokeapi.co/api/v2/pokemon/${cleanNumberPull}`
+        $.ajax({
+          method: 'GET',
+          url: lastAppAjax,
+          dataTypes: 'json',
+        }).done( (data) => {
+          console.log(data)
+          let type = data.types[0].type.name // fun to fool yourself over a few times w/ endpointName
+
+        
+          
+          console.log(type)
+          if (type == 'electric') {
+            truthBin.push('real-life')
+            $('.alert-robot').css("margin-top", "4em")
+            setTimeout( () => {
+              $('.alert-robot').animate({
+
+              })
+            })
+            $('.alert-robot').text('You Are LIFE')
+            $('.catchemGrid').detach()
+          } else {
+            
+            const bottomFlash = () => {     // npm i require('pg'||'pg-13')
+              $(event.target).css('border-bottom', "5px solid #EA110B")
+              // $('.gridBox').css('border-bottom', "5px solid red")
+              setTimeout( () => {
+                $(event.target).css('border-bottom', "")
+              }, "1000")
+            }
+            bottomFlash()
+
+            // $(event.target).css("border-bottom", "2px solid-red")
+
+
+            failCounter++
+            wholeFail.push(failCounter)
+            console.log('wholeFail.length')
+            console.log(wholeFail.length)
+            // $('.alert-robot').css("border", "2px solid pink")  //  mare[reflex-rooted pinkBorder isMinimumViable based first behavior check]
+            if (wholeFail.length == 1) {
+              console.log('length is 0')
+              setTimeout( () => { 
+                $('.alert-robot').text('find the electric pokemon')   // wish there was a more-unspecified way of returning this .text('are you a robot') 
+              }, "1000")
+            }
+            if (wholeFail.length == 2) {
+              console.log('length is 0')
+              setTimeout( () => { 
+                $('.alert-robot').text('you seem robotic..watch out for ghosts & please click the electric type')   // wish there was a more-unspecified way of returning this .text('are you a robot') 
+                // WOW! this looks very cool and doesn't need fixing. Funny, this almost looks like my  .dataAppendDuplicate joke of: just increase the padding hope nobody hovers twice. Everything is spaced very far
+              }, "1000")
+            }
+
+            setTimeout( () => {
+              $('.alert-robot').text('are you a robot?')
+            }, "3000")
+            // always nice to see flash messages work correctly.
+
+          }
+        })
+    })
+
+  // getSprite()
+  // $('.gridBox').css('border', '2px solid pink')
+  // console.log($('.gridBox')[0]
+
+  
+  let signupCounter = 0;
+  let wholeSignupCount = new Array() // []
+  // $(document).on('mousemove', (e) => {
+  //   if (e.clientY < 700) {
+  //     signupCounter++ 
+  //     wholeSignupCount.push(signupCounter)
+  //     if (wholeSignupCount.length == 2) {
+  //       console.log("yeah weve got it")  
+  //       $(form).hide()
+  //       $(pokeball).hide()
+  //     }
+  //   }
+  // })
+
+  
+ 
+// if... document.removeEventListener('mousemove')
+  
+  let shoe = $('footer')
+  shoe
+  .css("position", 'relative') // cant forget this time
+  .css('top', `${height/4}px`) // ez from memory so basic now stuff like this.
+  // .css('top', `${height}`)
+  // .css('background', 'blue')
+  // .swoosh()
+
+
+console.log('hey')
+    let body = $('body')
+    body
+    .css('background-color', 'peachpuff')
+    .css('margin-top', '10 rem')
+    
+    let jqForm = $('form')
+    let form = document.querySelector('form')
+
+
+    console.log('form')
+    console.log(form)
+//  labels
+
+    observelabel = document.querySelector('label')
+    let label = $('label')
+    label
+    .css('opacity', '0.2') // want opacity and .hide()      can check out for yourself but it seems to look okay this way.
+    .hide()
+    // .css('opacity', '0.2')
+    
+// set attr value = <input type="submit" value="Sign up">
+
+    let elabel = $('#labelemail')     // this css can look kind of cheesy but it looks like the pokeball going red /black /white. kind of neat. who cares. plenty of ways to make it look okay.
+    elabel
+    .css("background", "red")   
+    namelabel = $('#labelname')
+    .css('background', 'black')
+    .css('color', 'white')
+  
+    passlabel = $('#passwordlabel')
+    .css('background', 'white')
+    // .css('border', '5px solid brown')
+    
+    // inputs
+    let input = $('input')
+    input
+    // .css('opacity', '1.0') // not anymore thanks to label thats interesting
+    
+    let nameinput = $('#nameinput')
+    nameinput
+    // .css("background", "yellow")
+    let einput = $('#emailinput')
+    einput
+    // .css("background", "orange")
+    let passinput = $('#passinput')
+    passinput
+    // .css("background", "purple")
+    
+    let sendIt = $('.send')
+    sendIt
+    .hide()
+    // .css("border-radius", '50%') putting border-radius on twice() => { dont want to do that. }
+
+    $('form')
+    .css('margin-top', `${height/5}px`)
+
+    $('form').children()
+    // .css("background", "red")
+    .css('margin-top', '4rem')
+    .css("transform", 'scale(1.0)')
+
+    let hoverBucket = [];
+    let startingPoint = input.length - input.length++
+    let pokeball = $('.pokeball')
+
+    indexBucket = new Array() 
+
+    // $('.alert-sign-in-success').hide()
+    
+      // $(document.body).on('mousemove', (e) => { //     was going to use this mousemove so that: it detects if you're e.clientY/offsetY is above a certain level, and if so: transform: scale(2.0) the input tags
+    //   console.log(e)     ***** wrote SCROLL instead of MOUSEMOVE on ACCIDENT
+    //   $('.locationCheck').text(`${e.clientY}`)
+    //   if (e.clientY <= 800) {
+    //     // $(document.body).css('background', 'blue')
+    //     // $('form').css('background', 'green')
+    //     $('form').children().addClass('scale')
+    //     // label.css('height', '100px')
+    //   } else {
+    //     $('form').children().removeClass('scale')
+    //     // $('form').children().css('border', 'transparent') // can see how clunky this is having a mousemove event observer this low in the code. 
+    //     $('.locationCheck').text(`${e.clientX}`)
+    //   }
+    //   //  label.css('height', '500px')
+    // })
+
+
+
+
+
+    pokeball.on('mouseenter', (e) => {
+      startingPoint++
+      hoverBucket.push(startingPoint)
+      let n = hoverBucket.length -1
+
+      let inputI
+      let inputII
+      let inputIII
+      // $('input'[0]).css('background', 'yellow')       // input[0][0].css('background', 'blue') 
+      if (hoverBucket.length == '1') {                // eq() method constructs a new jQuery object from one element within that set. The supplied index identifies the position of this element in the set. i was trying to get the same result with .contents() because it also returns a jquery object. 
+        // let bracketN = 1--      // tried to decrement a string too
+        // ^^ let n=hovBuck.len-1 fixed this: a bit surprised none of this code works: (let n = bracketN-- )      let n = `${bracketN--}`         console.log(n)         console.log('n')
+        $('label').hide()
+        sendIt.hide()
+        
+        console.log(hoverBucket.length)
+        console.log(input[`${n}`])    // input[hoverBucket.length] very excited to even think this was worth trying out. 
+        let input1 = $(`input[${n}]`)     // i honestly credit .css('background', `url('${pokeString}')`) the jq background syntax and where you'd place: backticks || quotes because its almose opposite
+        // this has been harder than i thought                      // ***update: $(`${$(input).eq(`${cleanTarget}`).css prolly 2.5 hrs for this code 2bhonest.
+        console.info(input1.selector)  // trusty regex time   
+        let target = input1.selector
+        const trustySteed = /\d+/g;   // 
+        cleanTarget = target.match( trustySteed ).join([]);    // this is more challenging than i thought. took 30 mins to get to: input1 = $(`input[${n}]`). 60 later:     target = input1.selector    digging through object like an enetry.target form intersection observer doing no good.
+        
+        // jquery.min.js:2 Uncaught Error: Syntax error, unrecognized expression: [object Object] for the line below we're getting an error 
+        // $(`${$(label).eq(`${cleanTarget}`).css( {"opacity":"1.0"} )}`) // this also has the same error without the brackets.   proud to say I couldve just: formInput .hide() .show() very easily. Going through the .target .innerText [0].context ...   it's a really gr8 way to stay sharp. This is a very simple operation that it was an excite to spend a moment being a little verbose with input || newinput  && target || cleanTarget. 
+        $(`${$(label).eq(`${cleanTarget}`).show()}`) // was a little hard to decide between [.opacity] and [.hide()&&.show()]
+        // $('label').children().css("background", 'yellow') // tried the bracket in-front-of && behind[of] the .children()       ... newinput1 = input[0][0].eq() ... (`${$(input[0])}`)
+      // let inputTarget = `${$(input[0])}`  
+      // hope this works. for some reason this code works for 'height', '100px' but not opacity. maybe we can use .addClass with a .class{opacity: '1.0')} and then removeClass on hover. if the line of code above us isn't being funny with .removeClass() like it is for opacity for some reason
+      // $(`${$(label).eq(`${cleanTarget}`).show()}`) 
+        // console.log($(`input${cleanTarget}`))
+            // let actualinput1 = $(`input[${cleanTarget}]`)
+            // let actualinput1 = `${$('input')[`${cleanTarget}`]}` // this looks insanely weird.
+            // actualinput1.css('background', 'blue')
+        // let cleanInput1 = input1.selector.replace(/)
+        // console.log(input1.parent())  // 2bhonest: i kind of dont know why this isn't the label thats encasing it.         // console.log(input1.siblings())      ... && again ..
+        // $(inputI).parent().css('background', 'green')
+        // $('inputI')
+        // .css('background', 'green')
+      }
+      if (hoverBucket.length == '2') {
+        $('label').hide()
+        // $('label').css('opacity', '0.2')    // this feels a little lucky/clever. just reset all labels everytime. no need to isolate the past element that we couldn't anyways because it's in the hoverBucket.length === 1 scope. 
+
+
+        console.log(hoverBucket.length)
+        console.log(input[`${n}`])   
+        let input1 = $(`input[${n}]`)     
+        console.info(input1.selector)  
+        let target = input1.selector
+        const trustySteed = /\d+/g;  
+        cleanTarget = target.match( trustySteed ).join([]);    // this is more challenging than i thought. took 30 mins to get to: input1 = $(`input[${n}]`). 60 later:     target = input1.selector    digging through object like an enetry.target form intersection observer doing no good.
+        console.log('cleanTarget')  
+        console.log(cleanTarget)
+        // $(`${$(label).eq(`${cleanTarget}`).css( {"opacity":"1.0"} )}`) // $(`${$(label).eq(`${cleanTarget}`).css('opacity', '1')}`)
+        $(`${$(label).eq(`${cleanTarget}`).show()}`)
+        
+      }
+      
+      if (hoverBucket.length == '3') {
+        $('label').hide()
+        // $('label').css('opacity', '0.2')
+        console.log(hoverBucket.length)
+        console.log(input[`${n}`])   
+        let input1 = $(`input[${n}]`)     
+        console.info(input1.selector)  
+        let target = input1.selector
+        const trustySteed = /\d+/g;  
+        cleanTarget = target.match( trustySteed ).join([]);    // this is more challenging than i thought. took 30 mins to get to: input1 = $(`input[${n}]`). 60 later:     target = input1.selector    digging through object like an enetry.target form intersection observer doing no good.
+        console.log('cleanTarget')  
+        console.log(cleanTarget)
+        // $(`${$(label).eq(`${cleanTarget}`).css( {"opacity":"1.0"} )}`)  
+        $(`${$(label).eq(`${cleanTarget}`).show()}`)
+        hoverBucket.splice(0, hoverBucket.length)
+      }
+      if (hoverBucket.length == '4') {    // if you wish: plz remove this code and see the clunkiness!
+        sendIt.show()
+        // $('label').css('opacity', '0.2')
+        $('label').hide()
+        hoverBucket.splice(0, hoverBucket.length)
+        sendIt.show()
+      }
+    })
+
+    const hidenames = async () => {
+      namelabel.hide()
+      nameinput.hide()
+    }
+    const hideemails = async () => {
+      emaillabel.hide()
+      emailinput.hide()
+    }
+    const passemails = async () => {
+      passlabel.hide()
+      passinput.hide()
+    }
+
+    // $('form').on('mouseenter', (e) => { // nice mini ending of form/div html scope. I was going to wrap each label and input up 
+    //     console.log($(event.target))
+    //     $('.formbox')
+    //     .css("background", 'green')
+    //   })
+      nameBucket = new Array()
+
+    label.on('mouseenter', function(e) { // am very glad for this function to exist. get to use a little $(entry.target)endpoint practice
+      console.log('$(this)')
+      console.log($(this))
+      let quickThis = $(this)
+      quickThis
+      .css("opacity", '1.0')
+      let text = $(this)[0].innerText   // almost thought wed need a regex. so far we don't    "Email \n"
+      // console.log($(this)[0].childNodes[1])       console.log($(this)[0].innerText)
+      let thisKid = $(this)[0].childNodes[1]        // getting to <label><input></label> nested input 
+      let thisKidName = $(this)[0].childNodes[1].name
+      let startPoint = input.length - input.length++; // this is to 0 us out since the objectArray starts from 0.
+      let newInput = [input[`${startPoint}++`]]
+      const checkinput = () => {
+        console.log('input[0]') 
+        console.log([input[0]])   // feels kind of weird to put brackets outside of the front of the element outside of a for loop.
+
+      // let newPoke = [newObject[`${startPoint++}`]]; // thought it had to be ${newPoke} 10:00pm been here since about 11:00am wow
+        // for (let i = 0; i < input.length; i++) {      // this loop is nice because we dont need: *let newPoke = [newObject[`${startPoint++}`]];* incrementor code like this. each input is: input[0]
+        //   console.log('[input[i]]')
+        //   // console.log(`${[input[i][0]]}`) // read console wrong this doesn't work..// can keep first msg: super glad this only took 2 seconds. I'm kind of surprised that you need those curly braces or else the [0] won't register.
+        //   console.log("input name")
+        //   console.log([input[i]][0].name)   // probably 6 mins to get here this is the line of code we want. not the one above it. 12:43am
+        //   if ([input[i][0]].name == 'name') {
+        //     console.log('golden goose')         //     console.log('parent')
+        //     // console.log([input[i][0].name]) //           if ([input[i][0]].name.toString().includes('name')) {          
+        //   }
+          // console.log(`${[input[i][0]]}`) // 
+          // if ([input[i][0].name]) { console.log([input[i]]           //   // console.log([input[i][0].name])          
+        }
+        checkinput()
+      // let newPoke = [newObject[`${startPoint++}`]]; 
+      // thisKid
+      // .css("background", "green")
+      label.on('mouseleave', () => {      // instinct to leave this right under it. you'd want it to have access to the first $(this) only is needed.
+        // let mouseleavelabel = $(this)
+        // mouseleavelabel
+        quickThis
+        .css('opacity', '0.2')
+      })
+    })
+    
+
+    // kind of wanted to work backwards from having elements be .css('opacity','0.0/0.2') and increment up and back. At this point thinking its overkill to do anything more hovery/.hide()/.show()like.
+  //   const observeOption = { characterData: true, childList: true, subtree: true} // nice metrics. think this is 4th or 5th mutationObserver. took 5 hrs first time. took like 5 minutes this time no looking up. It's also been a good 5 months so not too impressive but worth noting.
+  //   const opacityCheck = new MutationObserver(entry => {
+  //         // console.log('entry')
+  //         // console.log(entry)
+  //         // console.log('entry.offsetTop')
+  //         // console.log(entry.offsetTop)
+  //         console.log(entry)
+  //         // let body = entry[0]
+  //         let form = entry[2]
+  //         console.log('form')
+  //         console.log(form)
+  //   })
+  
+  //  opacityCheck.observe(document.body, observeOption) 
+                                                                                                                                                                                                                                                              
+  //  console.log('MutationRecord') // watch out with console.info('MutationRecord') it didn't even pull up. glad i started using it later, and that it hasn't gotten in the way yet. Made almost this whole project without even using it.
+  //  console.log(MutationRecord)
+
+    // 1) on hover->make input take the hidden text of label
+    // 2) apply that .children().input 
+  
+    // .css('align-items', 'center')
+</script>

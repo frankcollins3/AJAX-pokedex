@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <style>
+            div {
+                text-align: center;
+                /* color: '#A6A1A0' */
+                color: #A6A1A0;
+            }
+        </style>
+    </body>
+</html>
+<% if (alerts.error) { %>
+    <% alerts.error.forEach(msg => { %>
+        <div class="alert alert-error"> <%= msg %></div>         <!-- never thought about it but these would be great for a maze game -->
+    <% }) %>
+<% } %>
+
+<% if (alerts.success) { %>
+    <% alerts.success.forEach(msg => { %>
+        <div class="alert alert-success"> <%= msg %></div>
+    <% }) %>
+<% } %>
+
+<% if (alerts.signinsuccess) { %>
+    <% alerts.signinsuccess.forEach(msg => { %>
+        <div class="alert alert-sign-in-success"> <%= msg %></div>
+    <% }) %>
+<% } %>
+
+<% if (alerts.logoutflash) { %>
+    <% alerts.logoutflash.forEach(msg => { %>
+        <div class="alert alert-sign-in-success"> <%= msg %></div>
+    <% }) %>
+<% } %>
+
+<% if (alerts.robot) { %>       
+     <!-- for some reason, this flash message, and [sometimes on show.ejs the <3 pokemon.id %> comes up UNDEFINED until ctlr-R for refresh.] -->
+    <% alerts.robot.forEach(msg => { %>
+        <div class="alert alert-robot"> <%= msg %></div>
+        <% }) %>
+        <% } %>
+        
+        
+        <% if (alerts.pokeInfo) { %>
+            <% alerts.pokeInfo.forEach(msg => { %>
+                <div class="alert alert-pokeInfo"> <%= msg %></div>
+    <% }) %>
+<% } %>
+
+
+ <!-- < % if (alerts.hover) { %>
+    < %  alerts.hover.forEach(msg => { %>
+        <div class="alert alert-hover"> < %= msg %></div>       // pink gorilla on basketball court concept: staring at error screen and not seeing:  [< %=] ejs variable right in front of your face
+    <  }) %>
+< % } %>  -->
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+
+    let failure = $('.alert-error')
+    failure
+    .css("color", '#E52D05')
+    // .addClass('flicker')
+    .animate({
+                opacity: 0.1  
+              }, {                
+                duration: 2000,
+                complete: () => {
+                failure.hide()
+                }
+                // }
+              })
+
+              let success = $('.alert-error')
+              success
+              .animate({
+                          opacity: 0.1  
+                        }, {                
+                          duration: 2000,
+                          complete: () => {
+                          failure.hide()
+                          }
+                          // }
+                        })
+
+
+    let sis = $('.alert-sign-in-success')
+    sis
+
+
+    // loosing seeing why this {app.use: globalObject} is somehow not applying to /pokemon/ endpoint: including /pokemon/show              am running behind && just took this idea on as a quick 10 minute thing. Im loosely putting together why the /pokemon endpoint is cutting us off from alerts.ejs      W/o doing so, given my breadcrumb level of knowledge of require('../')&&filescopeN'Friends: I'm guessing if we dragged pokemon out of its views folder we'd have this more available. I can see why you'd of course do the databaseLogic/authent./app.use&&globals firstly: with very little in the way. 
+    console.log($(window.location)) // this should fire on every page because app.use makes this page behave like a global variable.     console.info('psssst over here')
+    const thisPage = $(window.location)[0].href.slice(27) 
+    const locationUrl = $(window.location)[0].href
+    // console.log(locationUrl.length)     console.log('.length')
+    if (locationUrl.charAt(22)) {          // if (thisPage.charAt(22)) {
+        try {
+            sis.hide() 
+            // console.log("hey we have a character after the $(win.location)[0].href /slash")
+        }
+        catch {
+            // console.info('what are we even catching')
+        }
+    } else {
+        $('.alert-robot').hide()     
+        // console.info('there is no such character')      // interesting mental error: assuming a catch { block } is the else { block }
+    }
+    // if (thisPage != '')
+    // console.log('thisPage')
+    // console.log(thisPage)
+    $('.alert-robot')
+    .css('font-weight', 'bold')
+    .css('letter-spacing', '0.25em')    // letter spacing is very cool
+
+    $('.alert-pokeInfo') 
+    // .css('.font-size', '25px')
+    .css('margin-top', '-1em')
+    .hide()
+
+    console.log("hey dude")
+    console.log( $(location)[0].href)       // nice. found the "are you a robot flash" on this page. literal 3 minute fix. Quick error using the = instead of == and made the pokeball flash on and on and off and got it set. very quick and habit 
+    if ($(location)[0].href == 'http://localhost:7777/auth/login' || $(location)[0].href == 'http://localhost:7777/?') {
+        $('.alert-robot').hide()
+    }
+    // console.log($(location))  // leaving this to prove for a second I didn't think $('.alert-robot').hide() wouldn't satisfy the above locationUrl.charAt(22) condition.
+    // if $(location)
+
+</script>

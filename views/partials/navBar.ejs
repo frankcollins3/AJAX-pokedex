@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    </head>
+    <body>
+
+        <div class="nav">
+            <form action="/" method="GET">
+                <button type="submit" class="pokeBall"></button>
+            </form>
+
+            <form action="/pokemon" method="GET">
+                <button type="submit" class="greatBall"></button>
+            </form>
+
+            <form action="/" method="GET">
+                <button type="submit" class="ultraBall"></button>
+            </form>
+
+            <!-- <form action="/" method="GET"> -->
+                <button type="submit" class="ghost"> </button>
+            <!-- </form> -->
+        </div>
+
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script>
+
+            let nav = $('.nav')
+            nav
+
+            console.log($(location).attr('href')) // kinda easy to think this'd be $(window) //  can't/probably-shouldn't do this in the partials file since it won't have access to the pokeObject from here and we don't want location.href to equal /show/MEW or /PIKACHU we want to pull the pokeObject.name, (i.e. store <3 pokeObject.name %> let name = ...) and have if ($(location).href = /show/${name}) and have variable adjust to URL we'll need to do this from the actual show.ejs page.
+            // if ( $(window).attr('href') === '/')
+                
+
+
+            
+
+            let pokebtn = $('.pokeBall')
+            let gr8btn = $('.greatBall')
+            let ultrabtn = $('.ultraBall')  
+
+
+            let ghostbtn = $('.ghost')
+            
+            let ghost = document.getElementById('.ghost')
+
+            // ghostbtn.hide()
+            ghostbtn.css('opacity', '0.1')
+
+            // ghostbtn.on('hover', () => {             // i first had this set up as a function triggered by hovering on the invisible button but then it takes too long to fire event long enough to get an id below 151 for it to feel fluid
+            // $(document).on('mousemove', () => {       // change the event listener to click if you wish and you'll see why it's set up as mousemove. setInterval stuff based on ajax calls and  slicing urls / having to control timing to isolate a correct url 
+            // // $(document).on('click', () => {       // change the event listener to click if you wish and you'll see why it's set up as mousemove. setInterval stuff based on ajax calls and  slicing urls / having to control timing to isolate a correct url 
+            //     // $.ajax('https://wwww.pokeapi.co/api/v2/ghost/')
+            //     $.ajax({
+            //         method: 'GET',
+            //         url: 'https://pokeapi.co/api/v2/type/ghost',
+            //         dataType: 'json'
+            //     }).done( (data) => { 
+                    
+            //         let ghosts = data.pokemon
+            //         // let ghosturl = ghosts[1].pokemon.url
+            //         // console.log(ghosts);
+
+            //         // for (let i = 0; i < ghosts.pokemon.length; i++) {
+            //         //     console.log([i]) // this api is not as clean cut as the regular pokiapi/v2/pokemon endpoint... setting[i] variable so that we have 
+            //         //     let randomId = Math.random() * [i].length
+            //         //     console.log(randomId);
+            //         // }
+            //         const randomInt = (maxLimit = 77) => {    //77 for a.jax(done).data { cons.log(data[0] ---> data[77]   ) }
+            //             return random = Math.floor(Math.random() * maxLimit)
+            //             // return Math.random(Math.floor() * Math.random() * )
+            //         }
+            //         randomInt()
+            //         // let randomPoke = `ghosts[${randomInt()}]`
+            //         let randomPoke = ghosts[`${randomInt()}`]   
+            //         // strange to see this work but slice and working with URLs makes using a randomizer function with `${randomFunc}` with stringInterp. seem workable. It's put in brackets because it's the [0] or [1]... between .data and data[0].pokemon.url
+            //         // console.log(randomPoke);
+            //         let ghostUrl = randomPoke.pokemon.url // randomPoke is the data/ghosts[randomNumb < 77] since they have 77 objects as data. The difficulty is this [0] and the fact that [0]-[77] represents ids from [1] - [900]000
+            //         // console.log(ghostUrl);
+            //         let name = randomPoke.pokemon.name
+            //         // console.log(name);
+            //         // let slicedUrl = ghostUrl.slice(34, 37);     // this extracts from the 34th character and stops on the 37th leaving the id of the pokemon from ghosts or $.ajax(data)console.log(data[0].pokemon.url) 
+            //         let slicedUrl = ghostUrl.slice(34, -1);     // this extracts from the 34th character and takes off the last 1 character, being the backslash, leaving only the id of the pokemon.
+            //         console.log(`this is the ${slicedUrl}`)
+            //         let wholeCounter = [];
+            //         let counter = 0;
+            //         if  (slicedUrl < 151) {         // this is making sure that once we get that pokemon.url.slice, which can range from pokemonID# 90-900... we're isolating the url.slice to the first 151 pokemon.
+            //             counter ++; // for some reason i was doing this with counter = "" as I did during a vanilla javascript app and was having trouble getting it to behave the same way.
+            //             // console.log(name)
+            //             wholeCounter.push(counter);
+            //             // console.log(counter);
+            //         }
+            //         if (wholeCounter.length === 1) {
+            //             console.log('we found our pokemon');
+            //             $.ajax({
+            //                 method: 'GET',
+            //                 url: `https://pokeapi.co/api/v2/pokemon/${name}`,   
+            //                 dataType: 'json'
+            //             }).done(function(data) { // ajax call in an ajax call I know from setInterval it can be tricky keeping specificity. we shall see.
+            //                 console.log(data);
+            //                 console.log(data.sprites.front_default);
+            //                 ghostbtn.css('opacity', '1.0');
+            //                 // ghostbtn.css('background', 'blue');
+            //                 ghostbtn.css('background-image', "url(`${data.sprites.front_default}`)");
+            //                 ghostbtn.css('background-image', `url(${data.sprites.front_default})`); // background image finally working 
+            //             })
+            //         } else {
+            //             // console.log('lets stop the event somehow');
+            //             // this.detach()  // goal here was to set ghostbtn as the pokemon.sprite within the 2nd ajax call. 1st AJAX -> type endpoint. accesss id in data[0].pokemon.url.slice rebuild new ajax call then detach to destroy 'mousemove'()
+            //         }
+                        
+                
+                        
+
+                                                                // wholeCounter = [];
+                                                                // counter = "";
+                                                        //                     const flash1 = () => {
+                                                        //     let clickSound = true;
+                                                        //     console.log(clickSound);
+                                                        //     counter += counter;
+                                                        //     wholeCounter.push(counter);
+                                                        //     console.log(wholeCounter);
+                                                        //     if (wholeCounter.length === 1) {
+                                                        //         flickerFake();
+                                                        //         flicker2.play();
+                                                        //         lightBeam.style.display = "block";
+                                                        //         lightBeam.classList.add('lightFlicker');
+                                                        //         lightBeam.style.opacity = "0.0";
+                                                            
+                                                        //     } else if (wholeCounter.length === 2) {
+                                                        //         click.play();
+                                                        //         flicker2.play();
+                                                        //         asyncAnimationWrapper();
+                                                        //     }
+                                                        // }
+
+                    // let randomGhost = ghosts[Math.floor(Math.random() * ghosts.length)]
+                    // console.log(randomGhost);   
+                   
+
+                    // console.log(data.pokemon);
+
+
+                    // console.log(data);
+                // })
+                // ghostbtn.hide()  //instead of doing a hover event to hide and unshow the ghostbtn.. the manipulation observer can probably use some type of parameter of being hovered or not
+            // })
+
+
+
+            let config = { childList: true, characterData: true }
+            
+            
+
+
+            
+
+
+
+
+            // pokebtn.css('border', '3px solid green');
+
+            // poke.on('hover', () => {
+            //     console.log('hey');
+            // })
+
+            $(document).ready(function() {
+                $(window).scroll(function () {
+                })
+            });
+
+    
+            
+
+
+
+            
+         
+    //         const gastly = () => {
+    //             let ajax = new XMLHttpRequest()
+    //             ajax.open('GET', 'https://pokeapi.co/api/v2/pokemon/gastly/', true)
+
+    //             ajax.onload = async () => {
+    //                 if (ajax.status == 200) {
+    //                     // console.log('woot');
+    //                    console.log(ajax.response);
+    //                     const gastly = ajax.response
+    //                     console.log(gastly.moves);
+    //                     console.log(gastly)                        // console.log(gastly.data.name);
+    //                      // gastly() haunter() gengar()
+    // //   ********* &&&&& MAKE FUNCTION THAT CALLS either gastly() haunter() gengar() *****
+    //                 }
+    //             }
+    //             ajax.send()
+    //         }
+            // I prefer this variant: var rand = myArray[Math.random() * myArray.length | 0]
+        </script>
+    </body>
+</html>
+
+
+            
+                
+        
+            
+        
+
+            
+
+
+           

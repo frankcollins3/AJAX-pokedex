@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" href="/css/style.css">
+
+    </head>
+    <body class="pokemonBody">
+
+        
+<!-- <h1> pokemon page </h1> -->
+
+<!-- <div class="energyContainer"> 
+    <p>hehe</p> -->
+
+    <!-- <div class="energyCard" id="fire"></div>
+    <div class="energyCard" id="water"></div>
+    <div class="energyCard" id="electric"></div>
+    <div class="energyCard" id="leaf"></div>
+    <div class="energyCard" id="normal"></div>
+    <div class="energyCard" id="fighting"></div>
+    <div class="energyCard" id="psychic"></div> -->
+    <!-- <div class="energyCard" ></div>
+ </div> --> 
+ 
+ <div id="boxContainer">
+     <div id="cardContainer">
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>
+         <div class="energyCard"> </div>         
+        </div>
+
+        
+
+
+        <div class="pokemonDisplay">
+            <!-- // this is see we can find out how many pokemon we'll use because our console.log($(h1)[]) has an array that well have to have an incrementing number of so well use .length-1 to give us a cutoff point to stop incrementing the [0][1] h1[0].attributes.. -->
+            <% dbPokemon.forEach( (pokemon) => { %>
+                <ul>
+                    <!-- <li><3 pokemon.type %>, <br>   // if you unhide this code and li.opacity('1.0') in the beginning where global variables are:       you'll see the properly appended  pokemon.name & pokemon.type but then if you click on the energyCard the entry.target.style.opacity = '1.0' doesn't work. I only had this setup because you can't access the name from the type right there. It'd be easier to hide the name in a span, access the span and work backwards in an ajax call to give us the pokemon. I'd rather not have the names shown since they will be shown on the show.ejs page and the index.ejs page. The types page is only a Type and a photo to click on to take you to the show.ejs page
+                        <3 pokemon.name %>
+                    </li> -->
+                    <!-- <li> <span> <3 pokemon.type %> </span <3 pokemon.name %> </li> the goal here was to have the span be the only element that was popping up is the type but that we can still access the variable name.  instead: --> 
+                    <!-- <li>< %= pokemon.type %></li> -->
+                    <li> <%= pokemon.type %> : <span> <%= pokemon.name %> </span> </li>  
+                    <!-- superGr8: we've hidden the pokemon.name and made this variable referencable because we will not be finding:             pokemon(i.e.Drowsy).img.frontDefault  by digging thru pokeAPI with only keyword 'psyhic' from pokemon.type. Definitely needed pokemon.name and again I didn't want the pokemon.name showing on this page because it's going to have the names on every single page. can call it pokeNamePage at that point. BONUS this makes span its own little toggle class.--> 
+                </ul>
+
+
+                <!-- <div class="pokeContainer"> -->
+                    <!-- <h1 class="pokeh1"> < %= pokemon.name %>: id: < %= pokemon.pokeid %> < %= pokemon.type %> </h1> -->
+                     <!-- <p class="pokeName"> < %= pokemon.name %> </p>  -->
+                     <!-- <h1 class="pokeid"> < %= `${pokemon.pokeid},` %> </h1> -->
+                    <!-- <p class="pokeType"> < %= pokemon.type %> </p>   -->
+                    <!-- how to access the last element in an array to remove the comma -->
+                    <% }) %>
+                </div>
+                
+                <div id="pokeDisplay2"></div>
+                
+                <div class="nav">
+                    <form action="/" method="GET">
+                        <button type="submit" class="pokeBall"></button>
+                    </form>
+                    <form action="/pokemon" method="GET">
+                        <button type="submit" class="greatBall"></button>
+                    </form>
+                    <!-- <form action="/" method="GET"> -->
+                        <button type="submit" class="ultraBall"></button>
+                    </form>
+                    <!-- <form action="/" method="GET"> nice refreshero--> 
+                        <!-- <button type="submit" class="hidden"> </button> -->
+                        <!-- </form> -->
+                    </div>
+
+                </div>
+
+                <div class = "ghostContainer"></div>
+
+                <button type="submit" class="ghost"> </button>
+            
+
+
+    <!-- <div class="footer"> hey </div> -->
+
+
+
+                       
+
+       <!-- <script src="" async defer></script> --> 
+    </body>   
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>      <!-- can see type="module" and see what happens to /pokemon.ejs. I did go on a 40 minute spree of fixing the new  -->
+    <script>
+   
+// <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="module">    
+
+//     <script type="module">
+
+//          import { flip } from './utility.js'
+//          const sayHello = () => {
+//              return  flip('steve')
+//         }
+// console.info('we was doin that')
+// console.log(sayHello('stevieboy'))
+// UNCOMMENT THIS OUT IT LOOKS LIKE BOBA FETTS BLASTER
+
+
+
+        // global variables
+        let container = $('#cardContainer')         
+
+        let allEnergyCards = document.querySelectorAll('.energyCard')
+       let energyCard = $('.energyCard')                        // these energyCards are used with an array to: 1) grab last element of array. 2) array/displayTypes.pop() a.k.a. delete the url string for background from the array so it cant be used. We also make conditions once we set this url up 
+        let jqEnergyCard = $('.energyCard')[0]
+        let fireBgrnd = "url('/img/energy/energyFire.png')"
+        let leafBgrnd = "url('/img/energy/energyLeaf.jpeg')"
+        let electricBgrnd = "url('/img/energy/energyElectric.jpeg')" // '/img/energy/energyElectric.jpeg' // WAS ALSO TRYING TO DO  energyCard.css('background', `url('${randomType}')`);
+        let normalBgrnd = "url('/img/energy/energyNormal.png')" // '/img/energy/energyElectric.jpeg' // WAS ALSO TRYING TO DO  energyCard.css('background', `url('${randomType}')`);
+        let psychicBgrnd = "url('/img/energy/energyPsychic.jpg')" // '/img/energy/energyElectric.jpeg' // WAS ALSO TRYING TO DO  energyCard.css('background', `url('${randomType}')`);
+        let waterBgrnd = "url('/img/energy/energyWater.png')";
+        let fightingBgrnd = "url('/img/energy/energyFighting.jpg')";
+        
+        let ghost = $('.ghost')
+        ghost.css('opacity', '0.1');
+
+        let pokeList = new Array() // or let pokeList = [] ... this didn't work up there as < % let pokeList = [] %>
+        let pokeContainer = $('.pokeContainer')
+        let pokeDisplay = $('.pokemonDisplay') // bigger screen for the:     ul > li hidden <span> <3pokemon.name<3 </span and the <3pokemon.type%>
+        let pokeDisplay2 = $('#pokeDisplay2') // little mini screen for the pokemon
+        let jqDisplay = $('.pokemonDisplay')[0]
+        let dbPokemon = document.querySelectorAll('li')
+
+        let ghostContainer = $('.ghostContainer')
+        // $('.nav  button').css('border', '5px solid orange');
+        let navBtn = $('.nav button')
+        $(navBtn).each( () => {
+            $(navBtn)
+           .css('border', '1.5px solid rgb(61, 46, 61')
+           .css('box-shadow', '1.5px 1.5px 1.5px rgb(19, 14, 19)')
+        })
+        navBtn.on('mouseenter', () => {     // hmm I can't use $(this) over here and down there I can't use $(event.target) are terms being muddied because we are attaching similar hover-type events to the same target?
+                const rotate = () => {              // just wanted these randomRotations since it's more insync with how the pokeballs would actually move/behave in the show when they capture pokemon.
+                    $(event.target).css('transform','rotate(15deg)')
+                }
+                const rotate2 = () => {
+                    $(event.target).css('transform','rotate(-15deg)')
+                }
+            const rotateBucket = []
+            rotateBucket.push(rotate) // tried putting 
+            rotateBucket.push(rotate2)
+            let randomRotation = rotateBucket[Math.floor(Math.random() * rotateBucket.length)]
+            // $(event.target).css('transform', `${randomRotation}`)
+            $(event.target).css('transform', randomRotation)
+            $(event.target).css('box-shadow', '1px 2px 3px gold');
+            // .css('border', '200px');            
+            $(event.target).animate({
+                'opacity': 0.5
+                // 'transform' : 'scale(2.0)',
+                // 'left': 200,
+            })
+        })
+        navBtn.on('mouseleave', function() {    
+            // $(event.target).css('box-shadow', '1.5px 1.5px 1.5px rgb(19, 14, 19)')
+            $(this).css('transform','rotate(0deg)')
+            setTimeout(() => {
+                // $(event.target) ... coding too long? cant get $(event.target) to work. atleast $(this) is working.
+                $(this).animate({           // surprise jquery doesn't support transform in  the animate object
+                    'opacity': 0.5,
+                    'opacity': 0.6,
+                    'opacity': 0.7,
+                    'opacity': 0.8,
+                    'opacity': 0.9,
+                    'opacity': 1.0,
+                }, 1000)
+                $(this).css('opacity', '1.0')
+            }, "1000")
+        })
+
+        // trying to use some randomFunctions here to make the pokeballs wobble back and forth like they would in the game.
+        let intervalBucket = ["1000", "2000", "3000", "4000"]
+        let cssBucket = ['rotate(15deg)', 'rotate(25deg)', 'rotate(0deg)', 'rotate(-15deg)', 'rotate(-25deg)']
+        let randomCss = cssBucket[Math.floor(Math.random() * cssBucket.length)]
+        let randomInterval1 = intervalBucket[Math.floor(Math.random() * intervalBucket.length)]
+        let randomInterval2 = intervalBucket[Math.floor(Math.random() * intervalBucket.length)]
+        let randomInterval3 = intervalBucket[Math.floor(Math.random() * intervalBucket.length)]
+        let intervalArray = []
+        intervalArray.push(randomInterval1, randomInterval2, randomInterval3)
+        let newRandomInterval = intervalArray[Math.floor(Math.random() * intervalArray.length)]
+        const randomMovement = async () =>  {
+            let buttonBucket = Array($('.nav button')[0],$('.nav button')[1],$('.nav button')[2])
+            let randomItem = buttonBucket[Math.floor(Math.random() * buttonBucket.length)]
+            // console.log(randomItem);
+        const wiggle1 = async () => {
+            const moveSomewhere = () => {
+            $(randomItem).css('transform', `${randomCss}`)
+        }
+            const moveSomewhere2 = () => {
+            $(randomItem).css('transform', `${randomCss}`)
+        }
+            const moveSomewhere3 = () => {
+            $(randomItem).css('transform', `${randomCss}`)
+        }
+        const somewhereBucket = [moveSomewhere(), moveSomewhere2(), moveSomewhere3(),]
+        const randomSomewhere = somewhereBucket[Math.floor(Math.random() * somewhereBucket.length)];
+            await setTimeout(`${randomSomewhere}`, "1000")
+        // const moveBackRight = () => {
+        //     $(randomItem).css('transform', 'rotate(0deg)')
+        // }
+        // await setTimeout(moveBackRight, "1000")
+    }
+        await setTimeout(wiggle1, `${newRandomInterval}`)   
+        // const wiggle2 = () => {
+        //     $(randomItem).css('transform', 'rotate(0deg)')
+        // }
+            // await setTimeout(wiggle2, "3000")
+            // await setTimeout(wiggle2, "1000")
+        }
+      setInterval(randomMovement, `${newRandomInterval}`)
+        // const wiggle2 = () => {
+        //     $(randomItem).css('transform', 'rotate(0deg)')
+        // }
+        // setTimeout(wiggle2(), "1000")
+    // $(event.target).css('transform','rotate(-15deg)')
+// $(event.target).css('transform','rotate(-15deg)')
+        // setTimeout(observer.disconnect(), 5000, console.log('just checking'))        // Array.prototype.random = (length) => {
+        //     return this[Math.floor(Math.random() * length)] // leaving Math.random() open means whatever paremeters you put into the random function is going to fill this parenthesis right here basically as: () * array.length but as random(array)
+        // }
+        // console.log(buttonBucket.random())
+        // random(buttonBucket);
+
+
+
+
+                
+
+        
+
+
+        let h1 = $('.pokeh1')
+        let li = $('li')
+        li.css("opacity", '0.0');
+        $('.ghost').hide()
+        // li.css('opacity', '0.0') // li.hide()
+        // li.hide()
+        // THIS IS THE boolean section. set to false = skip a number access the next h1 with the new integer 
+        
+        pokeList.push(pokeContainer.children())
+        // console.log(pokeList);
+        // let displayTypes = new Array() // or [] <33 oldschool way  
+        let displayTypes = [] // or [] <33 oldschool way  
+        // displayTypes.push(fireBgrnd, leafBgrnd, electricBgrnd)
+        displayTypes.push(fireBgrnd, leafBgrnd, electricBgrnd, normalBgrnd, psychicBgrnd, waterBgrnd, fightingBgrnd) // this is so we have an array we can flip through. It was originally supposed to be that we'd grab a pokemon at random and then specify a displayTypes.pop(specifiedRandomPokemon) instead it just returns our displayTypes and .push() the pokemon then .pop() that very same returned and now .push to the end pokemon that we .pop so that we can't reuse it. 
+
+        let energyCards = new Array()
+
+        // observer code
+        let config = { attributes: true, childList: true };  // options/configuration
+
+        // let observer; 
+        
+        // const checkMutation = (mutationList) => {
+        //     console.log(mutationList)
+        // }
+        
+        // observer = new MutationObserver(checkMutation)
+        // observer.observe(jqEnergyCard, config)
+
+        // energyCard.click( () => {
+        //     checkMutation()
+        // })
+
+        
+
+
+        const observer = new MutationObserver( (mutations) => {
+
+mutations.forEach((mutation) => {   // in short this is just a lucky use-case of using the mutation observer. first we observe the jqEnergyCard. We watch to see if it has a background url which would be from our displayTypes array. we loop through displayTypes and match for our cleanUrl. If we do have a match, and it .includes(cleanUrl) we push that very url to the end of the array and pop it. We can apply a random background and consistently take control over our exactness on not reusing a background twice. Great to see mutationObserver have the ability to see anything going on with any element. mutationObserver is a serious ally for writing conditionals against css/eventListeners, if (element.mutationRecord.hasBeenClicked) { } ..
+    // console.log(mutation)
+    // console.log(MutationRecord.target.classList) // a bit easy to want to access the object by MutationRecord.
+    // console.log(mutation.target.classList)
+
+    // console.log(mutation.target.attributes.style.nodeValue           // these 4 lines of code show the map of where you'd go digging trying to find the /energy/FIRE any clean url to extract a type to rematch/specify with displayTypes and delete the backgroundType from displayTypes once its used using the manipulation observer to watch the page seeing which urls are posted. its also problematic that when you see the urls they come posted with \n/ regex type patterns which may need additional formulas/expressions to clean up.
+    let background = mutation.target.attributes.style.nodeValue     
+    // console.log(background);
+    let cleanUrl = background.slice(17, background.length-3);   // we are accesesing either "url('/img'...type.jpeg')" or perhaps just checking to see if displayTypes can match for characters against just .slice for "energyNormal" from "energyNormal.jpeg" or energyFire and see if displayTypes.childList.src (from manipulationObserver) has a url with same characters we have extracted from our $(event.target) 
+    // let cleanUrl = background.slice(29, background.length-3)
+
+    // to return the displayTypes.child that has characters that correspond to our cleanUrl sounds like the clearest way to explain the goal.
+    // first MVP is to 
+    // console.log(cleanUrl);
+
+    // for (let i = 0; i < displayTypes.length; i++) {
+    //     console.log([i])
+    //     console.log(displayTypes[i])
+    //     if (displayTypes[i] === cleanUrl) {
+    //         console.log("atleast we've got a match");
+    //         console.log(cleanUrl)
+    //         displayTypes.splice(i, 1);   // we are
+    //         i-- 
+    //     }
+    // }
+    for (let i = 0; i < displayTypes.length; i++) {
+        // console.log(displayTypes[i])
+        // console.log(displayTypes[i])
+        if (displayTypes[i] != null) {
+            if (displayTypes[i].includes(cleanUrl)) {  // if looping through displayTypes, and any point in the index( which is [i] that passes through every single character... if any index.includes the cleanUrl, which is generated as the URL of our randomly selected background.
+
+                displayTypes.push(displayTypes.splice([i], 1)[0]) // this is saying .splice at this very index that "let cleanUrl =" meets displayTypes where displayTypes is set to the same background. The push method throws the same indexed element to the end of the array, and .pop removes the item at the end so we finally control the flow of grabbing a random url, putting it to use/applying CSS one time to one element/ and then clearing that now applied CSS-energyCard-background from the displayTypes cache so the next random can't pick the same background.   Was trying to do displayTypes.pop(cleanUrl) and to figure how to remove an element from array with exact specification.
+                displayTypes.pop()
+            }
+        }
+    }
+    // array.push(array.splice(index, 1)[0]);
+// If you don't have the index, and only the element, then do this
+// array.push(array.splice(array.indexOf(element), 1)[0]);
+    //  for (const k of background) { wow can't believe that works. you can see in console the output url character by character being posted. gotta try to find a cleaner way to get the url.
+    //      console.log(k)
+    //  }
+    setTimeout(observer.disconnect(), 5000, console.log('just checking'))
+})
+// console.log(displayTypes())
+
+
+} ) // its really easy to want to call the 
+
+
+observer.observe( jqEnergyCard, {
+childList: true,
+characterData: true,
+attributes: true
+})
+
+
+// MVP with mutation observer is getting an iteration of watching over the element and then reverse console.log through the mutation object to see which parameters are usable to create conditional statements that'll lead us toward the goal. Which in this case is just using the circles, applying a background, checking the mutation object for the url, using .splice to get the type out of the url 
+const getRandomType = () => {
+let random = "";
+random += displayTypes[Math.floor(Math.random() * displayTypes.length)] // very a-ha/eureka to see this make sense I saw a different version of this on stackoverflow. to make a variable be an empty string and to do addition assignment just to almost reappend a variable to a different variable. 
+return random
+// return displayTypes[Math.floor(Math.random() * displayTypes.length)] // do this without bracket and only get the .length integer.
+// let randomType = displayTypes[Math.floor(Math.random() * displayTypes.length)]// do this without bracket and only get the .length integer.
+// console.log(randomType)
+}
+let typeIsRandom = getRandomType() //  I thought you could use the same return displayTypes[Math.floor] line(70) of code to 
+
+let storeType1 = function() {           //  
+// let randomType = getRandomType()    
+    let lastElement = displayTypes[displayTypes.length-1]   //  doing it this way by having the last element by selected, .push() to the end for certainty, and then .pop, gives us more control than:  selecting randombackground from displayTypes, and doing a .pop(randomElement) .. wasn't able to find a way to control with that much precision the same random element we extracted. I saw this js "set Object" and was thinking of using .add / .delete / .has but didn't know how to get a random value from a setObject when we typically do accessArray[Math.floor(.random()* accessArray.length )]
+displayTypes.pop()
+// use the mutation observer to check if there are any elements on the page with the same randomType string... // console.log(displayTypes);
+return lastElement
+}
+
+// storeType1() // storeType2() // storeType3() antiDRY test running the function 3x with /fire.jpeg /leaf.jpeg /electric.jpeg to test if the code will apply css and delete from displayTypes so we can sequentially apply a random background accross all of the pokemon energy cards. Minimum Viability for starters, the goal is to use a .each to see if the 1 function will just apply css and delete the value continually until all the types have been applied randomly as backgrounds and there are no repeats.
+// storeType2() // was going to use three different types of the same function to so that we can pick randomElements from the displayTypes which is an array of all the background url strings from relative path public/img/energyFire.png...
+// storeType3()     
+// console.log(`this is ${displayTypes}`)
+// let randomFunctionBucket = [storeType1, storeType2, storeType3]
+// let randomFunction = randomFunctionBucket[Math.floor(Math.random()*randomFunctionBucket.length)] // was trying to use energyCard.each( ()=>{ and $(this).css('background', 'randomFunctionFromBucket') not going to work cuz you'd only have $(this) from an event from what i know. .each coinciding with randomChanges applied is as ugly as setInterval if not more. 
+// let counter = ""; let wholeCounter = [];
+// $(document).on('mousemove', () => {
+//     counter += counter;
+//     if (wholeCounter.length == 1) {
+//         // i believe it'd be more helpful to have all of the circles pushed into an array. if we can access the array to style them, we can individualize the css 
+//         // even sneaking the .each into a document.mousemove event there's no $(this)... 
+//         // as a last ditch effort it may help to just apply all the randombackgrounds in a forEach and setup conditional guards (i.e. maybe let leaf = true) to check for no repeats on applying backgrounds twice. 
+//         // starting to think its better to have these types laid out to be uncovered. Triggering the uncovering is going to give $(this) 
+
+
+let wholeCounter = [];
+
+let dispObserve = new MutationObserver( (mutations) => {
+    mutations.forEach( (mutation) => {
+        // console.log(mutation)
+    })
+})
+
+dispObserve.observe( jqDisplay, {
+    // characterData: true,
+    childList: true,
+    subtree: true
+})
+
+
+
+
+
+energyCard.on('mouseenter', () => {     // this was originally going to be an automatically triggered function that applies all the styles randomly, quite disappointing to not work but totally keeping it consistent by hard-sourcing or building-materials from .slice + event objects
+let order = 1;
+// $('#cardContainer div:last').css('order', '+=' + order)
+// $('event.target').css('order', '+=' + order)
+
+let displayCounter = 0;
+let wholeDisplayCount = new Array()
+displayCounter++
+wholeDisplayCount.push(displayCounter);
+const fakeThis = $(event.target) // console.log($(this))
+
+
+// <div id="boxContainer">  box
+//      <div id="cardContainer"> card
+//          <div class="energyCard"> </div> div energyCard
+
+if (displayTypes.length == 0 || wholeDisplayCount.length === 7) {
+    console.log('got our empty array');
+    $(event.target).css('border', '4px solid goldenrod');
+
+    fakeThis.on('mouseleave', () => {
+        $(event.target).css('border', '1.5px solid rgb(61, 46, 61)')
+            // $('#cardContainer div').last().css('height', +10);
+            $('#cardContainer div').last()      //this is grabbing the last element of the divs that are in the cardContainer but the downside is that .last() doesn't have access to the current CSS and for some reason, respecifying display: flex, and order: '1' is not helping. Good idea is to try another way to target the last element. Either way apparently, last-child is going to be registering the order from the <div> </div> actual html. WE want to continually make a new energyCard 
+            .css('display', 'flex')
+            .css('order', '1')  /// wow thats insane.       .last() doesn't have access to the CSS so it makes sense that it ca
+        // $('#cardContainer > :last div').css('border', '5px solid blue');
+
+    
+        // $( "ul li" ).last().addClass( "highlight" );
+
+let orderProperty = 0;
+                
+
+// setInterval( () => { 
+//         orderProperty ++;
+//         // if (fakeThis.css('order') == 3) {
+//         //     fakeThis.css('order', '1');
+//         // }
+//         fakeThis.css('order', `${orderProperty}`)
+//         console.log('are we doing that');
+//         fakeThis.css('order', '1')
+//     }, "1000")
+})
+}
+
+
+
+
+let counter = 0;
+counter ++
+wholeCounter.push(counter)
+if (wholeCounter.length == 7) {
+    // console.log('here we go');
+}
+
+    if (!fakeThis.attr('id') ) {    // if our event.target !doesnt have any id at all a.k.a. if it hasn't been interacted
+        fakeThis.css('background', storeType1); // "url(`${}`)"); this isn't right // doing it the the other way 
+        // console.log($(this))
+        // console.log(fakeThis)
+        console.log(fakeThis[0].attributes.style.textContent)
+        let url = fakeThis[0].attributes.style.textContent
+
+        if (url.includes('.jpeg')) { // who knows
+            let backgroundSlice = url.slice(35, url.length-7) // quick problem. It's nice to be tested with slice and extracting URLs. little roadblock here is that depending on .jpeg or .png .... our id made could be leaf or electric. with a period. We're going to check if our url has png and depending on that, apply url.length-7 or url.length-6.   ACTUALLY we can leave it like this because we're only evaluating if the element has an id at all in the first place. $(event.target) is a godsend. using $(event.target) to apply CSS/analyze changes and then specify attributes like id or class based on the css changes. 
+            fakeThis.attr('id', backgroundSlice)
+        } else {
+            let backgroundSlice = url.slice(35, url.length-6) // quick problem. It's nice to be tested with slice and extracting URLs. little roadblock here is that depending on .jpeg or .png .... our id made could be leaf or electric. with a period. We're going to check if our url has png and depending on that, apply url.length-7 or url.length-6.   ACTUALLY we can leave it like this because we're only evaluating if the element has an id at all in the first place. $(event.target) is a godsend. using $(event.target) to apply CSS/analyze changes and then specify attributes like id or class based on the css changes. 
+            fakeThis.attr('id', backgroundSlice)
+        }
+// let backgroundSlice = url.slice(35, url.length-7) // quick problem. It's nice to be tested with slice and extracting URLs. little roadblock here is that depending on .jpeg or .png .... our id made could be leaf or electric. with a period. We're going to check if our url has png and depending on that, apply url.length-7 or url.length-6.   ACTUALLY we can leave it like this because we're only evaluating if the element has an id at all in the first place. $(event.target) is a godsend. using $(event.target) to apply CSS/analyze changes and then specify attributes like id or class based on the css changes. 
+    } else {
+        if (fakeThis.attr('id')) {
+            // console.log('hey cutie');   
+        }
+    }
+    
+// console.log($(this)) // dont know why $(this).css( wasn't working ) but thinking $(this) would work in a .each(.energyCard)
+    // $(this).css('border', '5px solid blue');
+        
+
+    })
+
+    // check into the display and access the textContent from the children. 
+    
+
+    // setTimeout(() => {
+    //         console.log('lets just set up a quick thing real quick');
+    //     }, "5000")
+
+    
+    
+    
+    
+
+let energyCounter = 0;
+let wholeEnergyCounter = [];
+
+energyCard.click( async function() {   // when you click, extract the type from the background,unhide the pokemon with a match for our actualType variable.
+    energyCounter ++
+wholeEnergyCounter.push(energyCounter)
+    if (wholeEnergyCounter.length == 2) { // jQuery's event data can still be accessed via jQuery. _data(element, "events") but be aware that this is an internal data structure that is undocumented and should not be modified. **this msg taken from google** I was going to use a loop to access the event object in $(event.target) and remove the target that is associated with the: " let background = entry.target.attributes.textContent.lowCase() "
+        location.reload(true); // glue it together? not fun to use this. 
+    }
+        
+        li.css('opacity', '0.0');   //thought you'd want to have this in the li.hover event it's better off in the click event. SECOND PROBLEM: it still saves the fact that the otherElement is going to have the oneLineType variable associated with it.
+        // was going to do an if(li.textContent != energyCardEventObject.target.backgroundCss.url.slice/type            (if li.textContent isn't = to energyCard.background... li.hide() this won't work because then they won't appear on hover. )
+      
+        let it = $(event.target)
+        // let it = $(this)
+        // console.log($(this))
+        let preBackground = it.context.attributes.id.textContent;
+        let background = it.context.attributes.id.textContent.toLowerCase().slice(0, preBackground.length-1); // this isn't the observerEntry this is the .energyCard. 
+        // let scrollObserver = new IntersectionObserver(entries => {  if you bring the intersectionObserver back up here.. The energyCard Click function won't clear the available li to see. 
+        // if ($('#boxContainer').css('display') == 'flex') {
+        //     console.log('its true');
+        // }
+        // console.log(it)
+    // li.each( (i) => {
+    //     if (li[i].textContent == 'normal' && $(event.target)!= null) { //am trying to check the li for the textContent and only show() the [i]/elements that have a correspondence between textContent == 'normal' and the background/id/extractedTypeFromBackgroundUrl to check and get some personalization going on with elements being displayed or not based on the type we click.
+    //         // if (li[i].textContent = $(event.target).id) {     //         //     console.log('weve got a match'); // if we can get a match we can hand select functions based on name in the function. 
+    //         // li[i].hide();       // big bummer that accessing this doesn't work. Not seeing a way to loop through and do an individual change on 1 element like how the gengar button applies $(event.target).changeCardToWhoseWhoPokemon 
+    // it.css('order', '1'); // i don't know why this isn't having the element push itself into the middle of all of the data by being in the 3 (0,1,2,3) spot
+    // if (it[0].attributes[1].nodeValue.includes('order:')) {         // problem is this applies order and then keeps it that way. it'll have to check if the $(event.target) has the order property and proceeds if it doesn't.
+        //   console.log(it[0].attributes[1].nodeValue.includes('order:')) // .includes is super effective because you can check for css / parameters included in strings. was looking for 5 minutes in the $(event.target) object and couldn't find anything referencing the order: property.
+        it.siblings().css('order', ''); // this sets the order to be empty because if you delete this. you can start at the top, mouseenter onto every element down, and click on elements, sending them to the top, which we can use visually so a user knows they are accessing a particular type. If this line of code is commented out you can only click on each element once since the order is already applied. This keeps things open and allows one to be consistently set. 
+        // it.siblings().css('order', +1); // this sets the order to be empty because if you delete this. you can start at the top, mouseenter onto every element down, and click on elements, sending them to the top, which we can use visually so a user knows they are accessing a particular type. If this line of code is commented out you can only click on each element once since the order is already applied. This keeps things open and allows one to be consistently set. 
+        if (!it[0].attributes[1].nodeValue.includes('order')) { // nodeValue: "background: url(\"/img/energy/energyWater.png\"); order: 1;"     this is where we get the order: 1 its a great way to have a fallback to reference a chance. This is almost the way the mutation observer works. it sets you up for a conditional/easy reference by observing for changes. 
+           await $(event.target).css('order', '1'); // i don't know why this isn't having the element push itself into the middle of all of the data by being in the 3 (0,1,2,3)     .. its behaving unexpectedly by seemingly taking its present location into factor, and moving it based on where it is. I think clearing it and resetting is a better idea. Or like how we take the background, push it to the end, and pop it off. it maybe better to: Take the flex-item .energyCard, push it to the front of the flex and get it to the middle by having a consistent location at the end or front. Maybe we go the route of changing it to (nth)-child and actually adjusting the html.
+            // order: 1 the way it is working by having it onto the very end of the flex display may look okay if we use column and have it go to the top. I'm not sure why order: 1 pushes them to the end and then why order: 0 does absolutely nothing.
+            // console.log(it);
+        }
+            let type = event.target.id
+            // let oneLineType = event.target.id.slice(0, event.target.id.length-1).stringify().toLowerCase()
+               // tried to wrap if statement is only so i can redeclare oneLineType up above. Without it declared up above the oneLineType will remain attached to each type if you click normal, check types, and check another type. IN SHORT THE PROBLEM IS oneLineType can be attributed to many different events, leaving all lis to be setup for a conditional check (if onelineType === 'allTypes') which can have all events/.energyCard with the oneLineType variable saved onto it.
+               let oneLineType = event.target.id.slice(0, event.target.id.length-1).toLowerCase()
+                if (type.includes('.')) {
+                    let preType = type.slice(0, type.length-1) // nope not type.slice(type.length-1) and almost thought i'd have to do something different to get the last character.
+                    // console.log(preType);
+                    let actualType = preType.toLowerCase()
+                    // console.log(actualType)
+                // console.log(pokeContainer.children())
+                //go into the children and dig out the pieces of data correlative to the type we click on
+                // if (h1[`${randomInt}`].outerHTML.includes(`${actualType}`)) {
+                // console.log('hmm');
+            } else if (!type.includes('.')) {           // having just else was being kind of strange and letting both console.log(actualType) show up.
+                let actualType = type.toLowerCase()
+                if (h1[`${randomInt}`].outerHTML.includes(`${actualType}`)) {
+                // console.log('hmm');
+            }
+            }
+            let target = $(event.target)
+            if (energyCard.opacity = 1.0) {
+                energyCard.css('opacity', 0.1); // this resets the energyCards so that we can't have 2 energyCards being 1.0 at the same time.      target.css distinguishes the very elements we're applying changes to in this line right here. 
+                target.css('opacity', '1.0');
+            }
+            pokeDisplay.on('mouseleave', (evt) => {  //
+                oneLineType = undefined;   // i wonder why this is even needed because if it redeclares the eariable with oneLineType = event.target.slice...       if it redeclares the variable why is it popping up both as psychic and normal types? if you delete this code you can have psychic types appear and then have the normal types trigger the psychic button since apparently oneLineType would be set as = 'psychic' = 'normal' problem solved. This was the hardest thing to do to get these types to be in sync with each other. This is also because once we are done with the energyCard.click function and deepen still within the click function into the li.hover function the $(this) is still grabbing the $(this) while in the hover event with the $(this) from the energyCard.click
+            })
+            // this is a bit like doing the 2 ajax calls within each other. dancing between: energyCard/$(event.target)     and the li/$(e.target) we can 
+            li.on('hover', (e) => {     // this hover is only activated once you click on an energyCard. This very behavior triggered in the hover would be activated automatically if we didn't need event.target to do so. 
+            // intersection observer replaced the li.hover function
+            // $('li').each( () => {
+            //     let oneLineType = ""; this code is triggering the other types 
+            // })
+            // let hoverEvent = e.target
+            let hoverTarget = e.target 
+            let jqHoverTarget = $(e.target) 
+        //    if (event.target.style.opacity = 1.0) { 
+                // console.log(oneLineType)            // if you can see the problem the oneLineType is being saved different times under different names with the same variable name.
+               if (oneLineType === 'normal') {                                                // this oneLineType is referring to $(event.target) which don't forget is the energyCard that is clicked and non-opacity 0.1.  This is saying:     if (energyCard.is(normal)) { if li.hover() } 
+            //    console.log(oneLineType);  //HUGE OBJECTIVE TO OVERCOME we can somehow store oneLineType as multiple different names without it becoming an array. The plan was as if eve
+            }
+            }) // hover.end 
+               // we want the normal type to show the normal types, dragon types, flying types...
+               // as these work, little problem: you can click normal and have the types show up. and then when you click a second type like psychic, the other types/data appeared from the .normalEnergyCard.click are still appeared.           
+            //   if (e.target.textContent === oneLineType) {
+            //    //    $(this).hide()                            no pun but THIS is still grabbing the originally declared .energyCard.click this
+            //        $(e.target).hide()          // continually amazed at the unfoldment tbh this feels very lucky. 
+            //    }
+            // this should be a solution. since you'd be on the pokeDisplay and have to go to the .energyCards to go click on another one, since we are still using the .energyCard .click reference of event.Target. we can use $(pokeDisplay).mouseleave ----> (saying that when you leave the pokeDisplay set oneLineType === "" because its still attached to this very event.target.       i see what ppl mean when they say computers are dumb. in the end the problem is we can have multiple event.targets with the oneLineType variable applied to them and the conditional statements are all checking for all of the types. leaving the ability for multiple types to be uncovered together.) pokeDisplay is a little sneakyway to steal control back from this: setIdToElement -> stripUrlBasedOnBackGroundInspiredId dumb solution that allows for us to be jammed.
+            // let scrolling = "";
+            let scrollObserver = new IntersectionObserver(entries => {   // were using this scrollObserver within the clickFunction because it needs access to the $(event.target) which is the .energyCard.        More .slice & .includes being 
+             let scrolling = true;
+                                                // pretty big issue here. same with the hover except with the hover we were able to put oneLineType = undefined and for everything to reset. Somehow: preBackground is being saved and understood as:       let background = 'Psychic' but also seemingly saving the old background = 'water', while console.log(background) + console.log(entry.target.html) will tell you the background and type are the same, and the code somehow bypassing the conditional that says if the background is stritcly equal to the entry.HTML. my next guess is to put the intersectionObserver in a function and maybe calling it to invoke it will reset the things going on under the hood. 
+    entries.forEach(entry => {       
+        if(entry.isIntersecting) {   // this means if our entryPoint is intersecting. I belive its working with threshold so that if (0.7) or           70% of the card is onto the observer, our conditional statements run our if() expressions 
+            // console.log($(event.target)) // you will lose the scope of event.target but if you declare it outside of the Observer we can stay in touch with it.. Just like in the ajax call.
+            console.log(it.context.attributes.id.textContent);
+            // console.log(`this is the ${background}`)  // these two lines of code will show you that $(event.target): 1 event can have several different targets/targeted element. As far as I can see: 1 variable name can be attached to several different elements if described under an event.target (in this case within a click event)  
+            // console.log(`this is the ${entry.target.innerHTML}`)        
+
+            // console.log(`have intersected aren't same type: ${background}`) this line of code is to show you when they don't match. Take out location.reload=true()
+            let pokeText = entry.target.textContent
+            // console.log(entry.target.textContent)
+            let newType = pokeText.slice(
+                pokeText.indexOf('') +1,
+                pokeText.lastIndexOf(':') - 1
+            )
+            // console.log(newType);
+
+           console.log(`this is our ${pokeText}`);
+            let newName = pokeText.slice(
+                pokeText.indexOf(':') + 3
+            )
+
+
+            // console.log(`this is the background ${background}`)
+                // console.log(`newName ${newName}`);
+            // console.log(`newName ${newNa
+            const checkElectric = () => {
+                if (background == 'electric' && newType == 'electric') {
+                    entry.target.style.color = "black"
+                   
+                    entry.target.style.textShadow = '1px 1px 1px goldenrod'
+                    let electricText = document.createElement('div')
+                                    $(electricText).addClass('text')
+                                    $(electricText).css('background-image', "url('/img/text/electricText.png')")
+                                    // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                    if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                    console.log('entry has less than one child');
+                                    entry.target.append(electricText)                                
+                                    } else {
+                                    console.log('nope the div has children');
+                                    // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                        }
+                    }
+                }
+            checkElectric()
+
+            const checkFire = () => {
+                if (background == 'fire' && newType == 'fire') {
+                    entry.target.style.color = "crimson"
+                    entry.target.style.textShadow = '1px 1px 1px black'
+                   
+                    let fireText = document.createElement('div')
+                                    $(fireText).addClass('text')
+                                    $(fireText).css('background-image', "url('/img/text/fireText.png')")
+                                    // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                    if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                    console.log('entry has less than one child');
+                                    entry.target.append(fireText)                                
+                                    } else {
+                                    console.log('nope the div has children');
+                                    // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                        }
+                    }
+                }
+            checkFire()
+
+            const water = () => {
+                if (background == 'water' && newType == 'water') {
+                    entry.target.style.color = "cornflowerblue"
+                    entry.target.style.textShadow = '1px 1px 1px black'
+                   
+                    let waterText = document.createElement('div')
+                                    $(waterText).addClass('text')
+                                    $(waterText).css('background-image', "url('/img/text/waterText.png')")
+                                    // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                    if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                    console.log('entry has less than one child');
+                                    entry.target.append(waterText)                                
+                                    } else {
+                                    console.log('nope the div has children');
+                                    // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                        }
+                    }
+                }
+            water()
+
+
+
+
+
+                
+            const checkPsychic = () => {
+            if (background === 'psychic' && newType === 'psychic') {
+                entry.target.style.color = "#C716C1"
+                entry.target.style.textShadow = '1px 1px 1px black'
+                let psnText = document.createElement('div')
+                                $(psnText).addClass('text')
+                                $(psnText).css('background-image', "url('/img/text/psychicText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(psnText) 
+
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+            }
+
+
+            if (background === 'psychic' && newType === 'ghost' || background === 'psychic' && newType === 'poison' ) {        //if we had dark type pokemon here we'd be classifying dark under the psychic type. 
+                        // entry.target.style.border = '5px solid peachpuff';
+                        entry.target.style.opacity = '1.0'
+                        // console.log('sure we got a ghost');
+                        // console.log(newType);
+                    let ajaxUrlPoke = `https://pokeapi.co/api/v2/pokemon/${newName}`
+                        $.ajax({
+                            method: 'GET',
+                            url: ajaxUrlPoke,
+                            dataTypes: 'json',
+                        }).done( (data) => {
+                            console.log(data);
+                            let image = data.sprites.front_default
+                           
+                            if ( background === 'psychic' && newType === 'poison') { // was being a little strange. a little redundant.
+                                console.log('weve got the poison');
+                                let poison = entry.target
+                                let psnName = data.name
+                                let psnImage = data.sprites.front_default;
+                                let psnPokemon = document.createElement('div')
+                                $(psnPokemon)
+                                .addClass('sprite')
+                                .css('background-image', `url('${image}')`)
+                                .css('background-size', 'cover')
+                                .css('background-repeat', 'no-repeat')
+                                $(pokeDisplay2).append($(psnPokemon));
+                                $(psnPokemon).on('hover', () => {
+                                    window.location.href = `pokemon/show/${newName}`
+                                })
+
+                                let psnText = document.createElement('div')
+                                $(psnText).addClass('text')
+                                $(psnText).css('background-image', "url('/img/text/psychicText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(psnText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                                 }
+                                        entry.target.style.color = '#9917BA'    // 6D0999
+                                        entry.target.style.textShadow = '1px 1px 1px black'
+                                            
+                                        
+                                        
+                                        // entry.target.charAt(0).toUpperCase()
+                                    }   // if background = psy && newType = 'poison'
+                                    if (background === 'psychic' && newType === 'ghost') {        // keeping the ghost aspect alive if its not in the way/obnoxious.
+                                let ghostCount = 0
+                                wholeCount = []
+                                wholeCount.push(ghostCount)
+                                if (wholeCount != null) {
+                                    console.log('now we in here');
+                                    
+                                    // .css('background', 'blue')
+                                    if ($(ghostContainer).children().length < 1) {              // feels lucky this just fell intno place.
+                                        let ajaxUrl = 'https://pokeapi.co/api/v2/pokemon/gengar'
+                                        $.ajax({
+                                            method: 'GET',
+                                            url: ajaxUrl,
+                                            dataTypes: 'json'
+                                        }).done( (ajaxGengar) => {
+                                            console.log(ajaxGengar)
+                                            let gengarImg = ajaxGengar.sprites.front_default
+                                            let gengarBack = ajaxGengar.sprites.back_default
+                                            let randomGhost = document.createElement('button') // hmm div vs button. 
+                                            $(randomGhost)
+                                            .css('height', '50px')
+                                            .css('width', '50px')
+                                            .css('border-radius', '50%')
+                                            .addClass('sprite')
+                                            $(randomGhost).css('background-image', `url('${gengarImg}')`)
+                                            $(randomGhost).css('top', '')
+                                            $(randomGhost).css('left', '')
+                                            const moveGhost = () => {
+                                                let top = '50px'
+                                                // finally got the ghost to appear. now just to set the CSS and location.      
+                                                $(randomGhost).css('position', 'relative')
+                                                ghostContainer.append($(randomGhost))
+                                                // if ($(randomGhost).length == 1) {
+                                                //     $(randomGhost)[1].detach()
+                                                // }
+                                                const timeStyle = () => {
+                                                    $(randomGhost).css('top', '50px')
+                                                    $(randomGhost).css('left', '15px')
+                                                }
+                                                const timeStyle2 = () => {
+                                                    $(randomGhost)
+                                                    .css('top', '150px')
+                                                    .css('right', '5px')
+                                                    .css('opacity', '0.8')
+                                                }
+                                                const timeStyle3 = () => {
+                                                    $(randomGhost)
+                                                    .css('top', '350px')
+                                                    .css('left', '25px')
+                                                    .css('opacity', '0.6')
+
+                                                }
+                                                const timeStyle4 = () => {
+                                                    $(randomGhost)
+                                                    .css('top', '650px')
+                                                    .css('right', '25px')
+                                                    .css('opacity', '0.6')
+
+                                                }
+                                                const timeStyle5 = () => {
+                                                    $(randomGhost)
+                                                    .css('top', '850px')
+                                                    .css('right', '25px')
+                                                    .css('opacity', '0.3')
+                                                    .css('background', `url('${gengarBack}')`)
+                                                    .css('background-size', 'cover')
+                                                    .css('background-repeat', 'no-repeat')
+                                                    
+                                                    console.log($(randomGhost).length)
+
+                                                }
+
+                                                setTimeout(timeStyle, "1000")           // can also use += "1000" in the css value to increment based on number. vs setting top: '100px'
+                                                setTimeout(timeStyle2, "2000")
+                                                setTimeout(timeStyle3, "3000")
+                                                setTimeout(timeStyle4, "4000")
+                                                setTimeout(timeStyle5, "5000")
+
+                                            }
+                                            const vanishGhost = () => {
+                                                const fade1 = () => {
+                                                    $(randomGhost)
+                                                    
+                                                    .css('opacity', '0.2')
+                                                }
+                                                const fade2 = () => {
+                                                    $(randomGhost)
+                                                    .css('opacity', '0.1')
+                                                }
+                                                const vanish = function (e) {
+                                                    // $(randomGhost).detach()  // i was going to have it detach but instead having it seem more like a game like how the first .ghostBtn did: Click the ghost and go to: '/pokemon/show/${ghostPokemon}' as the url.s
+                                                    window.location.href = '/'
+                                                }
+                                                setTimeout(fade1, "1000")
+                                                setTimeout(fade2, "2000")  
+                                                setTimeout(vanish, "3000")
+
+                                            }
+                                             setTimeout(moveGhost, "1000") 
+                                              setTimeout(vanishGhost, "6000") 
+                                              $(randomGhost).on('click', (e) => {
+                                                  console.log(e)
+                                                  console.log('pretty much just clicked the ghost')
+                                                  window.location.href = `/pokemon/show/${newName}`
+                                              })
+                                        })
+
+                                        console.log($(ghostContainer).children().length)
+                                    }
+                                }
+
+                                console.log(ghostContainer.children())
+
+
+
+
+                                entry.target.style.color = '#9917BA'    // 6D0999
+                                entry.target.style.textShadow = '1px 1px 1px black'
+                                let psnText = document.createElement('div')
+                                $(psnText).addClass('text')
+                                $(psnText).css('background-image', "url('/img/text/psychicText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(psnText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                }
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+
+                                ghost.css('position', 'relative') // always sucks forgetting this. nice to see the window closing on realizing its the problem right away. 
+                                let ghostCounter = 0;
+                                let wholeGhostCounter = []
+                                pokeDisplay2
+                                .css('background-image', "url('/img/haunter.png')")             // this is just
+                                pokeDisplay2.on('mouseenter', () => {
+                                pokeDisplay2.css('background-image', "url('/img/nicePokedex.png')")
+                                $(event.target)
+                                let realGhost = document.createElement('div')
+                                $(realGhost)
+                                .addClass('sprite')
+                                .css('background-image', `url('${image}')`)
+                                .css('background-size', 'cover')
+                                .css('background-repeat', 'no-repeat')
+                                ghostCounter ++;
+                                wholeGhostCounter.push(ghostCounter);
+
+                              
+                                
+                                if (wholeGhostCounter == 1) {
+                                    pokeDisplay2.append($(realGhost))
+                            
+
+                                    let newGhost = document.createElement('div') // can't do .addClass("sprite") right here.
+                                    newGhost.addClass("sprite");
+                                }                                
+
+
+                                $(realGhost).hover( () => {
+                                    window.location.href = '/'
+                                })
+
+                                }) // ajax call end
+                            }           // if (newType = ghost) end
+                        })
+                    // }
+                }              // if (background) line of code.
+            } // check psychic wrap
+            checkPsychic()
+
+
+            const checkNormal = () => {
+                if (background === 'normal' && newType === 'fairy') {
+                    entry.target.textContent = 'normal'
+                }
+                    
+                if (background === 'normal' && newType === 'normal' || background === 'normal' && newType === 'fairy') {
+                    entry.target.style.color = "#B9B2A4"
+                    let normalText = document.createElement('div')
+                                $(normalText).addClass('text')
+                                $(normalText).css('background-image', "url('/img/text/normalText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(normalText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+
+                }
+
+
+                // if we weren't doing ONLY the ORIGINal(up to id/pokeid 151).. we'd have steel type be saved under normal. Fairy type saved under normal.
+                if (background === 'normal' && newType === 'dragon' || background === 'normal' && newType === 'flying') {   
+                    // thisCodeSays: if background &new type is dragon... or background is normal newtype is flying... OR background = type from line 584... this code handles all normal types. even the normal to normal type because that is classified on line 584 with background = type. 
+                    entry.target.style.color = "#B9B2A4"
+                    entry.target.style.opacity = '1.0'
+                    entry.target.style.textShadow = '1px 1px 1px black'
+                    console.log(`${newName}`)
+                    let pokeAjaxUrl = `https://pokeapi.co/api/v2/pokemon/${newName}`;
+                    $.ajax({
+                        method: 'get',
+                        url: pokeAjaxUrl,
+                        dataTypes: 'json',
+                    }).done( (data) => {
+                        console.log(data);
+                        let pokeimage = document.createElement('div')
+                        let image = data.sprites.front_default;
+                    $(pokeimage).addClass('sprite');
+                    $(pokeimage)
+                    .css('background-image', `url('${image}')`)
+                    pokeDisplay2.append(pokeimage)
+                    $(pokeimage).on('hover', function () {
+                        window.location.href = `/pokemon/show/${newName}`
+                    })
+                    })
+                    let normalText = document.createElement('div')
+                                $(normalText).addClass('text')
+                                $(normalText).css('background-image', "url('/img/text/normalText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(normalText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+
+                }
+                // if (background == 'normal' && newType == 'flying') {
+                //     entry.target.style.border = '5px solid peachpuff';
+                //     entry.target.style.opacity = '1.0';
+                // }
+            }
+            checkNormal()    
+
+            const checkFighting = () => {
+
+                if (background == 'fighting' && newType == 'fighting') {
+                    entry.target.style.color = "#CC2707"
+                    entry.target.style.opacity = '1.0';
+                    entry.target.style.textShadow = '2px 2px 2px gold'
+                    console.log('know dat');
+                    let fightingText = document.createElement('div')
+                                $(fightingText).addClass('text')
+                                $(fightingText).css('background-image', "url('/img/text/fightingText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(fightingText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+
+                }
+                if (background == 'fighting' && newType == 'rock' || background == 'fighting' && newType == 'ground') {
+                    entry.target.style.color = "#CC2707"
+                    entry.target.style.opacity = '1.0';
+                    entry.target.style.textShadow = '1px 1px 1px black'
+
+                    let fightingText = document.createElement('div')
+                                $(fightingText).addClass('text')
+                                $(fightingText).css('background-image', "url('/img/text/fightingText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(fightingText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+
+                    let pokeAjaxUrl = `https://pokeapi.co/api/v2/pokemon/${newName}`;
+                    $.ajax({
+                        method: 'get',
+                        url: pokeAjaxUrl,
+                        dataTypes: 'json',
+                    }).done( (data) => {
+                        console.log(data);
+                        let pokeimage = document.createElement('div')
+                        let image = data.sprites.front_default;
+                    $(pokeimage).addClass('sprite');
+                    $(pokeimage)
+                    .css('background-image', `url('${image}')`)
+                    pokeDisplay2.append(pokeimage)
+                    $(pokeimage).on('mouseenter', () => {
+                        window.location.href = `/pokemon/show/${newName}`
+                    })
+                    })
+                    
+                }
+                // if (background == 'fighting' && newType == 'ground') {
+                //     entry.target.style.border = '5px solid peachpuff';
+                //     entry.target.style.opacity = '1.0';
+                // }
+            }
+            checkFighting()    
+
+            checkLeaf = () => {
+                if (background == 'leaf' && newType == 'grass' || background == 'leaf' && newType == 'bug') {
+
+                    entry.target.style.color = "Chartreuse"
+                    entry.target.style.opacity = '0.89';
+                    entry.target.style.textShadow = '2px 2px 2px black'
+                    console.log('know dat');
+                    let leafText = document.createElement('div')
+                                $(leafText).addClass('text')
+                                $(leafText).css('background-image', "url('/img/text/leafText.png')")
+                                // console.log(`this is the ${$(entry.target).children().length}`)  // took a while to realize you have to change entry.target to $(entry.target) and that .children() should be .children().length you could even try .size()
+                                if ($(entry.target).children().length = 1 && $(entry.target).children().length < 2) {       // i dont understand why I need the logical && operator on this. It looks like it should work as it does not without the && target.childre().length < 2 
+                                console.log('entry has less than one child');
+                                entry.target.append(leafText)                                
+                                } else {
+                                console.log('nope the div has children');
+                                // $(entry.target).children([1]).detach() // spent a few hours on this very little part with the psychicText popping up.
+                    }
+
+                    let ajaxUrl = `https://pokeapi.co/api/v2/pokemon/${newName}`
+                    $.ajax({
+                        method: 'GET',
+                        url: ajaxUrl,
+                        dataTypes: 'json',
+                    }).done( function(data) {
+                        let image = data.sprites.front_default;
+                        console.log(data)
+                        let pokeimage = document.createElement('div')
+                        $(pokeimage).addClass('sprite');
+                        $(pokeimage)
+                        .css('background-image', `url('${image}')`)
+                        pokeDisplay2.append(pokeimage)
+                        $(pokeimage).on('hover', function () {
+                            window.location.href = `/pokemon/show/${newName}`
+                        })
+                        // entry.target.style.border = '4px solid blue';
+                    })
+                }
+            }
+            checkLeaf()
+                        
+
+
+            // if background == type this is the catch for electric to equal electric 
+            $.ajax({            // farthest dig down yet. clickEvent -> intersectionObserver+entry.target -> ajaxCall based on entry.target.innerHTML
+                method: 'GET',
+                url: `https://pokeapi.co/api/v2/pokemon/${newName}`,              // url: `https://pokeapi.co/api/v2/${name}`,
+                dataType: 'json',
+            }).done( (data) => {
+                // console.log(data)
+                let pokemon = data
+                // console.log(pokemon.types[0].type.name)
+                console.log(pokemon)
+                let type = pokemon.types[0].type.name
+                let ajaxName = data.name
+                let image = pokemon.sprites.front_default       // since we're unavoidably within .done(data){image}       if we didn't have image here be so important. we could stores the code spanning:  letPokeimage 599 up to display.append(pokeimg)
+                console.log(`background ${background} and newType ${newType}`)
+                if (background === type) { 
+                    // entry.target.style.border = '5px solid peachpuff';
+                    entry.target.style.opacity = '1.0';
+                    let pokeimage = document.createElement('div')
+                    $(pokeimage).addClass('sprite');
+                    $(pokeimage)
+                    .css('background-image', `url('${image}')`)
+                    .on('hover', () => {
+                        window.location.href = `pokemon/show/${newName}`
+                    })
+                    // $(pokeDisplay2 > pokeimage).on('hover', function () {
+                    //     window.location.href = `pokemon/show/${newName}`
+                    // })
+                    
+                    if (newType !== 'flying') {         // if its being weird between adding 2 pidgeots/pidgey      and not letting (i.e. normaltype jigglypuff) to appear... this if statement is the line of code to look at. without this if statement it posts 2 pidgeots/pidgeys because it's a normal and a flying type. But with the if statement on it seems to only post a normal pokemon once and if you look away from the intersection observer it won't let you post it again if it lets the observation even one time.
+                    pokeDisplay2.append(pokeimage)
+                    $(pokeDisplay2 > pokeimage).hover( () => {
+                        window.location.href = `pokemon/show/${newName}`
+                    })
+
+                }
+
+                    // .css('height', '85px')
+                    // .css('width', '85px')
+                    // .css('background-size', 'cover')
+                    // .css('background-repeat', 'no-repeat')
+                }   
+
+
+
+
+
+            }) 
+
+        }  else if (!entry.isIntersecting) {   // might be better if we're having problems with 
+            entry.target.style.opacity = '0.0'
+            // check the mutation record for the last one to be put up
+            // post last piece of data in footer.
+            // let newName = "";
+            console.log
+            pokeDisplay2.children().detach()
+            pokeDisplay2.css('background-image', "url('/img/nicePokedex.png')") // this is just reaffirming pokeDisplay to have no background because when the element is out of the intersection Observor's watch: the haunter from the: background = 'psychic' newType = 'ghost'  .append($(randomGhost))
+            ghost.css('opacity', '0.1');
+            if (ghostContainer.children().length) {         // was getting a reference error even mentioning $(randomGhost) since it is mentioned in local scope of checkPsychic function.          
+                ghostContainer.children().detach()
+            }
+
+
+            // console.log(entry);
+            // console.log(entry.target);
+
+
+        
+            // scrollObserver.unobserve(entry.target)
+
+           
+            // if (entry.target.isVisible = 'false') {
+            //     console.log('cant see shit')
+            // }
+            // const background = undefined;
+            // console.log(background);
+        }
+    })
+
+
+}, { threshold: 0.7, })
+
+dbPokemon.forEach(dbData => {
+    scrollObserver.observe(dbData);
+})        
+
+
+
+// mutation observer to watch out for the elements in the intersection observer. 
+
+// trigger the mutation record on hover so that we can bypass the type and evaluate based on the pokemon name
+// const mutation = (record) => {
+//     // if (scrolling = true) {
+//         // for (const mutate of mutations) {
+//             // console.log(`${mutate} ${mutations}`)
+//             // }
+//             // console.log(mutations)
+//             // console.log(record);
+//             const otherThis = record[0]
+//             console.log(otherThis)
+//             // console.log(otherThis.addedNodes)
+
+// }
+
+// const config = { attributes: true, characterList: true, subtree: true }
+
+// const scrollMutations = new MutationObserver(mutation, config)
+
+// dbPokemon.forEach(dbData => {
+//     scrollMutations.observe(dbData, config)
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           if (preBackground !== null) {
+               let preBackGround = undefined
+           }
+        })
+
+            
+
+
+            
+
+            
+                    
+                
+        
+      
+       
+
+
+// append 
+    // pokeContainer.hide()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //     energyCard.click( () => {  *** DONT FORGET THIS ***** !!!!
+        //         var a = [5,1,2,3,4];
+        // a.push(a.shift());
+        // console.log(a); // [1,2,3,4,5]
+        //     })
+    
+
+        
+        
+
+
+
+
+
+    </script>
+<!-- </html> -->

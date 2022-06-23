@@ -1,0 +1,1303 @@
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+<body>
+  <!-- <header> < %- include partials/navBar % > </header>  -->
+   <!-- was going to use partial but i don't want the 'mousemove' event to be firing before the pokedex is clicked.  -->
+</body>
+
+
+<body class="indexBody">
+
+  <!-- < %- include partials/alerts.ejs %> -->      <!-- // < %- include 'partials/alerts' %> -->
+  
+  <!-- **************** THE MASTER BALL MIGHT BE SEARCH POKEMON BY TYPE & ABILITY! OR COMBINED WITH TRADING/ULTRA BALL ROUTE -->
+  <%- include('./partials/alerts.ejs') %> 
+
+  <!-- POKE BALL SECTION now handled in layout.ejs   --> 
+<div class="nav">
+  <form action="/" method="GET">
+    <button type="submit" class="pokeBall"></button>
+  </form>
+  <form action="/pokemon" method="GET">
+    <button type="submit" class="greatBall"></button>
+  </form>
+  <form action="/" method="GET">
+    <button type="submit" class="ultraBall"></button>    
+    <!-- hm: possible: .ultraBall.on('mouseenter',()=> currentUser) -->
+  </form>
+  <button type="submit" class="ghost"> </button>
+  <!-- </form> -->
+  <header>   </header>
+</div>
+<div class="pokedexContainer">
+  <button class="closePokedex" type="submit"> </button>
+  <button class="openPokedex" type="submit"> </button>
+</div>
+
+<div id="displayContainer">
+  <div class="pokedexScreen">  </div> 
+  <h2 class="user">   <%= currentUser.get('name') %></h2>
+
+</div>
+
+<!-- <p class="flashfailure"> < %= failure %></p> -->
+<!-- <p class="flashsuccess"> < %= success %>  </p> -->
+<h2 class="flashCookies"> <%= cookies %> </h2>      
+<div class="localsCont">
+  <p class="infohelp"> <%= infoHelp %></p>
+
+  <div class = "helpContainer">
+    <h2> Press:</h2>
+    <div class="helpscreen">        <!-- lucked out using grid for this. lot of random lucky ideas -->
+      
+      <p>Sign-Up: S  </p>   
+      <p>Log-In: I  </p>     
+      <p>Log-Out: O  </p>     
+      <p>1 pokemon  </p>     
+      <!-- <p>Press</p> -->
+    </div>
+  </div>
+
+</div>
+
+      <!-- <p class="user"> < = currentUser %></p>    from res.render({currentUser: username || userobject-->   
+   
+   <!-- surprised this works. Problem: 1) all the code works with specified strings like [name: 'hi', email: 'hey'] but causes a loading wheel w/ no terminal-logged errors. I believe it's an async issue from waiting for the user data. -->
+
+
+  <!-- this may look very simple but am probably most proud on this app of the <form input="ajax" solution and this right here working. -->
+
+<div class="container text-dark">
+  <div class = "card-deck">
+    <div class = "layout">
+      <% pokemon.forEach(function(poke) { %>
+        <!-- since we can't use axios lets make a fetch call with what we've got and try to access the pokeapi.co/pokemon/${poke.name} api. As a matter of fact now that I"m thinking about it we might be able to handle all these access the poke api matters in the post route. Perhaps we can make it so the user can hover somewhere and make the formInput for type appear on the poke card. 
+          With the poke/type api and the data[arbitraryNonPokeIdInt].pokemon.name or pokemon.url... -->
+          <!-- and no ability to access axios on this side since AXIOS/let axios = REQUIRE('axios') is an undefined keyword.  Setting up hidden inputs with < % = poke.type % >  doesn't seem possible with what I know, but also shows we got away with a lot with ajax and making data requests -->
+        <% let pokeid=poke.url.slice(34, poke.url.length-1) %>
+      <div class="card bg-light mb-5">
+        <div class="card-header">
+          <ul class="list-inline">
+             <!-- <li class="list-inline-item h6"> 
+              Pokemon # < % poke id %>
+             </li>  -->
+             <li class="list-inline-item id"> <%= pokeid %> </li>
+            <li class="list-inline-item">
+              <form method="POST" action="/pokemon"> 
+                <input
+                  hidden
+                  id="name"
+                  type="text"
+                  name="name"
+                  value="<%= poke.name %>"
+                />
+                <input
+                  hidden
+                  id = "pokeid" 
+                  type="text"
+                  name="pokeid"
+                  value="<%= pokeid %>"
+                />
+                <input
+                  hidden
+                  type="text"
+                  name="ajax"
+                  value="false"         
+                  />
+                  <!-- this hidden input is one of the most clever solutions on this app imo. its the distinguishing feature between <form>submitData</form> and an AjaxPostRoute.. possibly annoying anecdote: it reminds me of $(event.target)... $(event.target) is cool because it allows you to distinguish between an element that might share .class or identifying features/aspects from other elements that otherwise wont be targeted only because of $(event.target) this input seems like tagging a shark. We know in a second which input we've got. -->
+              </li>
+            </ul>
+          </div>
+          <% let sprite =
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeid}.png`
+        %>
+          <img class="card-img-top" src="<%= sprite %>" alt="Card image cap" />    
+        <div class="card-body">
+          <h1 class="card-title"> <%= poke.name %></h1>
+          <a
+          href="/pokemon/<%= pokeid %>"
+          class="h1 btn btn-light btn-block" id="pokeid"
+          ></a
+          >
+          <button class="pokeBtn" type="submit"> <span></span></button>
+          <!-- <input I had this setup as a hoverUncover/ .on"hover".show() 
+                  id = "type"
+                  type="text"
+                  name="type"
+                /> -->
+        </form>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  
+  <!-- <footer> < % - include partials/navbar % > </footer> -->
+  <!-- <div class="cookieJar"> </div> -->
+  <!-- 1) container 2) cardDeck 3) columns  }) 4) card  5) card-header 6) <ul>  **** CLOSING DIV TAG STRUCTURE SPLIT BY }) and UL-->
+    <!-- adding intersection observer -->
+    <!-- <script src="path/to/intersection-observer.js"></script> -->
+    <footer>  </footer>
+</body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" async defer></script>
+<script>
+
+
+
+      let height = $(document).height().toFixed()
+
+      let localhome = $('.localsCont')
+      let cookies = $('.flashCookies')
+      let jar = $('.cookieJar')
+      let sosmsg = $('.infoHelp') // doing this lastlastlastlastlast
+      sosmsg
+      .hide()
+
+
+      console.log('$(document).height().toFixed()')
+      console.log($(document).height().toFixed())
+
+      // localhome
+      // .css('display', 'flex')
+      // .css('flex-wrap', 'column nowrap')
+      // .css('justify-content', 'center')
+      // .css("align-content", 'center')
+
+      jar
+      .css('height', '100px')
+      .css('width', '100px')
+      .css('background-color', 'purple')
+      .css('margin-top', '10rem')
+      
+      cookies
+      .css('margin-top', '10em')
+      .css('height', '85px')
+      .css('width', '85px')
+      .css('transform', 'scale(0.6)')
+      .css('border-radius', '50%')
+      .css('background-image', `url(${'/img/cookies.png'})`)
+      .css('background-size', 'cover')
+      .css('position', 'relative')
+      .css('background-repeat', 'no-repeat')
+      // .css('top', `${height/5}`)
+
+      sosmsg
+      .css('transform', 'scale(1.5)')
+      .css('color', 'gray')
+      .css('margin-top', '5em')
+
+      $('.helpContainer').hide()
+      
+      let hoverCount = 0;
+      let wholeHoverCount = new Array(); 
+      
+      
+    
+  
+      
+      // if there are cookies skip the milk
+      cookies.on('mouseenter', (event) => {
+      if (hoverCount < 3) {
+        hoverCount++            // [soTheLast] count.length == 3 remains true indefinitely for our keyup function that will display our helpmsg. This was thought of last.               
+      }
+
+        wholeHoverCount.push(hoverCount)
+        if (wholeHoverCount.length == 1) {
+          signin.css("color", "#E52D05")
+          // signin.animate({ opacity: 0.1, duration: 1000, complete: () => console.log("well i guess i dont mind") })   // 3rd 1 line function. more automatic legibility. The reason we have the brackets here is because this is the options object for the animate method. An object is always going to have the brackets.
+          signin.animate({ opacity: 0.1 }, 3000, () => signin.hide() )   // 3rd 1 line function. more automatic legibility. The reason we have the brackets here is because this is the options object for the animate method. An object is always going to have the brackets.
+          setTimeout( () => {
+            $(event.target).css('background-image', `url(${'/img/milk.png'})`)
+          }, "1000")
+        }
+        setTimeout( () => {
+          if (wholeHoverCount.length == 2) {
+            setTimeout( () => {
+              $(event.target).css('background-image', `url(${'/img/cookie.png'})`)            
+            } ) //    } ,"") you can leave this empty but you can't leave an empty string like this because it wouldn't be a string. being a strongly-typed? language: it is inferring the units/data/number that would be in these quotes that would be a part of the setTimeout
+          }
+        }, "2000")
+        if (wholeHoverCount.length == 3) {     //can we trigger to have the document.onkeyup stored to only be available once this conditional is reached
+// .animate( properties [, duration ] [, easing ] [, complete ] ) doing this last this is what i mentioned before: its easy to think .animate({ }) is just semantic-jquery-syntax. We're invoking the animate method and the [ duration ] is 2nd argument in object. If you don't know the [brackets] arent an array you can be so confused reading documentation refferring to code not realizing [ duration ] the bracket is a documentation-trait and animate() {} housing an options object like intersectionObserver is exactly whats going on here.
+              setTimeout( () => {
+              sosmsg.show()
+              // sosmsg.addClass('flicker')    // 1) [vanillaJs&&animation/@keyframes] 2) jquery to access .done() so we can turn 
+              sosmsg.animate({
+                opacity: 0.9    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 500,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.1')             // opacity(0.0)
+                sosmsg.css('opacity', '0.8')
+                }
+              }),
+              sosmsg.animate({        // did this last, thought duration had to be "1000", "2000". getting bit better with documentation helps.
+                opacity: 0.8    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 500,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.9')             // opacity(0.0)
+                sosmsg.css('opacity', '0.0')
+                }
+              }),
+              sosmsg.animate({        // did this last, thought duration had to be "1000", "2000". getting bit better with documentation helps.
+                opacity: 0.7    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 400,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.9')             // opacity(0.0)
+                sosmsg.css('opacity', '0.0')
+                }
+              }),
+              sosmsg.animate({
+                opacity: 0.6    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 400,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                }
+              }),
+              sosmsg.animate({
+                opacity: 0.5    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 500,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                }
+              }),
+              sosmsg.animate({
+                opacity: 0.4    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 400,      // didn't know 500 would
+                // step: () => {         // easing
+                // }
+              }),
+              sosmsg.animate({
+                opacity: 0.3    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 300,      // didn't know 500 would
+              }),
+              sosmsg.animate({
+                opacity: 0.2    //  // css properties 
+              }, {                  // opening second object which would be [, duration]
+                duration: 200,      // didn't know 500 would
+                step: () => {         // easing
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                sosmsg.css("opacity", '0.1')             
+                sosmsg.css('opacity', '0.8')
+                },
+                complete: () => {
+                  sosmsg.hide()
+                }
+              }),
+            $(event.target).detach()    // cookies.on('mouseenter') $(event) being the element triggering the behavior.
+          }, "1000")
+        }
+      })
+
+      const buttonBucket = []
+        // s sign-in    i sign-out    l log-in    x log-out
+      const pressingButtons = () => {
+        const keyup = (e) => {
+          console.log(e)
+          if (e.code.includes('S')) {
+            console.log('keyI dont mind')
+            // if (!currentUser) {
+              // location.href = '/auth/signup' // res.redirect('/auth/signup') // HA! no res error,   // also wrote window.href 
+              window.open('/auth/signup')   // had to refresh the browser / poss. empty cache hard reload when changing from location.href over to window.open during the same-browser-tab [ctrl-F refresh] refreshing.
+
+              // buttonBucket.push('s')     // [would've been]: { keyI||keyH : info||help } if you press "keyS"&&.then("keyI")-> if (buttonBucket.length == 2) { if(s+i)res.redirect: /auth/login (sign-in) } if btnBin.length = 3 btnBin.splice(0, bin.len) to restart our filling of the bucket with hopefully 2 values that will generate a res.redirect
+              // }
+            }
+            if (e.code == "KeyI") {
+              //  if (e.code.includes('l')// 30 minute sinkhole. Just hitting the command button alone without any other key will trigger this as if it was a: 'keyL' output with .includes
+              console.log("how about this instead")
+              location.href = '/auth/login'                 // $(this)||$(that)
+            }
+            if (e.code == "KeyO") {
+              location.href = '/auth/logout'    // wouldn't want to have this open in a new tab because you'd want to log out on the current browser. 
+            }
+            if (e.code == 'KeyH') {
+              $('.helpContainer').show()
+              const onShow = () => $('.helpContainer').show()
+              onShow()
+              const showOff = () => $('.helpContainer').hide()
+              setTimeout(showOff, "2000")
+            }
+          }
+          document.onkeyup = keyup
+        }
+        
+      
+      
+      pressingButtons()
+        // $( ".block" ).first().animate({
+        //   left: 100
+        // }, {
+        //   duration: 1000,
+        //   step: function( now, fx ){
+        //     $( ".block" ).slice( 1 ).css( "left", now );
+        //   }
+        // });
+
+
+      // cookies.on('mouseenter', () => {    // sunk almost 40 minutes into this unexpectedly 
+      //   tgt = $(event.target)
+      //   setTimeout( () => {
+      //     tgt.css('background-image', `url(${'/img/milk.png'})`)         // $(event.target).detach() also steedOfTrust
+      //   }, "1000")
+      //   setTimeout( function() { // perfect unforeseen example of why $(event.target) and double scope-within-scope can give troubles. Here we have the same event doing 2 .css() changes upon behavior. 1st hoverScope()->cookies[res.locals.cookies=''our ghost flashmessage were decorating] 1st scope cookies.css(milk) ---> 2nd scope cookies.css(cookie.png) Our first hover event is somehow satisfying the second event even though its nested. can see where the ole'WD40 comes from: we can also use an array(w/ truncater function array.splice(0, arr.leng) to set up a wholeCounter box to do conditional logic based on how many events weve fired. Still no need But good to know because that mode-of-thought is
+      //     cookies.on('mouseenter', () => {
+      //       // tgt.on('hover', (evt) => {      // pull this code outFromBeyond the TimeoutScope and you will see it behave as a 1-hover animation style. we were originally playing with $(event.target) and its turning our hover based steps into an animation since we're in both scopes/eventListeners and it's firing our second hoverFunction seemingly nonsensically sense the .hover() => would dictate you'd have to hover twice to see milk. this is not the case. *changed it now*nice to see you can stack .css() and .on()  didn't realize you could just throw .on and stack eventHandlers right underneath css.  doing this last that kind of sounds like a long time to realize that
+      //       $(event.target).css('background-image', `url(${'/img/cookie.png'})`)
+      //       cookies.on('hover', () => {
+      //         $(event.target).hide()
+      //       })
+      //     }) 
+      //   }, "1000")
+      // })
+        // if (href.includes(port) && href.includes(currentLoc.hostname) && href.includes(currentLoc.pathname)) {    // wonder why this doesn't work with === strict equality. maybe because they're doing var to var literally and console assumes :      href !== currentLo
+        // // console.log('port verified w/ location. if only we can look at process.env as well. tried to send the process.env through as an object to cross verify that our PORT on this url browser is the same one that is running the index.js page')
+        // }
+
+        
+            let ghosts = [];
+                                    //  NOT HAPPENING!
+            let pokebtn = $('.pokeBall')
+            let gr8btn = $('.greatBall')
+            let ultrabtn = $('.ultraBall')
+            let ghostbtn = $('.ghost')
+            let ghostbtn2 = $('.ghost')[0]
+            let ghost = document.getElementById('.ghost')
+            // ghostbtn.hide()
+            ghostbtn.css('opacity', '0.1')
+          // global variables declared 
+          let card = $('.card')
+          
+          // $('.layout').children().hide() // trying to target the children of the layout so that we can have a   screen for the randomAjaxPoke for appendChild()
+
+          let jQcard = $('.card')[0]
+          let observerCard = document.querySelectorAll('.card') // this is how you set up intersection observer
+          
+          let img = $('.card-img-top');
+
+
+          let nav = $('.nav')
+          // GLOBAL VARIABLES for pokedex screen and random pokemon rendering.
+          let closePokedex = $('.closePokedex')
+          let openPokedex = $('.openPokedex')
+          let display = $('#displayContainer');
+          let screen = $('.pokedexScreen');
+
+          let signin = $('.alert-sign-in-success')  // doing this last after flash messages and basic user authenticated login: thanks to APP.use & res.locals., we have access to every variable as easily as if we just declared it [let signin = 'signin']
+
+          // let parent = $(parent) || $('body');
+          // console.log(display);
+          // console.log(screen);
+          $('.nav').hide()
+          card.hide()
+          openPokedex.hide()
+          display.hide();
+          screen.hide()
+          $('header').hide()
+          // let failure = $('.flashfailure')     // this was a home made flash message
+          failure.hide()
+          // let success = $('.flashsuccess')
+          success
+          .css("height", '2%')
+          .css('text-align', 'center')
+          .css('color', 'white')
+          .css('background-color', '#0882F8')
+          .css("width", '25%')
+          .css("border", '3px solid peachpuff')
+          // .css('margin-top', )
+          .hide()
+          // $('footer').hide() 
+
+          let posx = (Math.random() * ($(document).width())).toFixed();     // mvp if you wanted to .width()-divsize)) to factor in size of element into screen size
+          let posy = (Math.random() * ($(document).height())).toFixed();
+          let posx2 = Math.floor(Math.random() * ($(document).width())).toFixed();
+          let posy2 = Math.floor(Math.random() * ($(document).height())).toFixed();
+          let posx3 = Math.floor(Math.random() * ($(document).width())).toFixed();
+          let posy3 = Math.floor(Math.random() * ($(document).height())).toFixed();
+          let xRandomWrapper = Math.floor(Math.random() * posx) 
+          let yRandomWrapper = Math.floor(Math.random() * posy) 
+          const randomId = (min, max) => {
+            return Math.floor(Math.random() * (max-min) + min) 
+          }
+          // const appendPokemon = () => { making this code like this as a callback to be invoked in the ajax call makes an empty image post. this code perfectly works in the call. another 
+          //   let pokeImg = document.createElement("img");
+          //        $(pokeImg).addClass('randomImg')
+          //        $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+          //        $(pokeImg).css('position', 'absolute');
+          //        $(pokeImg).css('left', `${posx}`);
+          //        $(pokeImg).css('top', `${posy}`);
+          //        document.body.appendChild(pokeImg);
+          // }      
+          randomPokeBucket = new Array()      // these functions are only repeated     
+          const randomPokeAjax =  () => { 
+            let hypotheticalid = (randomId(1, 151))
+            let urlForAjax = `https://pokeapi.co/api/v2/pokemon/${hypotheticalid}`  // we are creating a function that gives us an id from 1-151 which can be used in an ajax call to return a rendered pokemon.
+            console.log(urlForAjax);
+            // randomX = Math.floor(Math.random() * x)   randomY = Math.floor(Math.random() * y) // i thought $(pokeImg).css('left', 'x') was sticking to a random position and could've been avoided by putting an overarching randomizer around each coordinates. 
+             $.ajax({
+               method: 'GET',
+               url: urlForAjax,
+               dataType: 'json',
+             }).done(function(data, e) {      // weve officially used our random pokemon and are now returning pokemon from poke api.
+              // console.log(data);    // wow this is behaving strangely. big timewaste. this console.log(data) in the terminal is calling the 'urlForAjex' with the string interpolation cut off.
+              // console.log(e)    // hmm i guess e in ajax is a boolean success/fail on whether or not anything is being handled in the done function
+               let pokemon = data
+               let name = pokemon.name
+               randomPokeBucket.push(name)
+               let img = pokemon.sprites.front_default    // this is a url from the pokeapi. it will be used as the src for an <img src="randomPokeUrlFromPokeApi.co"
+              // appendPokemon()
+              let pokeImg = document.createElement("img");
+                 $(pokeImg).addClass('randomImg')
+                 $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+                 $(pokeImg).css('position', 'absolute');
+                //  $(pokeImg).css('left', `${posx}`);
+                //  $(pokeImg).css('top', `${posy}`);
+                const setTheCss = () => {
+                  $(pokeImg).css('left', `${posx}`);
+                  $(pokeImg).css('top', `${posy}`);
+                  // $(pokeImg).css('transform', 'scale(1.1)')
+                }
+                setTheCss()
+                document.body.appendChild(pokeImg);
+                const voidAppendage = () => {
+                 const firstTimeOut = () => {
+                   if (document.body.contains(pokeImg)) {    // anti dry code but this is only because element.detach() is a bit opinionated? / overpowering. this way we get a full waiting cycle out 
+                    //  console.log(pokeImg);
+                   }
+                 }
+                 setTimeout(firstTimeOut, 2000)
+                 const secondTimeOut = () => {
+                   if (document.body.contains(pokeImg)) {
+                     $(pokeImg).detach()
+                   }
+                 }
+                 setTimeout(secondTimeOut, 2000);
+               }
+               voidAppendage()
+               $.ajax({          // noticing a problem where we're getting a 404 status code but we're able to get terminal output confirming we're hitting the same location as the pokemon.js post route.
+                type: "POST",
+                url: '/pokemon',   // was going to have a pokemon object outside of this. now that i know you could use specified data here.. i like the looseness that comes with dealing with 'json', .done()
+                data: {
+                pokeid: `${pokemon.id}`,
+                name: `${pokemon.name}`,
+                type: `${data.types[0].type.name}`
+            }
+          })  
+             // use manipulation observer to access if there is an element posted at the location. if it's there. move the img to another location. toggle if you have to.
+           })
+           }
+                  // this is for the random pokemon super not dry but only done because we're doing a random location set on .css('left', `${randomLocationVar}` and we need a fresh random location every time to avoid the random Pokemon being spit onto the same random location
+         
+            const randomPokeAjax2 =  () => {
+            let hypotheticalid = (randomId(1, 151))
+            let urlForAjax = `https://pokeapi.co/api/v2/pokemon/${hypotheticalid}`  // we are creating a function that gives us an id from 1-151 which can be used in an ajax call to return a rendered pokemon.
+            console.log(urlForAjax);
+            // randomX = Math.floor(Math.random() * x)   randomY = Math.floor(Math.random() * y) // i thought $(pokeImg).css('left', 'x') was sticking to a random position and could've been avoided by putting an overarching randomizer around each coordinates. 
+             $.ajax({
+               method: 'GET',
+               url: urlForAjax,
+               dataType: 'json',
+             }).done(function(data, e) {      // weve officially used our random pokemon and are now returning pokemon from poke api.
+              console.log(data);    // wow this is behaving strangely. big timewaste. this console.log(data) in the terminal is calling the 'urlForAjex' with the string interpolation cut off.
+              // console.log(e)    // hmm i guess e in ajax is a boolean success/fail on whether or not anything is being handled in the done function
+               let pokemon = data
+               let name = pokemon.name
+               randomPokeBucket.push(name)
+               let img = pokemon.sprites.front_default    // this is a url from the pokeapi. it will be used as the src for an <img src="randomPokeUrlFromPokeApi.co"
+              // appendPokemon()
+              let pokeImg = document.createElement("img");
+                 $(pokeImg).addClass('randomImg')
+                 $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+                 $(pokeImg).css('position', 'absolute');
+                //  $(pokeImg).css('left', `${posx}`);
+                //  $(pokeImg).css('top', `${posy}`);
+                const setTheCss = () => {
+                  $(pokeImg).css('left', `${posx2}`);
+                  $(pokeImg).css('top', `${posy2}`);
+                }
+                setTheCss()
+                // $('header').appendChild(pokeImg);
+                document.body.appendChild(pokeImg);
+
+                const voidAppendage = () => {
+                  const firstTimeOut = () => {
+                    if (document.body.contains(pokeImg)) {    // anti dry code but this is only because element.detach() is a bit opinionated? / overpowering. this way we get a full waiting cycle out 
+                      console.log(pokeImg);
+                    }
+                  }
+                  setTimeout(firstTimeOut, 6000)
+                  const secondTimeOut = () => {
+                    if (document.body.contains(pokeImg)) {
+                      $(pokeImg).detach()
+                    }
+                  }
+                  setTimeout(secondTimeOut, 2000);
+                }
+                voidAppendage()
+                $.ajax({          // noticing a problem where we're getting a 404 status code but we're able to get terminal output confirming we're hitting the same location as the pokemon.js post route.
+                type: "POST",
+                url: '/pokemon',   // was going to have a pokemon object outside of this. now that i know you could use specified data here.. i like the looseness that comes with dealing with 'json', .done()
+                data: {
+                pokeid: `${pokemon.id}`,
+                name: `${pokemon.name}`,
+                type: `${data.types[0].type.name}`
+            }
+          })  
+              })
+              }        
+              const randomPokeAjax3 =  () => {
+                let hypotheticalid = (randomId(1, 151))
+                let urlForAjax = `https://pokeapi.co/api/v2/pokemon/${hypotheticalid}`  // we are creating a function that gives us an id from 1-151 which can be used in an ajax call to return a rendered pokemon.
+                console.log(urlForAjax);
+                // randomX = Math.floor(Math.random() * x)   randomY = Math.floor(Math.random() * y) // i thought $(pokeImg).css('left', 'x') was sticking to a random position and could've been avoided by putting an overarching randomizer around each coordinates. 
+                 $.ajax({
+                   method: 'GET',
+                   url: urlForAjax,
+                   dataType: 'json',
+                 }).done(function(data, e) {      // weve officially used our random pokemon and are now returning pokemon from poke api.
+                  console.log(data);    // wow this is behaving strangely. big timewaste. this console.log(data) in the terminal is calling the 'urlForAjex' with the string interpolation cut off.
+                  // console.log(e)    // hmm i guess e in ajax is a boolean success/fail on whether or not anything is being handled in the done function
+                   let pokemon = data
+                   let name = pokemon.name
+                   randomPokeBucket.push(name)
+                   let img = pokemon.sprites.front_default    // this is a url from the pokeapi. it will be used as the src for an <img src="randomPokeUrlFromPokeApi.co"
+                  // appendPokemon()
+                  let pokeImg = document.createElement("img");
+                     $(pokeImg).addClass('randomImg')
+                     $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+                     $(pokeImg).css('position', 'absolute');
+                    //  $(pokeImg).css('left', `${posx}`);
+                    //  $(pokeImg).css('top', `${posy}`);
+                    const setTheCss = () => {
+                      $(pokeImg).css('left', `${posx}`);
+                      $(pokeImg).css('top', `${posy}`);
+                    }
+                    setTheCss()
+                    document.body.appendChild(pokeImg);
+                    const voidAppendage = () => {
+                      const firstTimeOut = () => {
+                        if (document.body.contains(pokeImg)) {    // anti dry code but this is only because element.detach() is a bit opinionated? / overpowering. this way we get a full waiting cycle out 
+                          console.log(pokeImg);
+                        }
+                      }
+                      setTimeout(firstTimeOut, 4000)
+                      const secondTimeOut = () => {
+                        if (document.body.contains(pokeImg)) {
+                          $(pokeImg).detach()
+                        }
+                      }
+                      setTimeout(secondTimeOut, 2000);
+                    }
+                    voidAppendage()
+                    $.ajax({          // noticing a problem where we're getting a 404 status code but we're able to get terminal output confirming we're hitting the same location as the pokemon.js post route.
+                    type: "POST",
+                    url: '/pokemon',   // was going to have a pokemon object outside of this. now that i know you could use specified data here.. i like the looseness that comes with dealing with 'json', .done()
+                    data: {
+                    pokeid: `${pokemon.id}`,
+                    name: `${pokemon.name}`,
+                    type: `${data.types[0].type.name}`
+                    }
+                  })  
+                  })
+                  }        
+              const randomPokeAjax4 =  () => {
+                let hypotheticalid = (randomId(1, 151))
+                let urlForAjax = `https://pokeapi.co/api/v2/pokemon/${hypotheticalid}`  // we are creating a function that gives us an id from 1-151 which can be used in an ajax call to return a rendered pokemon.
+                console.log(urlForAjax);
+                // randomX = Math.floor(Math.random() * x)   randomY = Math.floor(Math.random() * y) // i thought $(pokeImg).css('left', 'x') was sticking to a random position and could've been avoided by putting an overarching randomizer around each coordinates. 
+                 $.ajax({
+                   method: 'GET',
+                   url: urlForAjax,
+                   dataType: 'json',
+                 }).done(function(data, e) {      // weve officially used our random pokemon and are now returning pokemon from poke api.
+                  console.log(data);    // wow this is behaving strangely. big timewaste. this console.log(data) in the terminal is calling the 'urlForAjex' with the string interpolation cut off.
+                  // console.log(e)    // hmm i guess e in ajax is a boolean success/fail on whether or not anything is being handled in the done function
+                   let pokemon = data
+                   let name = pokemon.name
+                   let img = pokemon.sprites.front_default    // this is a url from the pokeapi. it will be used as the src for an <img src="randomPokeUrlFromPokeApi.co"
+                  // appendPokemon()
+                  let pokeImg = document.createElement("img");
+                     $(pokeImg).addClass('randomImg')
+                     $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+                     $(pokeImg).css('position', 'absolute');
+                    //  $(pokeImg).css('left', `${posx}`);
+                    //  $(pokeImg).css('top', `${posy}`);
+                    const setTheCss = () => {
+                      $(pokeImg).css('left', `${posx}`);
+                      $(pokeImg).css('top', `${posy}`);
+                    }
+                    setTheCss()
+                    document.body.appendChild(pokeImg);
+                    const voidAppendage = () => {
+                      const firstTimeOut = () => {
+                        if (document.body.contains(pokeImg)) {    // anti dry code but this is only because element.detach() is a bit opinionated? / overpowering. this way we get a full waiting cycle out 
+                          console.log(pokeImg);
+                        }
+                      }
+                      setTimeout(firstTimeOut, 4000)
+                      const secondTimeOut = () => {
+                        if (document.body.contains(pokeImg)) {
+                          $(pokeImg).detach()
+                        }
+                      }
+                      setTimeout(secondTimeOut, 2000);
+                    }
+                    voidAppendage()
+                    // use manipulation observer to access if there is an element posted at the location. if it's there. move the img to another location. toggle if you have to.
+                  })
+                  }        
+              const antiDRYrandomPokeFunc = async () => {   // interesting so if you put a randomPokeAjax() function in here and out there and call them at the same time they post 2 different pokemon at same different random location. never even watched the show but wow at dragonair and raichu in the same spot looks like a digimon. instead of window.clientY am gonna target location in a different way and change .css('bottom', ${randomLocation})
+                  setTimeout(await randomPokeAjax, 2000)
+                  setTimeout(await randomPokeAjax2, 6000)
+                  setTimeout(await randomPokeAjax3, 9000)
+                } 
+                // antiDRYrandomPokeFunc()
+                // setInterval(antiDRYrandomPokeFunc, 8000)
+              // const antiDRYrandomPokeFunc2 = async () => {          // its nice to use the manipulation observer to craft our conditional statements around
+              //   let randomFuncArray = [randomPokeAjax, randomPokeAjax2, randomPokeAjax3] // // let arrayOfRandomFunctions = [randomPokeAjax(), randomPokeAjax2(), randomPokeAjax3()] this will return a collection of values 
+              //   // await setTimeout(randomPokeAjax, 6000)
+              //   const mutationObserver = new MutationObserver(entries => {
+              //     console.log(entries)
+              //     let lastRecord = entries.slice(entries.length-1)            // this code is saying take off the last entry and store it as a variable.
+              //     if (lastRecord[0].target.removedNodes !== null) {           // was working backwords and accessing the randomImg from the manipulationRecord and using the fact that it would've been removed or not from .detach() to set up our conditionals around
+              //       let randomFunction = randomFuncArray[Math.floor(Math.random() * randomFuncArray.length)] 
+              //       let intervals = [2000, 4000, 6000, 3000, 5000]
+              //       console.log(randomFunction)
+              //       let randomIntervals = intervals[Math.floor(Math.random()* intervals.length)]
+              //       console.log(randomIntervals)
+              //       return setInterval(randomFunction, randomIntervals)
+              //       console.log('this shit is working');
+              //     }
+              //   })
+              //   let options =  { childTree: true, childList: true }
+              //     mutationObserver.observe(document.body, options);
+              // }
+              //    antiDRYrandomPokeFunc2()
+                //  setInterval(antiDRYrandomPokeFunc, 4000) // no good. there's gotta be another way to do this, but I'm wondering how often something like this would be done. it does the same problem where the locations are random and saving.
+                // randomPokeAjax()
+              //  setInterval(randomPokeAjax, 3000);
+           //setting the range for our random# function to be the number of total original pokemon. we can use this number in place of the ID to do an ajax call and fetch us a random pokemon
+          // ghost button // hover on a button and access the "types" endpoint from poke api  // change button to a random ghost sprite thats sized appropriately. 
+          // intro page functions 
+          closePokedex.click( (e) => {
+              signin
+              .animate({
+                          opacity: 0.1,
+                          color: '#E52D10',
+                        }, {                
+                          duration: 2000,
+                          complete: () => {
+                          signin.hide()
+                          }
+                          // }
+                        })
+
+            success.show()
+            success
+            .css('transform', 'scale(1.5')
+            .css('margin-top', '-20rem')
+            const vanishMsg = async () => {
+               success.animate({
+               opacity: '0.8',
+               opacity: '0.5',
+               opacity: '0.4',
+              })
+              success.hide()
+            }
+            setTimeout(vanishMsg, "2000")
+            antiDRYrandomPokeFunc()
+            // console.log(e)
+            openPokedex.show()
+            closePokedex.hide()
+// ghostbtn.on('hover', () => {             // i first had this set up as a function triggered by hovering on the invisible button but then it takes too long to fire event long enough to get an id below 151 for it to feel fluid
+              ghostbtn.on('click', () => {    //  // **** THIS FUNCTION WILL TOGGLE ALL OF THE CARDS TO GENGAR AND PUT AN EVENT THAT'll CHANGE TOGGLE THE CLASS BACK
+              $.each($('.card'), (i) => {   
+                // card.removeClass('card')
+                // card.css('background', "url('/img/haunter.png')")  // $('.card').css('background', "url('img/haunter.png')")              
+                card.addClass('ghost-card')
+                card.children().hide()
+                console.log([i])
+                // console.log( $('this').context.images ) // console.log( $('this').context.images[i] ) //were able to get the images here and continually access that id hoping to give us better strength in targetability
+                url = $('this').context.images[i].src // a good 90 minutes to get here
+                const id = url.slice(73, -4)
+                // $('.card').children().hide() // this deletes the whole card. this gengar function is trying to clear the pokemon image and name and id and all so we just have the haunter/whose who pokemon silhouette background to toggle on / off
+                // $('.list-inline').children().hide()  // $('.card-body').hide()                 // $(img).hide()              
+              })              
+                $('.card').on('click', (event) => {
+                  console.log($(event.target));
+                  // $(event.target).css('border', '20px solid pink')
+                  $(event.target).removeClass('ghost-card')
+                  $(event.target).children().show()
+                  // $('.list-inline').children().show()  // $('.card-body').show()                   // $(img).show()
+                })
+              })
+          const randomGhost =  () => {
+           $(document).on('mousemove', () => {       // change the event listener to click if you wish and you'll see why it's set up as mousemove. setInterval stuff based on ajax calls and  slicing urls / having to control timing to isolate a correct url 
+            // $(document).on('click', () => {      
+                // $.ajax('https://wwww.pokeapi.co/api/v2/ghost/')
+                $.ajax({
+                    method: 'GET',
+                    url: 'https://pokeapi.co/api/v2/type/ghost',
+                    dataType: 'json'
+                }).done( (data) => { 
+                    let ghosts = data.pokemon
+                    // let ghosturl = ghosts[1].pokemon.url
+                    // console.log(ghosts);
+                    // for (let i = 0; i < ghosts.pokemon.length; i++) {
+                    //     console.log([i]) // this api is not as clean cut as the regular pokiapi/v2/pokemon endpoint... setting[i] variable so that we have 
+                    //     let randomId = Math.random() * [i].length
+                    //     console.log(randomId);
+                    // }
+                    const randomInt = (maxLimit = 77) => {    //          77 for $.ajax(done).data          { cons.log(data[0] ---> data[77]   ) } The 77 is arbitrary count of data for ghost type pokemon ranging from id 92-94 out of original 151 up to 900. So 3 / 77 if we only want ghosts from the first game leaves us with probability problem  on how to access the right id in time to change the button background so user/human isn't waiting forever for activity. The upper flip side to beatingn problem is it was easy to make the mouse get a chance to try to chase the ghost down since its so rare (74/77 against favor) that a ghost pops up and it moves while you can. having css be just ghostbtn.css('LEFT') makes this little game occur right by the navbar out of the way.
+                        return random = Math.floor(Math.random() * maxLimit)
+                        // return Math.random(Math.floor() * Math.random() * )
+                    }
+                    randomInt()
+                    // let randomPoke = `ghosts[${randomInt()}]`
+                    let randomPoke = ghosts[`${randomInt()}`]   
+                    // console.log('randomPoke')
+                    // console.log(randomPoke)
+                    // strange to see this work but slice and working with URLs makes using a randomizer function with `${randomFunc}` with stringInterp. seem workable. It's put in brackets because it's the [0] or [1]... between .data and data[0].pokemon.url
+                    // console.log(randomPoke);
+                    let ghostUrl = randomPoke.pokemon.url // randomPoke is the data/ghosts[randomNumb < 77] since they have 77 objects as data. The difficulty is this [0] and the fact that [0]-[77] represents ids from [1] - [900]000
+                    // this error will keep popping up for certain pokemon that doesn't fall under this ghostUrl assignment. 
+                    // console.log('ghostUrl');
+                    // console.log(ghostUrl);
+                    let name = randomPoke.pokemon.name
+                    // console.log(name);
+                    // let slicedUrl = ghostUrl.slice(34, 37);     // this extracts from the 34th character and stops on the 37th leaving the id of the pokemon from ghosts or $.ajax(data)console.log(data[0].pokemon.url) 
+                    let slicedUrl = ghostUrl.slice(34, -1);     // this extracts from the 34th character and takes off the last 1 character, being the backslash, leaving only the id of the pokemon.
+                    // console.log(`this is the ${slicedUrl}`)
+                    let wholeCounter = [];
+                    let counter = 0;
+                    if  (slicedUrl < 151) {         // this is making sure that once we get that pokemon.url.slice, which can range from pokemonID# 90-900... we're isolating the url.slice to the first 151 pokemon.
+                        counter ++; // for some reason i was doing this with counter = "" as I did during a vanilla javascript app and was having trouble getting it to behave the same way.
+                        // console.log(name)
+                        wholeCounter.push(counter);
+                        // console.log(counter);
+                    }
+                    if (wholeCounter.length === 1) {
+                        console.log('we found our pokemon');
+                        $.ajax({
+                            method: 'GET',
+                            url: `https://pokeapi.co/api/v2/pokemon/${name}`,   
+                            dataType: 'json'
+                        }).done(function(data) { // ajax call in an ajax call I know from setInterval it can be tricky keeping specificity. we shall see.
+                            // console.log(data);  // can see someone wanting to change this to let pokemon = data
+                            console.log(data.sprites.front_default);
+                            ghostbtn.css('opacity', '1.0');
+                            // ghostbtn.css('background', 'blue');
+                            ghostbtn.css('background-image', `url(${data.sprites.front_default})`); // background image finally working  I was going to 
+                            // const moveGhost = () => {
+                            //   ghostbtn.animate({
+                            //     opacity: 0.8,
+                            //   }, 1000)
+                            //   ghostbtn.animate({
+                            //     opacity: 0.50,
+                            //   }, 1000)
+                            //   ghostbtn.animate({
+                            //     opacity: 0.20,
+                            //   }, 1000)
+                            // }
+                            // moveGhost()
+                            const fadeGhost = () => {
+                              ghostbtn.animate({
+                                opacity: 0.8,
+                              }, 1000)
+                              ghostbtn.animate({
+                                opacity: 0.50,
+                              }, 1000)
+                              ghostbtn.animate({
+                                opacity: 0.20,
+                              }, 1000)
+                            }
+                            // fadeGhost()
+
+                          const moveGhost = () => {
+                            ghostbtn.css('left', `${posx}`) // wow I thought changing .nav to position: relative would help.. it was to change .ghost to position: relative;
+                            let randomPositionBucket = [`${posx2}`, `${posx3}`, `${posy2}`, `${posy3}`]
+                            let random = randomPositionBucket[Math.floor(Math.random)() * randomPositionBucket.length]
+                            ghostbtn.css('left', `${random}` )
+                          }                            
+                          const chaseGhost = async () => {          // you can catch a ghost depending on mousemove allowing you to reach the ghost before the event possibly calls 1 of the  <151 id pokemon is called...... use  console.log to check(`this is the ${slicedUrl}`)
+                            await setTimeout(fadeGhost, 3000)
+                            // await fadeGhost()
+                            moveGhost()     // careful. same problem as before where .css is sticking to one spot. choose from function out of random function array to set a fresh position each time
+                            ghostbtn.animate({
+                              opacity: 0.1,
+                            }, 2000)
+                          }
+                          chaseGhost()
+                          let posx = (Math.random() * ($(document).width())).toFixed();     // mvp if you wanted to .width()-divsize)) to factor in size of element into screen size
+                        }) // closing out the .done(function)(data) part { }
+                    } 
+          })
+        })
+      }
+      setTimeout(randomGhost, 2000)
+      pokedexFade =  () => {
+      openPokedex.animate({
+        opacity: 0.2
+      }, 1000)
+      openPokedex.animate({
+        opacity: 0.4
+      }, 2000)
+      openPokedex.animate({
+        opacity: 0.6
+      }, 3000)
+      openPokedex.animate({
+        opacity: 0.8
+      }, 1000)
+      openPokedex.animate({
+        opacity: 1.0
+      }, 1000)
+      const showNav = () => {
+        $('.nav').show()
+      }
+      setTimeout(showNav, 10000);
+    }
+    // setTimeout(pokedexFade,  1000)
+    pokedexFade()
+  }) // closePokedex.click end
+
+          openPokedex.click( (e) => {
+            $('header').show()
+            openPokedex.hide()
+            display.show()
+            screen.show()
+            // $('.pokedexScreen').prepend($('<img>',{id:'newImage', src: `${card}` })) // returns 'localhost:/{object object}'               // $('.pokedexScreen').prepend($('<img>',{id:'newImage', src: `${card}` })) // returns 'localhost:/{object object}'
+              $('.pokedexScreen').prepend(card)
+              card.show()
+            })
+
+                                            // Intersection Observer code 
+                let options = {
+                  root: null,
+                  rootMargin: '-500px',
+                  threshold: 0.7,
+                }
+                    cardCounter = []
+                    let observer = new IntersectionObserver(entries => {
+                      counter = 0
+                      let lengthBucket = [7, 11, 3, 5] // had this as 7, 10, 5, 11.. too many fill up too fast.
+                      let randomLength = lengthBucket[Math.floor(Math.random() * lengthBucket.length)]
+                      console.log('randomLength')
+                      console.log(randomLength)
+                      
+                      console.log(entries);
+                      entries.forEach(entry => {
+                        // console.log(entry);
+                        if(entry.isIntersecting) {
+                          
+                          counter++
+                          cardCounter.push(counter)
+                          // if (cardCounter.length % `${randomLength}` === 0) {       // touching up this project at its tail end. 
+                          if (cardCounter.length % `${randomLength}` === 0) {       // touching up this project at its tail end. 
+
+                            $('.alert-pokeInfo').show()
+                            setTimeout( () => {
+                              $('.alert-pokeInfo').hide()
+                            }, "1000")
+                            let text = entry.target.innerText // our innerText 2IVYSAUR shows up like this with all caps. We just need a regular-expression to return all uppercase characters and then we can access ajax and save about every 7-10th card we scroll by or so. 
+                            // let uppercase = text.replace(/[^0-9]/g, '') // did this by memory but pulled every the 2 back only. oops
+                            let uppercase = text.replace(/[^a-zA-Z]+/g, '').toLowerCase(); // did this by memory but pulled every the 2 back only. oops
+                            let ajaxUrl = `https://pokeapi.co/api/v2/pokemon/${uppercase}` // not anymore
+                            $.ajax({
+                              method: 'GET',
+                              url: ajaxUrl,
+                              dataTypes: 'json',
+                            }).then(ajaxResponse => {
+                              $.ajax({
+                                method: 'POST',
+                                url: '/pokemon',
+                                data: {
+                                 pokeid: `${ajaxResponse.id}`,
+                                  name: `${ajaxResponse.name}`,
+                                  type: `${ajaxResponse.types[0].type.name}`
+                                }
+                              })
+                            })
+                           
+                            entry.target.style.opacity = '0.1'
+                            
+                            $('newPoke')
+                            .show() // thisll be our little alert 
+                            .css('margin-top', '10%')
+                            .css('z-index', '1.0')
+                            setTimeout( () => {
+                              success
+                              .hide()
+                            }, "1000")
+                            // pokedexScreen.appendTo(success)
+                          }
+                          // console.log(`this is ${entry}`);
+                          entry.target.classList.toggle('fancy')
+                        } else {
+                          // $('.alert-pokeInfo').show()
+                        }
+                        // } else 
+                        // {
+                        //   console.log("oo");
+                        //   entry.target.style.border = '10px solid blue';
+                        //   // observer.unobserve(entry.target);
+                        // }
+                      })
+                      // console.log(entry);
+                    // }, {threshold: 1.0})  // this is saying when the card is 100% in view of the observed intersection/container... then it will be under entry.isIntersecting
+                    }, {threshold: 0.7  })  // this is saying when the card is .30% in view of the observed intersection/container... then it will be under entry.isIntersecting
+                    // $.each(jQcard, ()  => {
+                    //   observer.observe(jQcard);
+                    // })
+
+                    // $.each($('.card-img-top'), ()  => { 
+                    //   observer.observe(jQcard);
+                    // })
+                    observerCard.forEach(card => {
+                      observer.observe(card);
+                    })
+                      // OBSERVER CODE
+
+          // pokemon card methods/hover methods &  data/api-endpoint features made from from axios.get(pokeapi).then(pokemon res.render{pokemon}
+                    // **************  // when you hover on an image get the id from the github url, access the pokeapi with a rebuilt api using a cleaned up id from the ghub url.. and use ajax to request the shiny poke images for a subtle hover change
+          img.on('mouseenter', (e) => {             // img.on('mouseenter') will make every pokemon the hovered pokemon vs $(event.target)
+            let hoveredImg = $(event.target)
+            // console.log(e)
+            // console.log(e.currentTarget.currentSrc);
+
+            const url = e.currentTarget.currentSrc // this retrieves the url from the github sprite api. we can chop it up and use the number in there to rebuild a pokeapi.co  api request as ..pokeapi.co/api/pokemon/${id}/
+            urlpreid = url.slice(73)
+            let urlNoId = urlpreid.slice(0, 73) //this code starts the extracted string from 0 and ends at 73 so we have the slash.
+            console.log(urlNoId);
+
+            var numberPattern = /\d+/g;   // https://stackoverflow.com/questions/1183903/regex-using-javascript-to-return-just-numbers regex code from this question
+            cleanId = urlpreid.match( numberPattern ).join([]);  //this code joins the regex and takes all characters besides ints out and returns int.
+            // console.log(cleanId)
+
+            const ajaxUrl = `https://pokeapi.co/api/v2/pokemon/${cleanId}/` 
+
+            $.ajax({
+              method: 'GET',
+              url: ajaxUrl,
+              dataType: 'json'
+            }).done(function(data) {
+            console.log(data);
+            let pokedata = data;
+            let name = pokedata.name
+            console.log(name);
+
+            let newImg = pokedata.sprites.front_shiny
+            hoveredImg.attr('src', newImg)   // if you don't specify event.target up there... targetability becomes lost in the ajax call.
+          })
+        })
+
+
+        img.on('mouseleave', (e) => {
+          let hoveredImg = $(event.target)
+          // console.log(e)
+          pokeurl = e.currentTarget.currentSrc
+
+          let unchoppedUrlFromGithub = pokeurl.slice(73) // 
+          // let unchoppedUrlFromGithub = pokeurl.slice(-5) // 
+          console.log(unchoppedUrlFromGithub);
+
+          var numberPattern = /\d+/g;
+          cleanId = unchoppedUrlFromGithub.match( numberPattern ).join([]);
+
+          let pokeUrlAjax = `https://pokeapi.co/api/v2/pokemon/${cleanId}/`
+          $.ajax({            // I specifically learned JQuery for this very feature. I wanted to do it originally by setting unique variable names from the app.get/route handler using axios.get(pokemon =>  for (const pok in pokemon) and do data requests + make poke rendering object. I originally wanted to show any pokemon that has an evolve form ... show the evolve form on hover. Need jq since there's no DOM
+            method: 'get',
+            url: pokeUrlAjax,
+            dataType: 'json'
+          }).done( (data) => {
+            let poke = data
+            // console.log(poke.name)
+
+            let backShinyImg = poke.sprites.back_shiny
+            hoveredImg.attr('src', backShinyImg);
+          })
+        })  
+
+          // openPokedex.hide()
+          // screen.hide();
+        
+        // img.on('mouseenter', (e) => {
+        //   console.log(e)
+        //   // preChopUrl = e.target.currentSrc
+        //   // console.log(preChopUrl);  
+        // })
+   
+// IntersectionObserver.prototype.POLL_INTERVAL = 100
+// const observer = new IntersectionObserver(entries => {
+//   const observCard = entries;
+//   entries.forEach(entry => {
+//     reEntry = entries[0];
+    
+//       reEntry.target.classList.toggle('anim', entry.isIntersecting)   // easy to want to do reEntry.classList. can dig thru entries[0] cons.log 
+//       console.log(reEntry.target)
+
+//       // reEntry
+//   }), {
+//     threshold: 0.5
+//   }
+//   // console.log(observCard.target); this will show you which event is popping up as being under observer watch
+
+// })
+
+
+// const cards = document.querySelectorAll('.card');
+// const cards = $('.card')
+// const cardDeck = $('.card-deck')[0]   // dont leave out the [0]
+// const layout = $('.layout')[0]        // was trying to change where the viewport is referencing from
+// // console.log(cardDeck); console.log(layout)
+
+
+//   let options = {
+//     root: null, //this defaults to null if unspecified
+
+//     // use jquery to get a better hold of observer
+
+//     threshold: 1.0, // to 
+//     rootMargin: '50%',  
+//                                               // threshold: 0.5, // to for now this ratio is getting one to pop up
+//                                               // rootMargin: '50%',    
+//   } // syntax used to pre-prepare a targetable 2nd parameter of options with 
+
+// const observer = new IntersectionObserver(entries => {
+//     console.log(entries)
+//     entries.forEach(entry => {
+
+//       console.log(entry.target);
+//       console.log(entry);
+
+//           // if (entry.intersectionRatio > 0) {
+//             if (entry.isIntersecting === true) {
+
+//           entry.target.style.backgroundColor = "orange";
+//           observer.unobserve($(card)[0])
+
+//           //  entry.target.classList.toggle('anim') 
+//         } else {
+//           console.log('we in the hood');
+//           // observer.unobserve($(card)[0]); // I thought we could use the entry placeholder here 
+//         }
+//         // entry.target.classList.toggle('anim', entry.isIntersecting);                // 2nd arg  if isIntersecting is true 
+
+//     })
+// },  options)
+// // },  {
+// //     threshold: 1.0,
+// // })
+
+// // observer.observe($(card)) // its easy to think this isn't wrong. wow thats what a breaking change would be called this totally collapses the app/defaulting to hide() behavior
+// const allImage = Array.from(document.querySelectorAll(".img"));
+// let card = $('.card');
+// // let cards = Array.from(document.querySelectorAll('.card'));  
+// // console.log(cards);
+// observer.observe($(card)[0])
+
+// observer.observe($('.card')[0])
+
+// $(document).ready(function(e) {
+//   // $('.card').css('border', '4px solid brown');
+
+// //create a referencable randomizer function
+// // locate any way to access either the id or the names of pokemon
+// // process/ JSON.stringify or clean up the data
+// // grab a random name or random id and grab a random pokemon.
+// // append that pokemon randomly to the page using the mouse location / screen location context.  
+
+// // wow you can do vanilla javascript down here... breaking news. but you still lose the context of:
+// // < % pokemon.forEach(function(poke))  from res.render('index' {pokemon}) %> .. and cannot access pokemon down here.
+
+//   $('.indexBody').css('background', 'peachpuff');
+//   $('.nav').hide()
+//   $('.openPokedex').hide()
+//   $('.container').hide()
+
+//   let pokeBtn = $('.pokeBtn')
+
+// // POKEDEX FUNCTIONS
+// closePokedex = $('.closePokedex')
+// openPokedex = $('.openPokedex');
+// closePokedex.on('click', (e) => { // this syntax more like vanilla js syntax
+//   // console.log(e) e.currentTarget or e.pageX/e.clientX/e.pageX/e.offsetX
+//   closePokedex.hide()
+//   openPokedex.show()
+// })
+
+// openPokedex.click(function(e) {  
+
+//   openPokedex.hide()
+//   $('.container').show()
+//   $('.nav').show()
+//   $('.indexBody').css('background-image', 'url(/img/pokedexScreen.png)'); // using url that way is like setting background-image in the DOM in vanilla javascript
+//   $('.indexBody').css('background-size', 'cover');
+   
+//   // THIS IS HOVERING OVER THE "Bulbasaur" "charmander" text 
+//   $('.card-title').hover(function(e) {  // this was originally going to be targeted from hovering on the pokemon image itself but needed variable setting context from this.html() which wouldn't work with $('.element').html() .. is not a function
+//     // console.log(this)
+//     // let pokeName = (e.view.window.name).trim();
+//     // let newName = JSON.stringify(name).slice(0);     //.substing .replace... were all being funny.
+//     // let name =$(this).text($(this).text().replace(' ' ', ''))
+//     let name = $(this).text().trim()
+
+//     let pokeUrl = (`https://pokeapi.co/api/v2/pokemon/${name}`);
+    
+//     // let pokeUrl = `https://pokeapi.co/api/v2/pokemon/${pokeId}`
+//     $.ajax({
+//       method: 'GET',
+//       url: pokeUrl,
+//       dataType: 'json'
+//     }).done(function(data) {
+//       console.log(data)
+//       console.log(data.name);
+//     })
+//   })
+// })
+
+// // $('.card-img-top').on('mouseenter', (e) => { // this is targeting the imgicon
+// $('.card-img-top').on('mouseenter', (e) => { // this is targeting the imgicon changing <img attribute src to the rebuilt from github sprite to pokeapi ajax call where we store the shinyImg var as the shiny sprites from poke api
+//   // $('.card-img-top').hover( (e) => {
+// // $(this).css('border', '8px solid green');
+// let clickedElem = $(event.target)             // if i'm not mistaken I was losing the event.target context within the ajax call. only when specifying it like this was I able to access this code and apply changes only to the selected element. every $('.card') was turning shiny.
+// // $(event.target).css('border', '2px solid black');
+// // bullseye.slideUp()
+// $(event.target).hover( () => {                          // this was supposed to be very simple by grabbing the 
+//   // $(event.target).css('border', '5px solid orange');
+//   let pokeName = JSON.stringify(name); // this will pop up as " ivysaur"/" charmander" with trailing white space
+//   let imgUrl = e.currentTarget.currentSrc // this digs into the event object/parameter amd returns the URL from github.com/sprites api NOT POKEAPI!
+//   let idOfUrl = imgUrl.slice(73)  // this starts and includes the URL right after /pokemon/#3.png this starts slice at 73rd character. leaving /#3.png
+//   let urlNoId = imgUrl.slice(0, 73) //this code starts the extracted string from 0 and ends at 73 so we have the slash.
+//   var numberPattern = /\d+/g;   // https://stackoverflow.com/questions/1183903/regex-using-javascript-to-return-just-numbers regex code from this question
+//   cleanId = idOfUrl.match( numberPattern ).join([]);  //this code joins the regex and takes all characters besides ints out and returns int.
+//   // console.log(`this is the ${cleanId}`);
+//   // let pokeUrl = `check out ${urlNoId}${cleanId}` // this will make the exact url we had before without .png
+//   let pokeUrl = `https://pokeapi.co/api/v2/pokemon/${cleanId}`
+//   // console.log(`dont forget this is the ${pokeUrl}`);
+//   $.ajax({
+//     method: 'GET',
+//     url: pokeUrl,
+//     dataType: 'json'
+//   }).done((data) => {
+//     pokemon = data
+//     // console.log(pokemon);
+//     let shinyImg = pokemon.sprites.front_shiny    
+//     // console.log(shinyImg)
+//     clickedElem.attr('src', shinyImg); // this is accessing that image that renders < % = sprite/image %> and setting <img SRC = " ... "
+//     // this is accessing that image that renders < % = sprite/image %> and setting <img SRC = " ... "
+//   })
+// })
+
+// $(event.target).on('mouseleave', () => {
+//   let clickedMe = $(event.target)
+//   let pokeName = JSON.stringify(name); // this will pop up as " ivysaur"/" charmander" with trailing white space
+//   let imgUrl = e.currentTarget.currentSrc // this digs into the event object/parameter amd returns the URL from gibhub.com/sprites/api
+//   let idOfUrl = imgUrl.slice(73)  // this starts and includes the URL right after /pokemon/#3.png 
+//   let urlNoId = imgUrl.slice(0, 73) //this code starts the extracted string from 0 and ends at 73 so we have the slash.
+//   var numberPattern = /\d+/g;   // https://stackoverflow.com/questions/1183903/regex-using-javascript-to-return-just-numbers regex code from this question
+//   cleanId = idOfUrl.match( numberPattern ).join([]);  //this code joins the regex/regular expression (int from strings formula) 
+//   // console.log(`this is the ${cleanId}`);
+//   // let pokeUrl = `check out ${urlNoId}${cleanId}` // this will make the exact url we had before without .png
+//   let pokeUrl = `https://pokeapi.co/api/v2/pokemon/${cleanId}`
+//   $.ajax({
+//     method: 'GET',
+//     url: pokeUrl,
+//     dataType: 'json'
+//   }).done(function(pokeData) {
+//     // console.log(pokeData)
+//     let shinyBackImg = pokeData.sprites.back_shiny
+
+//     // $(event.target).css('border', '10px solid blue');
+//     // $(event.target).css('border', '10px solid blue'); // quite something that $(event.target) scope lost but clickedMe = $(event.target) works.Atleast 90 minss in.
+//     // clickedMe.css('border', '10px solid blue');
+//     clickedMe.attr('src', shinyBackImg);
+//   })
+//    })
+//   })
+
+//   //  this is a function to return the sprite.shiny_front || sprite.shiny_back to a pokemon.sprite.front_default;
+//    $(event.target).click(function(e) {
+  
+//      let clickedElement = $(event.target)
+//     //  console.log(e)
+//     //  console.log(e.view.window.name) // strangely this returns bulbasaur for some reason.
+//     })
+  //  $('.card-img-top').on('mouseleave', function(e) {
+  //    console.log(e)
+  //   let clickedOn = $(event.target) // $(this) loses its targetability in AJAx call.
+  //    console.log(`oh wow we have to deal with ${clickedOn}`)
+  //    clickedOn.on('mouseleave', function() {
+  //      clickedOn.css('border', '10px solid purple');
+  //    })
+  //  })
+
+  // let newImgUrl = imgUrl.slice(0, 73)
+  //   ajaxPokeUrl = `${newImgUrl}${name}`
+  //   console.log(ajaxPokeUrl)
+  //   let image = $('.card-img-top')
+  //   // image.css('border', '7px solid olive');
+  //   $(this).css('border', '5px solid blue')
+  
+  // $('.card-img-top').parent().css('border', '10px solid maroon');
+  
+  //   // let name = JSON.stringify(e.view.window.name).trim()  //hmmm this doesn't work.
+  // console.log(pokeName)  
+  //   let pokeUrl = `https://pokeapi.co/api/v2/pokemon/`
+  //   $.ajax({
+  //     method: 'GET',
+  //     url: `https://pokeapi.co/api/v2/pokemon/`,
+  //     dataType: 'json'
+  //   }).done( (data) => {
+  //     console.log(data)
+     
+  //   })
+    // console.log(pokeName);
+    // console.log(name);
+  // })
+
+// $('.header').css('color', 'blue');
+
+// $('#pokebtn').css('border', '3px solid pink');
+// $( ".myClass" ).css( "border", "3px solid red" );
+// $( ".pokeDetail" ).css( "border", "10px solid brown" );
+
+// $( ".pokeDetail" ).click(function() {
+//     // $(".card-title").css( "border", "10px solid brown" );
+//     // $( ".card-title").innerHTML.get();
+//         // $( "ul.topnav > li").css( "border", "3px solid green");
+//         $("card-img-top").css( "border", "5px solid orange");
+
+// })
+//access the pokeball first.
+let poke = $(".pokeDetail")
+poke.click(function() {
+    // $(".card-img-top").css( "border", "5px solid orange");
+    let ajax = new XMLHttpRequest()
+    ajax.open('GET', 'https://pokeapi.co/api/v2/pokemon/ditto', true) 
+
+    ajax.onload = () => {
+        if (ajax.status == 200) {
+          console.log(ajax.responseText);
+        } else {
+          console.log('insane');
+        }
+        ajax.send()
+    }
+})
+// })
+</script>
+</body>
+
+

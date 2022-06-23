@@ -1,0 +1,606 @@
+  .nav {
+  position: relative; 
+  align-self: center; 
+  width: 100%;
+  z-index: 1;   /* z-index was for the nav.show() since on click and the data container hid the navbar*/
+  padding-top: 0;
+  margin-top: -2%;
+   /* position: fixed;     */
+ /* overflow-y: scroll;  scroll-behavior: smooth;  scroll-snap-type: y mandatory; was using this during the wrestle with intersection observer */
+ display: flex;
+ justify-content: center;;
+ align-items: center;
+ flex-flow: row wrap;
+}
+
+.user {
+    position: relative;
+    top: 8%;
+    z-index: 1;
+    color: whitesmoke;
+    display: flex;
+    /* align-self: flex-end; */
+  /* left: -33%; */
+}
+
+.pokeBall {
+    margin: 0 2em 0 2em;
+    background-image: url('/img/pokeball.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.greatBall {
+    margin: 0 1em 0 1em;
+    background-image: url("/img/greatBall.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.ultraBall {
+    margin: 0 2em 0 2em;
+    background-image: url("/img/ultraBall.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.hidden{ 
+  display: none;
+}
+
+.ghost {
+    background-color: none;
+    position: relative;
+    align-self: flex-end;
+    /* background-color: blue; */
+    /* align-self: flex-end; */
+    opacity: 0.5;
+    margin: 0 1em 0 9em;
+    /* background-color: rgb(73, 34, 180); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.ghost-card {
+  background-image: url('/img/haunter.png') !important; /* few hours down drain. !important is.. important!  */
+  background-size: cover;
+  height: 650px;
+  /* background-image: url("img/haunter.png"); */
+  background-repeat: no-repeat; 
+  /* background-color: red; */
+}
+
+/* LAYOUTS END */
+
+/*  app.get('/',) main index / actual pokedex render. */
+html, body {
+  /* background-color: peachpuff; */
+  background-size: cover;
+  /* background-size: 100%; *
+  /* background-position: absolute; was unselecting and reselecting while trying to pinpoint the intersection observer to the container that was being finnicky by only letting the first image in a row of selected .forEach entries register as being obseved*/ 
+  /* background-attachment: fixed !important; */
+  background-position: 0 50px;
+  /* /* overflow-y: scroll; trying to get the navbar to stick and follow the page around. this isn't working. */
+  /* scroll-snap-type: y mandatory;  */
+}
+
+/* SEPARATE THE CSS BY FILE!! */
+.indexBody {
+  width: 100%; 
+  overflow: hidden;
+  /* background-color: olivedrab; */
+  background-color: wheat;
+  overflow-x: hidden; 
+  padding-top: 2%;
+  margin-top: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* flex-direction: column; */
+  /* align-content: center; */
+  /* justify-content: center; */
+  /* background-image: url('/img/pokedexScreen.png'); */
+  /* background-color: blue; */
+  background-size: 100% 100%;
+/* background-size: cover; */
+  background-repeat: no-repeat;
+}
+
+  .helpScreen {     
+    /* almost forgot I wanted to do a 15 x 10 grid with the extra 1 pokemon(15x10 (150 out of 151) with the extra pokemon being appended to a display  */
+    z-index: 1;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+  }
+    
+  p {
+    /* border: 2px solid */
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+/*  */
+
+
+/* 1)apply flex to pokedex  */
+/* 2) put a random pokemon/div on the page MVP 3) --> if button.class=closepokedex = body.append(randomPoke)    */
+/*  */
+#displayContainer {
+  margin-top: 10%;  
+  width: 600px;
+  height: 600px;
+  transform: scale(1.25);           
+  /* border: 2px solid pink;   */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  /* overflow: scroll; */
+  /* background-image: url('/img/closepokedexbtn'); */
+    background-size: cover;
+    background-repeat: no-repeat
+}
+
+.infoHelp {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.id {
+  text-align: center;
+  margin-top: 1em;
+  color: #FFF; 
+  font-size: 33px;
+  font-weight: bold;
+}
+
+.pokedexScreen { 
+  transform: scale(1.25);
+  overflow-x:hidden;
+  padding-top: 3%;
+  height: 600px;
+  width: 600px;
+  /* background-color: darkcyan; */
+    background-image: url('/img/pokedexScreen.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.pokedexContainer {
+  border: none;
+  /* overflow: scroll; */
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* overflow-y: scroll;  */
+  /* flex-flow: wrap; */
+}
+
+.randomImg {
+  height: 135px;
+  width: 135px;
+  /* border: 5px solid salmon; */
+}
+  
+.closePokedex {
+    /* transform: scale(2.0); */
+    margin-top: 2%;
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    background-image: url('/img/closePokeDex.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.openPokedex {
+    /* transform: scale(2.0); */
+    margin-top: 2%;
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    background-image: url('/img/openPokeDex.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.displayText {
+  /* position: -webkit-sticky; // was trying to use this to get the navbar from moving. using pos: fix  on the actual element instead. */
+  top: 0px;
+  color: aquamarine;
+  text-shadow: 1px 2px 1px #FFF;
+  font-weight: bold;
+}
+
+  .card.fancy {       /* this is the class that is toggled with intersection observer's watch */
+    transform: scale(.60);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    background-image: url('/img/pokemontemplate.png');
+    /* background-image: url("../img/card-bg.jpg") !important; */
+    background-size: cover !important;
+    /* background-color:#FFFFFF99!important; */
+    /* border: 10px solid white !important; */
+    margin-top: 140px;
+    margin-bottom: 140px !important;
+    animation: anim1 2s ease-out;
+    /* width: 30%!important; */
+  }
+
+  .card {
+    transform: scale(.60);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    background-image: url('/img/pokemontemplate.png');
+    /* background-image: url("../img/card-bg.jpg") !important; */
+    background-size: cover !important;
+    /* background-color:#FFFFFF99!important; */
+    /* border: 10px solid white !important; */
+    margin-top: 140px;
+    margin-bottom: 140px !important;
+    /* border: 8px solid salmon; */
+  }
+
+  /* .flashLightFlicker2 {
+    animation: onLight2 20s;
+    animation-iteration-count: 1;
+}
+
+@keyframes onLight {
+    0% {
+        transform: rotate(1deg); 
+    }
+    20% {
+        transform: rotate(1deg);
+    } */
+  .flicker {
+    animation: flickFade 4s;
+    animation-iteration-count: 1;
+  }
+
+  #flicker {
+    animation: flickFade 4s;
+    animation-iteration-count: 1;
+  } 
+  
+  @keyframes flickFade {
+    0% {
+      opacity: 1.0
+    }
+    20% {
+      opacity: 0.9
+    }
+    40% {
+      opacity: 0.7
+    }
+    60% {
+      opacity: 0.5
+    }
+    80% {
+      opacity: 0.2
+    }
+    100% {
+      opacity: 0.0
+    }
+  }
+
+  .card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* align-self: center; */
+    font-size: 30px !important;
+    margin-top: -15%;
+    text-transform: uppercase !important;
+    /* text-align: center !important; */
+  }
+
+  .card-img-top {
+    margin-top: -15%;
+    /* overflow: scroll; */
+    padding: 5%;
+  }
+
+  .list-inline-item {
+    /* background-image: url('/grass/poke-grass2.jpeg'); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .h3 {
+    text-transform: uppercase !important;
+  }
+  .navbar-brand {
+    font-size: 30px !important;
+  }
+  
+  .nav-link {
+    font-size: 20px !important;
+    margin: 0 20px 0 20px !important;
+  }
+  
+  .container {
+    /* background-color: seagreen; */
+     /* overflow-y: scroll; */
+    /* scroll-behavior: smooth;  */
+    margin-top: 5% !important;
+    /* margin-top: 10% !important; */
+  }
+
+  .btn {
+    font-size: 15px !important;
+    margin: 0 auto !important;
+  }
+
+  .pokeBtn {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    margin-bottom: 2%;
+    background-image: url('/img/pokeball.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  button:hover{
+    cursor: pointer;
+  }
+
+  .pokeBtn:hover {
+    cursor: pointer;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    margin-bottom: 10%;
+    background-image: url('/img/openPokeball.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+                                  
+  .card-header {  
+    /* THIS IS THE ID! */
+    /* color: antiquewhite; */
+    font-size: 15px !important;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 5%;
+    opacity: 70%;
+    color: whitesmoke !important;
+  }
+
+.newImage {
+  transform: scale(0.5);  
+  /* transform: scale(2.0);   */
+  /* border: 5px dotted salmon; */
+}
+  
+  .favorite {
+    margin-left: 45% !important;
+  }
+  
+  .layout {
+      width: 50%;
+    /* -webkit-column-count: 1 !important;
+    -moz-column-count: 1 !important;
+    column-count: 1 !important; */
+    margin: 0 auto;
+  }
+  
+  img {
+    /* actual pokemon image itself. */
+    transform: scale(0.5);
+  }
+  
+  .h6 {
+    font-size: 15px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .card-details {
+    /* height: 70vh !important; */
+    height: 80vh !important;
+  }
+
+
+
+
+
+  
+
+
+
+
+
+  
+ /* ENERGY CARD SECTION & pokemon.ejs  */
+.pokemonBody {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  /* background-image: url('/img/typePage.jpeg'); */
+  /* background-color: peachpuff; */
+  background-image: url('/img/noScreenPokedex.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center; 
+  /* align-items: center; */
+  /* align-content: center; */
+}
+
+.energyContainer {
+  /* border-radius: 50%; */
+  position: absolute;
+  margin: 5% 0 5% 0; 
+  padding: 5rem;
+  border: 2px solid maroon;
+  /* display: flex;
+  flex-flow: row nowrap; */
+  /* display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; I was considering using the grid for this. */
+}
+
+#boxContainer {
+  /* margin-top: 10%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#cardContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  /* border: 2px solid pink; */
+  margin-top: 4rem;
+}
+.pokemonDisplay {
+  background-image: url('/img/nicePokedex.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* border: 8px solid blanchedalmond; */
+  border: 1.5px solid rgb(61, 46, 61);
+  box-shadow: 1px 1px 1px rgb(61, 46, 61);
+  margin-top: 10%;
+  /* margin-left: 10%; */
+  transform: scale(1.25);
+  overflow-x:hidden;
+  padding-top: 3%;
+  height: 600px;
+  width: 600px;
+}
+/* .pokemonDisplay > h1 {
+  margin: 2em;
+  color: white;
+} */
+span {
+  display: none;
+}
+.pokemonDisplay li {   
+                    /* kiss 60mins goodbye can take out .pokemonDisplay to see.  */
+  /* margin-top: 10%; */
+  text-align: center;
+  height: 50px;
+  margin-top: 35%;
+  padding-top: 55%;
+  /* padding: 5%; */
+  /* margin-left: 33%; */
+  font-size: 55px;
+  list-style: none;
+  /* line-height: 10rem; */
+  color: orchid;
+}
+
+.energyCard {
+  /* opacity: 0.1; */
+  display: flex;
+  top: 0; left  : 0; /* nice to know you can do positioning css I wonder if you can do margin and padding the same line-reducing way.... */
+  /* margin: 0 5% 0 5%; padding: 0 5% 0 5%; */
+  border: 1.5px solid rgb(61, 46, 61);
+  box-shadow: 1.5px 1.5px 1.5px rgb(19, 14, 19);
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  /* padding: 2% 2% 0 2%; */
+  margin-top: 2%;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  /* from .circle div: */
+}
+
+#pokeDisplay2 {
+  background-image: url('/img/nicePokedex.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: 20%;
+  margin-bottom: 5%;
+  height: 150px;
+  width: 150px;
+  border: 2.5px solid rgb(61, 46, 61)
+}
+
+.sprite {
+  height: 125px;
+  width: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.text {
+  display: flex;
+  margin-left: 30%;
+  height: 50px;
+  width: 225px;
+}
+/* ENERGY CARD SECTION */
+
+ /* this is in case we go the route of having a big container on far right side an invisibleContainer waiting for the same ghostBtn from before to pop up. The big screen in the middle makes it feel like something you'd actually be holding and this ghost container can easily make everything not work well together. I was glad to see align-self work bu */
+ /* wow the relief that align-self just works right away... never used it correctly and am at a loss atm for the random posting to not look ugly. it'd be nice to seize control over some canvas to isolate the ghost and keep it separate from everything because everything else is quite nice looking id think. very luck the energy cards top and the pokeball bottom with the pokedexScreen looks fluid. huge accident/luck */
+ .ghostContainer {      
+   /* border: 5px solid pink; */
+   align-self: center;   
+   position: relative;  
+   left: 3%;
+   height: 1000px;
+   width: 10%; 
+  } 
+   
+
+  @media screen and (max-width: 1000px) {
+    .energyCard{
+      transform: scale(0.75);
+      /* margin-top: -3rem; */
+    }
+    .energyCard:hover {
+      transform: scale(1.5);
+      margin-left: 2rem;
+    }
+    #cardContainer {
+      transform: scale(0.75);
+      margin-top: 10rem;
+    }
+    .pokemonDisplay {
+      transform: scale(0.5);
+      margin-top: -1rem;
+    }
+    #pokeDisplay2 {
+      margin-top: -3rem;
+      transform: scale(0.7);
+    }
+  }

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+  </head>
+  <style>
+    * {
+      margin-top: 2em
+    }
+    body {
+      overflow-y: hidden;
+      background-color: peachpuff;
+      display: flex;
+      flex-direction: column;    
+      /* a big screw in the wall for a while seeing {flex-direction:row&&justify-content:center} work together unless you change to: {flex-direction: column}  */
+      justify-content: center;
+      align-items: center;
+    }
+    /* form, form input {    */
+    form {   
+      text-align: center;
+      margin-top: 15%;
+      /* transform: scale(2.0); */
+      /* line-height: 10rem; */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .pokeball {
+        margin-top: 7rem;
+        border-radius: 50%;
+        background-image: url('/img/pokeball.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 85px;
+        width: 85px;
+        transform: scale(0.5);
+        /* background-color: green; */
+      }
+      #submit {
+        height: 65px;
+        width: 65px;
+        background-size: cover;
+        background-color: transparent;      /* VERY COOL these 2 transparent! */
+        border: 2px solid transparent;
+        background-repeat: no-repeat;
+        background-image: url('/img/rare_candy.png');
+        transform: scale(0.5);
+      }
+      .actualInput {
+        /* margin-top: 15%; */
+        /* border: 2px solid pink; */
+        color: white;
+      }
+      .blackInk {
+        border: 2px solid pink;
+        color: black;
+      }
+    
+  </style>
+  <body>
+
+    
+    <script src="" async defer></script>
+  </body>
+</html>
+<form action="/auth/login" method="POST">
+  <div class="formBox">
+    <label for="auth-email">Email</label>
+    <input id="auth-email" type="email" name="email" class="actualInput">           <!-- this input type="email" comes with its own automatic flash-type messages like: ["please include an @"] they're not as pretty as they sound.-->
+    
+  </div>
+  
+  <br/>
+  <div class="formBox">
+    <label for="auth-password">Password</label>
+    <input id="auth-password" type="password" name="password" class="actualInput">
+  </div>
+  <br>
+  
+  <input id="submit" type="submit" value="Log In">
+  <div id ="submitBox" class="formBox">
+    
+  </div>
+  <!-- the animation function done in jq from alerts.ejs doesn't do what we want it to do here. -->
+  
+  <div class="pokeball">
+  </div>
+  <label class="pokeLabel"><%= hoverflash %></label>
+  
+  
+</form>
+<%- include('../partials/alerts') %>    
+<!-- <p>mouse#: </p> e.clientY displaycontainer for {mouse:screenLocation} conditional logic. -->
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>   
+
+<script>
+let box = $('.formBox')
+box
+.css('line-height', '5em')
+.css("")
+
+let submitBin = $('#submitBox')
+submitBin
+.css('margin-top', '5rem')
+
+let submit = $('#submit')
+.css('color', 'transparent')
+
+let btnBox = $('#submitBox') 
+btnBox
+
+$('.pokeLabel').hide()
+
+let input = $('.actualInput')
+input.css("opacity", "0.2")
+
+let adviceCounter = 0
+let counterBox = []
+
+let pokeball = $('.pokeball')     
+
+
+// .css('opacity', "1.0")
+// $(evt.target).css('opacity', '2.0')    // had this set up as $(evt.target) and wanted to walk back from that because I was also going to have this be its own setInterval function so it wont be initiated upon behavior a second time after the elements are already given styling-based functionality on mouseEnter*
+const nowYouSee = (event) => {
+  setTimeout( () => {           // ouch 5 minutes back and forth:     setTimeout( (event) ) housing the event parameter within the time-out and not the overarching event. 5 minutes good second to be slamming hvy-duty&&rapid-fire
+    console.log('and we do our thang')
+    // input.css("opacity", "1.0")// element.css('opacity', '1.0')
+    $(event.target).css("opacity", "1.0")
+  }, "2000")
+}
+const nowYouDont = (event) => {
+  // input.css("opacity", "2.0")
+  $(event.target).css("opacity", "1.0")
+  setTimeout( () => $(event.target).css('box-shadow', ''), "1000") //
+}
+
+input
+.on('mouseenter', nowYouSee)
+.on('mouseleave', nowYouDont)
+  
+// .on('mouseenter', (nowYouSee, "2000") // 
+
+// const nowYouSee = (element) => {
+
+
+// setTimeout(nowYouSee(input), "5000") doing it this way fires right away. Shall change the placeholder in nowYouSee() function and just go directly for a single-responsibility, element-specified function where we're not ambiguously describing any (would/could/should-be) placeholder/parameter 
+
+const shadowBall = (event) => {         // ! big learning atleast for my xp level. I learned a decent bit of event.target from mountains of pokeAjax Calls. I had tons of trouble wrapping head around callback functions. imo they'd be way easier to get-to-speed with using $(event.target) because its so obviously telling you what you'll be workingn with. all of the various placeholders especiailly in .forEach((pokedata) vs .forEach( (data)) forIn(k, v) object.entries(k, v) almost all saying same thing. This is saying:   .uponBehavior( [index[0]].cssChange =>  
+$('.pokeLabel').detach() // .hide()
+  setTimeout ( (tgt) => {
+    $('.actualInput').removeClass('actualInput')
+    $('.actualInput').addClass('blackInk')
+    console.log($(event.target))  
+    $(event.target).css('box-shadow', '5px 5px 5px #A6A1A0')
+    $('input').css('box-shadow', '5px 5px 5px #A6A1A0')
+    $('#submit').css('box-shadow', '')
+    // req.flash('hover')
+  }, "1000")
+}
+
+
+
+
+
+const advice = () => {
+  if (counterBox.length < 3) {
+    setInterval( () => { 
+      adviceCounter++
+      counterBox.push(adviceCounter)
+      console.log(`${counterBox.length}`)
+      $('.pokeLabel').show()
+      setTimeout( () => {
+        $('.pokeLabel').hide()                // quite funny that this works; it's a bit anti dry i'm sure..
+      }, "3000")
+    }, "2000")
+  } else {
+    console.info('dont worry about it')
+  }}
+  setTimeout(advice, "3000")
+
+
+
+// pokeball.on('mouseenter', SetTimeout( () => {
+//   console.log('hey')
+// }, "1000")
+// )
+pokeball.on('mouseenter', shadowBall)
+ //    .on ending
+// $('.actualInput').css('color', 'black')   // for some reason, even if this is within the eventListener, it is somehow activating without the mouseenter.event() firing off. I'm going to use a toggle .css class instead.
+let l = $('label')
+l
+.css("color", "#A6A1A0");
+
+p = $('p')
+// p.css('border', '2px solid pink')
+p.css("color", '#A6A1A0')
+
+let body = $(document.body)
+
+
+
+
+// was just trying to do little trick with mutationObserver where we watch the inputs, count the characters, and turn the invisible white characters into regular black characters after char.count>=2      from 1st observer (5hrs to use) to this 4th or so time basic up&&running 8 mins I see from the documentation just now that There is such thing as:  [PerformanceObserver] where we can count the length. Might be worth a try. As I type this... $(this).input.css('color', 'toggle') seems in-the-way && more obnoxious than not.
+// const inputInSight = document.querySelectorAll('.actualInput')
+// // console.log(inputInSight)
+// const observeroptions = {characterData: true, subtree: true, childList: true, attributes: true}
+// const inputWatch = new MutationObserver(mutation => {
+//   console.log(mutation)
+// })
+// // }, observeroptions)
+// // inputWatch.observe(document.body, observeroptions)
+// inputWatch.observe($('form input')[0], {     // document.body always good isMinimViab first: [cons.log||cons.info]
+//   characterData: true,
+//   subtree: true,
+//   attributes: true
+// })
+// observer.observe({entryTypes: ["measure"]});
+// const performanceObserve = new PerformanceObserver  (entries => {   // 3-4 minutes to work, whether or not we manage the form input trick where .charLength>2 -> inputFont.color toggle white->black
+//   console.log(entries)
+// })
+// performanceObserve.observe({entryTypes: [$('form input')]})
+
+
+$(document).on('mousemove', (e) => {
+  // console.log(e) 
+  // console.log(e.clientY)
+  p.text(`${e.clientY}`)      // jquery form of a trick shown by brad traversy on youtube where he accesses the windows e.clientY and appends it to an element. Ever since accessing seeing that event object and seeing him do it: the rest w/ intersection observer + ajax was history. The only thing i ever had in mind from the start of this app was the pokedex screen .onpokemonCardImage.hover()=> ajax.shiny_data  ||  front_default&&back_default .attr('str', `pokeapispritesDatImgUrlToggle`
+  // p.prepend(`hey: ${e.clientY}`) o.O
+  p.textContent += `You Are Here: ${e.clientY}`
+  if (e.clientY < 700) {      // ha. on $(this).machine the <900 is right where the pokeball is and makes it {almost: impossible} to click.
+    try { 
+      $('form').css('transform', 'scale(2.0)')
+      // $('*').css('position', 'absolute')      // uglybtn
+      $('*').css('line-height', '5%')      // uglybtn
+      // $('*').css('margin-top', '10px')
+      // console.log("see the butt")
+      body
+      // .css('background-color', "purple")
+    }
+    catch {
+      console.log('hmm')
+    }
+  } else {
+    $('form').css('transform', 'scale(1.0)')
+    body
+    // .css("background-color", "peachpuff") was doing first isMinimViab test on background.toggle()
+  
+  }
+
+})
+
+  
+
+
+</script>

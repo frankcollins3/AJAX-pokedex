@@ -1,0 +1,1758 @@
+<%- include('../partials/navBar.ejs') %> 
+<!-- (-10) minutes not realizing you'd have to use: ../partials    instead of: partials/navbar.ejs -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">      <!-- just like how res.render('assumes views/   for pokemon/show') this code is assuming /public from public.join  -->
+
+    <!-- this would be filled out assumptively with public/ already understood to be entried. thats why we do public.join in  -->
+    <style>   /* just using internal CSS isntead of inline-styling or external style sheets since it's a bit crowded there and there will be very little here. */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: url('/img/whiteCard.jpg')
+      /* background-image: url('/img/blackPokedex.jpeg'); */
+      /* background-color: white; */
+    }
+    .contContainer {
+      margin: 2em;
+      padding: 2em;
+      transform: scale(1.25);
+      margin-top: 3%;
+      background: url('/img/blackPokedex.jpeg') no-repeat;
+      background-size: cover;
+      /* background-repeat */
+      /* overflow: hidden; */
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      align-items: center;
+      /* justify-content: row; */
+      /* align-items: center; */
+      /* border: 2px solid blue; */
+    }
+    .container {
+      margin:  0 10rem;
+      overflow-x: hidden;
+      /* padding:  0 10rem; */
+      transform: scale(1.5);
+    }
+    .press1 {
+      opacity: 0.7;
+      /* margin-top: -1%; */
+    }
+    /* .q { */
+      /* color: green; */
+    /* }  */
+    /* .a { */
+      /* color: blue; */
+    /* } */
+    p, li {
+      list-style-type: none;
+      color: #A6A1A0;
+      /* color: #A6A1A0; */
+      text-shadow: 0.5px 1px 1.5px black;
+      /* color: black; */
+      text-align: center;
+      font-weight: bold;
+    }
+    /* ul { maybe maybe not. probably just gonna use IDs    // kind of easy to want to throw overflow-y: hidden; overflow-x: scroll for some variety but it truly looks best as simple and expected and plain and uniform as can be. Wanted to throw this page away, am glad to have cleaned up that array of object data from the moves api thats in the move: `[${moves}]` key and to have used this page to balance out the light eccentricities.  only wanted to use this page for the :name req.params.name url conditional. It's a very simple 1 and done check like the non-relevant port conditional down there. This cleaning up of raw data makes use of the api and some good js basics. Getting this array sent here was a 
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+    } */
+
+    </style>
+</head>
+
+<body>
+
+<div class="contContainer">
+    <div id="container1" class="container">
+    <!-- <p> < %= pokeObject.moves %></p> -->
+    <ul id="movesList">
+      <h2> Moves</h2>
+      <!-- weird or not? 1) take out the brackets and you get a reference error/not a function/nothing-to-grab error 
+        2) Keep the brackets in and you see them render. Come to think of it, you see the brackets render in the terminal .... 
+        3) but then the object { parenthesis also show up on the terminal and when we render the pokemon.forEach() from index.ejs we don't have the brackets 
+      -->
+      <% let moves = [pokeObject.move] %> 
+      <% moves.forEach( (move) => { %>
+          <li id="moveLi"> <%= move %> </li>
+          <li id="newBucket"></li>
+          <% }) %>
+
+                   <!-- move: `[${moves}]` glad to spend >4hrs parsing this. when there was no need:     move: moves  -->
+                  <!-- move: `[${moves}]` glad to spend >4hrs parsing this. when there was no need:     move: moves  -->
+          
+
+       <!-- % pokeObject.move.each( (move) => { %>
+        <li> < %= move %> </li>
+      < % }) %> -->
+    </ul>  
+  </div>
+  
+  <!-- <h1> < %= pokeObject.description %></h1>
+  <h2> < %= pokeObject.weight %> <br></h2>
+  <h3> < %= pokeObject.height %></h3> -->
+ 
+    <div class="container" id="pokeContainer"> 
+      <ul>
+        <img class="pageImg" src="<%= pokeObject.img %>">
+        <li class="name"> <%= pokeObject.name %> </li>
+        <li class="id"> #<%= pokeObject.id %> </li>
+      </ul>
+    </div>
+    
+
+    
+    <div class="container" id="container3">           <!-- this api endpoint was a of head-against-the-wall bashBashBashing. just damage-Relations -->
+
+     
+
+
+      <ul id = "dblFrom">             <!-- ID structure is just Q - A like call response  -->
+        <p class = "q"id="dblFromQ">double damage from:</p>           <!-- i.e. w/ mewtwo "psychic type" for example does double damage from ghost -->
+        <p class = "a" id="dblFromA">boutta be ghost</p>
+      </ul>
+
+        <ul id = "dblTo">  
+        <p class = "q" id="dblToQ"> double damage to:</p>
+        <p class = "a" id="dblToA"> double to A </p>
+      </ul>
+
+      <ul id = "halfFrom">  
+        <p class="q" id="halfFromQ">half from </p>
+        <p class="a" id="halfFromA">half from answer</p>
+      </ul>
+      
+      <ul id = "halfTo">
+        <p class="q" id="halfToQ">half to: </p>
+        <p class="a" id="halfToA">half to A</p>
+      </ul>
+
+      <ul id = "noneFrom">
+        <p class="q" id="noneFromQ">no damage from:</p>
+        <p class="a" id="noneFromA">none from A</p>
+      </ul>
+
+      <ul id = "noneTo">
+        <p class="q" id="noneToQ">no damage to:</p>
+        <p class="a" id="noneToA">none to A</p>
+      </ul>
+    </div>
+
+    
+    <!-- <div id="container4" class="container">
+      <li class="cont4moves"></li>
+    </div> -->
+
+
+  </div>  <!-- contContainer end -->
+         
+        <p class="description"> <%= pokeObject.description %> </p>
+        <p class="description2"> <%= pokeObject.description2  %> </p>
+
+      
+  <footer></footer>
+
+
+  <!-- <div class="contContainer"> -->
+    <!-- <div class="container">         probably don't need to call this pokeContainer -->
+      <!-- <img src="< %= pokeObject.img %>">   -->
+      <!-- <ul> -->
+        <!-- <li class="name"> < %=  pokeObject.name %> </p> -->
+        <!-- <li class="id"> #:< %=  pokeObject.id %> </p> -->
+        <!-- <p class="name"> #: < %=  pokeObject.id %> </p> -->
+      <!-- </ul> -->
+      
+    <!-- </div> -->
+    
+    <!-- <div class="infoContain"> -->
+      <!-- <h1> hey how are you </h1> -->
+    <!-- </div>     contContainer -->
+    <!-- </div> -->
+    
+    
+
+
+
+  
+  <!-- find document height.  -->
+  
+  
+  
+  
+  
+  
+</body>
+  
+  </html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" defer></script>   <!--   -->
+<script>
+
+nav = $('.nav')   // coming from include partials.
+nav
+.css('position', 'relative')
+.css('top', '-6rem') // hmm cant use percentages
+.css('pading-top', '-3rem')
+.css('order', '3')
+
+poke = $('.pokeBall')
+great = $('.greatBall')
+ultra = $('.ultraBall')
+
+img = $('img')
+.css('transform', 'scale(1.5)') 
+
+// console.log(`this is the img height ${$('img').parent().height()}`) // console.log(`pokecontainer height ${$('#pokeContainer').height()}` some discrepency here hmm.
+let footer = $('footer')
+footer
+.css('margin-top', '-2rem')
+.css('padding-top', '-2rem')
+// UL variables
+let ulDblFr = $('#dblFrom')
+ulDblFr
+
+let id = $('.id')
+id
+
+// function background() {
+//    return new Promise(function(resolve, reject) {
+//      setTimeout((function() {
+//         // console.log("first Promise in chain functions")
+//         resolve (
+//           $('.pageImg') // just giving this page a little shimmer.
+//           .attr('src', shinyImg) // .css('background-image', `url('${shinyImg}')`)
+//           )
+//         }), 2000);
+//       });
+//     }
+let timeoutArray = []; //  Uncaught TypeError: Assignment to constant variable. ----> thats the error for using ++ on a let
+let timeoutTimer = 1;
+
+const idBackToNumber = () => {
+  id
+  .text('*press1*')
+  .css('transform', 'scale(0.5)')
+  .css("opacity", "0.5")
+  .addClass('press1')
+  timeoutTimer += timeoutTimer
+  timeoutArray.push(timeoutTimer)
+}
+
+
+// function newPromise() {
+//    return new Promise(function(resolve, reject) {
+//      setTimeout((function() {
+//         // console.log("first Promise in chain functions")
+//         resolve (
+//           // id.css('border', '5px solid green')
+//           // console.log('ohS heeit')
+//           toNumberTimeout(), // that was a 15 minute brainTest. you have to separate expressions within a resolve block with commas.   
+//           )
+//         }), 3000);
+//       });
+//     }
+//     newPromise()
+
+// .css('border', '8px solid red')
+// <ul id = "dblFrom">  
+//         <ul id = "dblFrom">  
+//           <ul id = "dblFrom">  
+ul = $('ul')
+ul
+.css("text-shadow", "1.5px 0.5px 1.5px black")
+.css('font-weight', 'bold')
+// .css('display', 'flex') kind of wanted to set the types in a row. also kind of wanted to not do this page at all. taking the good with bad. 
+
+// console.log(img)
+li = $('li')
+li
+.css('text-align', 'center')
+.css('list-style-type', 'none')   // also for the other one for now.
+.css('transform', 'scale(1.25')
+.css('color', 'black')
+.css('text-align', 'center')  // could use internal <style>styling</style> up above but good ol' DOM/alter-ego jQ-obj
+.css('font-weight', 'bold')
+.css('text-shadow', '0.5px 1.5px  gray')
+
+
+p = $('p')
+p
+.css('text-align', 'center')
+.css('list-style-type', 'none')
+.css('transform', 'scale(1.25')
+
+
+
+// damage
+
+// <p id="dblFromA>?
+
+  dblFq = $('#dblFromQ')
+  dblFq
+  // .css('color', 'green')
+
+  .hide()
+  dblFa = $('#dblFromA')
+  dblFa
+  .css('color', 'blue')
+  // dblFa.hide()
+  .hide()
+  dblToQ = $('#dblToQ')
+  dblToQ
+  // .css('color', 'green') 
+  .hide()
+
+  dblToA = $('#dblToA')
+  dblToA
+  // .css('color', 'blue')
+  .hide()
+
+  halfFq = $('#halfFromQ')
+  halfFq
+  // .css('color', 'green')
+  .hide()
+
+  halfFa = $('#halfFromA')
+  halfFa
+  // .css('color', 'blue')
+  .hide()
+
+  halfToQ = $('#halfToQ')
+  halfToQ
+  // .css('color', 'green')
+  .hide()
+
+  halfToA = $('#halfToA')
+  halfToA
+  // .css('color', 'blue')
+  .hide()
+
+  noneFromQ = $('#noneFromQ')
+  noneFromQ
+  // .css('color', 'green')
+  .hide()
+
+  noneFromA = $('#noneFromA')
+  noneFromA
+  // .css('color', 'blue')
+  .hide()
+
+  noneToQ = $('#noneToQ')
+  noneToQ
+  // .css('color', 'green')
+  .hide()
+
+  noneToA = $('#noneToA')
+  // .css('color', 'blue')  
+  .hide()
+
+  // <ul id = "dblTo">  
+// container sizing
+let width = $(document).width().toFixed()
+let height = $(document).height().toFixed() // console.log(`this is the ${width}`) console.log(`this is the ${height}`)
+let outerWidth = Math.floor($(document).width().toFixed()*.6) // let outerWidth = width*.9.toFixed() // let outerHeight = height*.9.toFixed (!working)
+let outerHeight = Math.floor($(document).height().toFixed()*.6)
+let containerHeight = outerHeight/10*5 // nice could've sworn this would've needed adjustments.  664.5 // interesting number pattern here. 
+let containerWidth = outerWidth/10*5 
+contContainer = $('.contContainer')
+contContainer
+.css('height', outerHeight)
+.css('width', outerWidth)
+
+$('.container')
+.css('height', '200px')
+.css('width', '250px')
+.css('background-image', `url('/img/whiteCard.jpg')`)
+.css('background-size', 'cover')
+
+let container1 = $('#container1')
+container1
+
+
+let pokeContainer = $('#pokeContainer')
+pokeContainer
+.css('overflow-x', 'scroll')
+.css('display', 'flex')
+.css('flex-flow', 'column wrap')
+.css('align-items', 'center')
+.css('overflow', 'hidden')
+
+let container3 = $('#container3')
+.hide()
+.css('overflow', 'hidden')
+
+let contfour = $('#container4')
+contfour
+.hide()
+.css('display', 'flex')
+// .css('text-align', 'center')
+.css('font-size', '35px')
+.css('letter-spacing', '.2em')
+.css('line-height', '2em')
+
+
+let damageList = $('#damage')
+damageList
+.css('border', '5px solid green')
+
+let cont1 = $('#container1')
+
+let moves = $('#movesList li')  // it's insane just getting the non-pretty data from pokemon/data.moves is quite a big challenge 
+
+moves
+.css('color' , 'grey')
+.css('font-size' , '20px')
+.css('border', '5px solid pink')
+.css('height', '90%')
+.css('width', '90%')
+moves.hide()
+
+let describe = $('.description')
+describe
+.hide()
+.css('transform', 'scale(1.5)')
+.css('position', 'relative')
+.css('top', '1em')
+let describe2 = $('.description2')      // id prefer to have toggle upon intersectionObserver based conditional logic but I think this page is okay.
+describe2                             // these two were also [uponScrollToContainerEnd] go on their own container with more data from the api. 
+.hide()                             // ty fs.readFileSync and me not being able to find the species_flavor_entries / pokeDescriptions from the api and letting one more thing get done to this simple project.
+.css('transform', 'scale(1.5)')
+.css('position', 'relative')
+.css('top', '4em')
+
+
+
+
+
+// console.log(dataWeight)
+// let dataHeight = $('.height')[0].outerText     [upon scroll] I was going to change <3pokeobject.name%>&&<3pokeObject.id%> to show the weight and the height but I don't think that looks any better to be honest. 
+// let dataWeight = $('.weight')[0].outerText     // i thank the pokemon.ejs for receiving a lot of the lucky judgment (if its even good judgment) and being willing to call a completed page a completed page.
+
+// was done with this page then realized: if we can scroll to the bottom of the movesLi.. and (if array.length-1.item == entry.target.pokeName.sliceCleanName.) --> container1 -> li -> pokemon.height, pokemon.weight, pokeinfo.json.pokeName  [show the description for pokemon cards]
+// hmm... moves is one big parsed, cleaned up data let observerLi = document.querySelectorAll('#moveLi') // had an error forgot the All. couldn't do a forEach on 1 element
+// 1) would like to turn moves into a bunch of data and push to array. maybe use a regex to count the number of commas, then the number of moveData can help.
+// 2) 
+// console.log('description')
+// console.log($('.description'))
+let describeText1 = $('.description')[0].innerText   // // console.log(describeText1.split('.').join(' <br/?'))
+let describeText2 = $('.description2')[0].innerText
+
+
+// let observerLi = document.querySelectorAll('#movesList li') // aw man forgot when i appended it it was only cleaned up and restructured, I tried to do that first 
+// better be last observer:
+// let config = {  }
+moveBucket = []; // function chunk(array, size) {   [ if (!array) return [];  ]    //if no array return array a bit surprised to be 5 months in on this and to just find out about this array syntax. A lot of this was brute force Ajax / data type stuff. I didn't have to look a whole lot up.
+
+
+  let observerLi = document.querySelectorAll('.cont4moves') // aw man forgot when i appended it it was only cleaned up and restructured, I tried to do that first 
+observerLi.forEach((amove) => {
+// console.log('amove')
+// console.log(amove)
+})
+scrollCount = 0;
+scrollBucket = [];
+let eagleEye = new IntersectionObserver(entries => {
+  console.log(entries)
+})
+observerLi.forEach( (move) => {
+  eagleEye.observe(move)
+})
+// const myDiv = document.querySelector('#container1')  
+
+
+if ($('.description2')[0].innerText.includes('maybe')) {        // from our descriptionBin.push(fsdata2||'maybe') 
+  $('.description2').detach() // not hide()
+}
+let bucket = [describeText1, describeText2]
+let randomPick = bucket[Math.floor(Math.random()* bucket.length)]
+
+scrollCounter = 0
+wholeScrollCounter = [];
+const contain = document.querySelector('#container1');
+scrollCount++
+wholeScrollCounter.push(scrollCount)
+
+console.log('offsetHeight')
+console.log(contain.offsetHeight)
+scrollNumberBucket = [] // maybe if we can get the exact scrollTop size of container by hitting the bottom and pushing value to this array.
+// let containerMax = scrollNumberBucket[0]
+// let equationValue = containerMax/5
+
+// let scrollPercentage = parseInt(contain.offsetHeight * 0.60) // @ 0.6 might have to set these numberes based on number of moves if you check out: [magikarp vs mew]. 
+console.log('contain.scrollTop')
+console.log(`scrollTop${contain.scrollTop}`)
+
+contain.addEventListener('scroll', (e) => {  
+  console.log(`offsetHeight ${contain.offsetHeight}`)
+  console.log(`scrollTop ${contain.scrollTop}`)
+
+  // console.log('element.offsetHeight')       console.log('element.scrollTop')      console.log('scroll height')     // scrollCount++ //     reach a count of 20 in like 2 seconds with ['mousemove'||'scroll']        // wholeScrollCounter.push(scrollCount)
+  let scrollheight = `${contain.scrollHeight*0.98}` //almost forgot. changing this to 0.98 from 0.90 is quite a big difference.    // if curiousPlz:  take out this math and do this equation with [scrollTop >= contain.scrollHeight] about 30 minutes of being stuck on this until realizing turning this into a percentage of itself to give some wiggle room: (idea taken from let height = $(document).height().toFixed()/9 to do simple math-based container sizings)
+  if (contain.offsetHeight + contain.scrollTop >= scrollheight) {
+    scrollNumberBucket.push(contain.scrollTop)  
+      scrollCount++                                                          // think it's okay to do either or/pick random if both are available. I'm already opting out of doing anything with pokemon.height&&pokemon.weight
+        wholeScrollCounter.push(scrollCount)  
+        // if (wholeScrollCounter.length % 2 === 0) {
+        
+          $('.description2').hide()
+          $('.description').show()
+  } else {
+          $('.description').hide()
+          // if (contain.scrollTop < `${scrollPercentage}` && wholeScrollCounter.length > 1) {       
+            // if (contain.scrollTop === 0 || contain.scrollTop < && wholeScrollCounter.length > 1) {
+              if (contain.scrollTop === 0 && wholeScrollCounter.length > 1) {
+                $('.description2').show()
+              }
+            }
+           
+
+  // else if (contain.scrollTop < contain.scrollHeight * 0.5) {
+  //         $('.description').hide()
+          
+  // }
+        // {gloryDays:wholeCounter}
+    // if (contain.offsetHeight + contain.scrollTop >= contain.scrollHeight) {  // kind of wanted to do a modula based even/odd description1.show()/description2.show()
+    // }
+
+    // contain is at the end of its scroll, load more content
+
+    // $('.name').textContent       // $('.id').hide()    i was going to have the name and id .hide()[surprise?] but instead just show and hide the $('description')[1] think there's enough toggling and switching and hiding and disappearing going on. slight confidence from doing a few things that show use-cases. definitely not a super complex app and doesn't need to have olympic medals over its head.
+
+    // if (!wholeScrollCounter.length % 2 == 0) {
+    // } else {
+      // $('.description').hide()
+      // $('.description2').show()
+
+  // if (contain.scrollTop === 0 && wholeScrollCounter.length > 5) {
+  //   $('.description2').show()
+  //    if (contain.scrollTop < 20) {
+  //      $('.description2').hide()
+  //   }
+})
+
+    
+
+// observerCard.forEach(card => {
+//                       observer.observe(card);
+//                     })
+
+// https://stackoverflow.com/questions/11047670/creating-a-jquery-object-from-a-big-html-string
+//  appreciate reflex to turn a non-targetable something (like a str) to a jquery object. didn't know .contents() existed but only learned jq for ajax 
+// same habit/reflex to dig-dig-dig thru jqObj by: (background or id etc) 
+// console.log('moveString')
+// console.log(moveString)
+
+
+moveString = moves[0].textContent.toString().replace(/[[\]]/g,'')  // this is taking that textContent and turning into a string. reflex after all that id .slice() from pokemon/index.ejs       // console.log("hey how is you")
+// console.log('moveString')
+// let newStr = moveString.split(',').join(', ')
+// $('.cont4moves').append(newStr)
+// const commaCount = /[,]/gi;     // moveBucket = [];
+// const commaBucket = moveString.match(commaCount);
+// const moveAmount = `${commaBucket.length+1}`
+// let subStr = moveString.toString().split(','); // this took a good hour; didn't know you could work with substrings. 
+// // var chunks = str.split("").reverse().join().match(/.{1, 4}/)
+// let str = $('subStr')
+// subStr.forEach( (move) => {
+//   console.log('move')
+//   // console.log(move)
+//     //  moveBucket.push((move));
+//     //  $('#container4').append(move)
+// });
+// const secondTime = () => {
+//   // console.log(moveBucket)
+// }
+// setTimeout(secondTime, "1000")
+let sliceString = `<h1>${moveString.split(',').join(', <br/>')}</h1>`   // considering regex copy-paste:  very glad to have tried .join(', \n'). split at comma and join with comma and linebreak after the space that follows the comma. ∫
+let fakejQobj = $('<h1/>').html(sliceString).contents()// now this newStr is as if we did:[ let li = $('.li') ]     our jqObj. now referencable like a js var
+cont1.append(fakejQobj)
+fakejQobj
+.css('color', '#A6A1A0')
+.css('text-align', 'center')  // could use internal <style>styling</style> up above but good ol' DOM/alter-ego jQ-obj
+.css('line-height', '2em') 
+.css('list-style-type', 'none');
+
+let h2 = $('ul h2')
+h2
+.css('transform', 'scale(1.25')
+.css('color', '#A6A1A0')
+.css('text-align', 'center')  // could use internal <style>styling</style> up above but good ol' DOM/alter-ego jQ-obj
+.css('font-weight', 'bold')
+.css('text-shadow', '1px 1.5px  black') // oops mistakenly used box-shadow.
+
+
+// NAV BALL functions in case every other file was using an include partials. We are checking for the URL to verify we'd be on this page only.
+let currentPage = $(location)[0]    // just wanted to knock a few conditionals based on $(location) didn't know you could do this. oops didn't have the [0] in bracket. and had it in origin=       href=       location= 
+let origin = currentPage.origin
+let href = currentPage.href
+let serverChop = href.slice(0, 21)
+if ( $(location).href = `http://localhost:7777/pokemon/show/${name}`) {   // this can't go in the partials file because we need a reference of the url.
+// let currentPage = $(location).href    //hm cant believe this doesn't work.
+
+// console.log(currentPage.href.charAt(34))
+if (currentPage.href.charAt(34) === '/') {
+  let name = li.context.URL.slice(35)  
+  // console.log(name);
+}
+
+let locationPort = currentPage.port// console.log(name);
+// console.log('locationPort')
+// console.log(locationPort)
+  // for (let i = 0; i = origin.length; i++)          { 
+  //   let n = [i]
+  //   // console.log(origin.charAt[i]); NOPE
+  // update after doing regex a third time the \d is the every number besides digits wow this is so easy to read:
+  // 1)  /      / everything in here is regex.  // 2) \d all non-numbers      3)    apply to all /g characters in the string.
+var numberPattern = /\d+/g;   // https://stackoverflow.com/questions/1183903/regex-using-javascript-to-return-just-numbers regex from index.ejs
+regexInt = origin.match( numberPattern ).join([]);  //this code joins the regex and takes all characters besides ints out and returns int.
+// console.log(regexInt) //regex works. I've got to brush up on this. only glad to see a reflex in using a tool that could've worked to match port = port
+                      // disclaimer this regex is a super simple copy-paste 
+
+// let slice = href.slice(origin) // u never know. can see where one would get the imagination to make a js framework/tool
+let urlName = href.slice(35)
+
+if (href.includes('origin') && href.includes(urlName)) {
+  // console.log('sure')
+}
+
+// let pagePokemon = currentPage.slice(36)
+// console.log(pagePokemon)
+// if (pagePokemon === name) {
+//   console.log(name);
+//   console.log('weve got our match');
+// }
+  // what this is really doing is: we want to make changes to the navBar. if we were using partials in every file we would want to run a conditional so we only affect the navBar on this page.
+  ultra.hide()  // not having the ability to go to that page from here. This page is like it's own little island. 
+
+  great.hide()
+  poke.hide()
+  $('.ghost').hide()
+
+  const showHide = async function() {
+    const showPoke = () => {
+      poke.show()
+    }
+    const hidePoke = () => {
+      poke.hide()
+    }
+   setTimeout(await showPoke, "1000")
+    setTimeout(await hidePoke, "3000")
+  }
+  // setTimeout(showHide, "2000")
+  // setInterval(showHide, "3000")
+
+  greatBallShowHide = async () => {
+    const showGreat = () => {
+      great.show()
+    }
+    const hideGreat = () => {
+      great.hide()
+    }
+  setTimeout(await showGreat, "4000") 
+  setTimeout(await hideGreat, "6000")
+  }
+// setInterval(greatBallShowHide, "10000")
+const showHideBoth = async () => {
+setTimeout(showHide, "1000")
+setTimeout(greatBallShowHide, "2000")
+}
+setInterval(showHideBoth, "2000")
+//   const swapBalls = () => {       // thisll be more easily done if we start with all the pokeball greatball ultraball being .hide()
+//        setTimeout(hidePoke, "3000")
+//     }
+// setTimeout(swapBalls, "2000")
+}
+  
+let urlName = img.context.URL.slice(35)
+let idFromGit = img[0].currentSrc.slice(73)  // most simply & minimum know-how is count .slice()
+// few ways to get that url can do .length - some numbers but that'll vary with the 3 id pokemon vs 2 or even the first 9 (1 digit pokemon) 
+// we can use that regex from before but I'd really rather understand it more before I keep grabbing it as  solution
+// console.log(idFromGit);
+// const numberCounter = () => {
+//   return idFromGit.replace(/[^0-9]/g, '').length //oh wow slashes begin and end the actual expression itself and the behavior of this (like the intersection observer) defaults to 1 character at a time so the g makes the regexp apply for any amt. of characters that falls within its program/expression. The 2nd argument is the new empty string for it.
+// }
+// console.log(idFromGit.replace(/[^0-9]/g, '')) // more understanding here and up at the other regex.x
+let numberOfNumbers = idFromGit.replace(/[^0-9]/g, '').length
+let numOfNumsString = idFromGit.replace(/[^0-9]/g, '').length.toString()
+// console.log(`number count: ${numberOfNumbers}`);  // sweet during tabswitch to console wasn't sure if we'd be using count+1 but this isn't array based indexing though.
+
+// let newCount = "";
+let counter = 0;
+let numberCounter = new Array()
+let urlCounter = [];
+
+let actualid = [];
+if (numberOfNumbers != null) {
+  let actualid = idFromGit.slice(0, idFromGit.length-4)
+  numberCounter.push(actualid)
+}
+
+let ajaxUrl = `https://pokeapi.co/api/v2/pokemon/${numberCounter}` // in case any1 didn't know this is a pokemonUrl...
+// console.log(`number counter array ${numberCounter}`);
+// console.log(`urlName ${urlName}`);
+
+$.ajax({    // totally muscle memory by now all these ajax calls so many possibilities: retrieve/send data without refreshing the browser! interesting tool
+  method: 'GET',
+  url: ajaxUrl,
+  dataTypes: 'json',
+}).done( (showPagePokemon) => {
+  // console.log('showPagePokemon')
+  // console.log(showPagePokemon)
+  // // idBackToNumber, comeBack, toNumberTimeout
+const comeBack = () => {
+  id.removeClass('press1')
+  .text(`${showPagePokemon.id}`)
+  // .text(`hey`)
+  .css('transform', `scale(1.5)`)
+  .css('margin-top', '-1%')
+}
+
+const toNumberTimeout = () => {
+  if (timeoutArray.length < 4) {
+    setTimeout(idBackToNumber, 1000) 
+    // timeoutTimer++
+    setTimeout(comeBack, 2000)
+    // timeoutArray.push(timeoutTimer)
+  }
+}
+
+  setInterval(toNumberTimeout, 6000)
+
+  let name = showPagePokemon.name
+  let type = showPagePokemon.types[0].type.name
+  let shinyImg = showPagePokemon.sprites.front_shiny
+
+  let ajaxUrl2 = `https://pokeapi.co/api/v2/type/${type}`
+ 
+  let intervalBucket = new Array ()  
+  let bucketCounter = 0;
+  let wholeCounter = [];
+  if (wholeCounter.length % 2 == 0) {
+    intervalBucket.splice(0, intervalBucket.length) // something seems to say that refreshing a bucket of random values and resetting the variable over and over may help to get a fresh reset.
+    intervalBucket.push("4000", "6000", "8000")
+    let randomTime1 = intervalBucket[Math.floor(Math.random() * intervalBucket.length)]
+  }
+  intervalBucket.push("4000", "6000", "8000")
+  let randomTime = intervalBucket[Math.floor(Math.random() * intervalBucket.length)/2]
+  // console.log(randomTime)
+  // let randomTime2 = `${randomTime}`+2000
+  // let randomTimeString = randomTime2.toString()
+  let quickerTime = randomTime = intervalBucket[Math.floor(Math.random() * intervalBucket.length)/4] // originally had background + backToBackground up for independent timeOut functions
+function background() {
+   return new Promise(function(resolve, reject) {
+     setTimeout((function() {
+        // console.log("first Promise in chain functions")
+        resolve (
+          $('.pageImg') // just giving this page a little shimmer.
+          .attr('src', shinyImg) // .css('background-image', `url('${shinyImg}')`)
+          )
+        }), 2000);
+      });
+    }
+function backToBackground() {
+  return new Promise(function(resolve, reject) {
+    setTimeout((function() {
+        // $('#q').append('first <br>');
+        // console.log("secondPromise in chain functions")
+        resolve(              //
+          $('.pageImg')
+          .attr('src', showPagePokemon.sprites.front_default)
+          )
+          // reject(
+          // console.log("your pokeApi front_default image wasn't applied")
+          // )
+    }), 1000);   
+}
+);
+}
+function errorLog() {
+  return new Promise ( function(resolve, reject) {
+    setTimeout( (function() {
+      if ($('.pokeImg').attr('src', showPagePokemon.sprites.front_default)) { // this looks like it might not work // UPDATE this works. its so in your face obvious that it's worth trying [I feel like its overlooked because you might not try to set the exact same object/data-endpoint set as the image]        
+        // console.log($('.pokeImg').attr('src', showPagePokemon.sprites.front_default)) thought this would return a boolean
+      }
+    }), 3000)
+  })
+}
+const chainFunctions = () => {
+  background().then(backToBackground).then(errorLog) // i was also wondering if you can .then(setTimeout(second, "2000").then(setInterval(third, "3000")
+}
+setInterval(chainFunctions, 6000) // interesting.. The promise totally stays in tact even when you click and hide and show the containers. The same that was getting in our way of checking .parent().child().text() [the fact that every element w/ .hide() applied: will be compared against any element w/ .show() w/ ALL text: .hide() or .show() being equal and enveloped by the .text() .html() of parent().child()]
+// .hide() .show() is very gentle and allows for things to run smoothly against it. I don't want the pokemon to be shiny over and over flashing in your face. But when you click away and come back you are more likely to also come back to the pokemon as its about to turn back shiny, with the promise clock not restarting. 
+let guessBucket = new Array()     //      this was absolutely destroying me that it was within (e.code.includes(1) && e.code.includes('digit')) scoot this code down some and see why it doesn't work. The guessBucket array is created every single time the button it started. Was even saying mentally to self: It doesn't make any sense that this array is cleared out like this. I give thanks to relax of looking for our trusty array truncate too: guessBucket.splice(0, gussBuck.length) but no truncate tool. I even changed guessBucket = [] to new Array()
+
+wholeOppositeCounter = []; // just creating another way of counting so that 
+let oppositeCounter = 0;
+
+// if (locationPort === regexInt) { // if (port === regexInt && port === process.env.port) { could be testing conditionals. not really doing much just practicing slice and training the shark sense to sense drop of blood / tiny stone to uncover.  }
+  // console.log(process.env.test); // might be admitting to not know much: but no native DOM in nodeJS, & no access to process.env or even REQUIRE...
+  const pressOne = () => {
+    // console.log('e')
+    const logkey = (e) => {     //hmm 
+      if (e.code.includes(1) && e.code.includes('Digit')) { // working with that event object. 
+        iconBucket = 0
+        iconBucket++
+        candyBucket = 0  //new Array()
+        console.log(wholeOppositeCounter)
+        guessBucket.push('/img/rare_candy.png', `${showPagePokemon.sprites.front_default}`)
+        let guess = guessBucket[Math.floor(Math.random() * guessBucket.length)]
+        let candyGuess = 0
+        candyGuess++
+        wholeCandy = []
+        wholeIcon = [];
+
+        let pokeImg1 = document.createElement('img')
+        let newImg1 = guess
+        $(pokeImg1)
+        .css('height', '120px')
+        .css('width', '120px')
+        .css('position', 'relative')
+        .css('top', '5em')
+        .attr('src', newImg1)
+        $('footer').append($(pokeImg1))  
+        const detachCandy = () => {
+        $(pokeImg1).detach()
+      }
+
+      if (guess !== '/img/rare_candy.png' || guess !== `${showPagePokemon.sprites.front_default}`) {
+        setTimeout(detachCandy, 2000)
+          oppositeCounter++
+          wholeOppositeCounter.push(oppositeCounter)
+          // if (wholeOppositeCounter.length < 2) {
+          // }
+        }
+
+        if (guess === '/img/rare_candy.png') {
+          candyGuess ++
+          wholeCandy.push(candyGuess++)
+          // console.log('got ourselves a candy')
+          // console.log(wholeCandy.length)
+          setTimeout(detachCandy, 2000)
+          
+          $(pokeImg1).on('hover', () => {
+            // location.href = 'localhost:8888/pokemon/show/slowpoke'
+            // location.href = 'http://localhost:8888/pokemon/show/slowpoke'
+            let speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${name}`
+      $.ajax({
+        method: 'GET',
+        url: speciesUrl,
+        dataTypes: 'json',
+      }).done ( (speciesData) => {
+        // console.log(speciesData) // first time looking at this end point. 
+        // console.log(speciesData.evolution_chain.url)
+        let chain = speciesData.evolution_chain
+        let preSlice = speciesData.evolution_chain.url.slice(chain.url.length-10)
+        var numberPattern = /\d+/g;   // https://stackoverflow.com/questions/1183903/regex-using-javascript-to-return-just-numbers regex from index.ejs
+        speciesRegex = preSlice.match( numberPattern ).join([]);
+        // console.log(speciesRegex) // still gonna do that deep dive. love knowing when regex is appropriate. all I did was setup a preSlice string that included an arbitrary length -10. I did that because if I just used the regex.match(number).join on the entire url. it would pick up the /api/v2 TWO...
+
+          let evolveUrl = `https://pokeapi.co/api/v2/evolution-chain/${speciesRegex}`
+        $.ajax({              // of course dont forget we could have these ajax calls as their own separate functions but we actually need the context of everything within the overarching ajax call, pretty much going up-and-down this whole chain
+          method: 'GET',
+          url: evolveUrl,
+          dataTypes: 'json',
+        }).done((evolveData) => {
+          console.log('evolveData')
+          const evolvesFrom = evolveData.evolves_from_species
+          console.log('evolveData.chain')
+          // console.log(evolveData.chain)
+          // console.log(evolveData.chain.is_baby)
+
+          if (evolveData.chain.is_baby ='false') {
+            console.log("yeah")
+            console.log('species')
+            console.log(evolveData.chain.species.name)
+            let chainUrl = `https://pokeapi.co/api/v2/pokemon/${evolveData.chain.species.name}`
+            $.ajax({
+              method: 'GET',
+              url: chainUrl,
+              dataTypes: 'json',
+            }).done((result) => {
+              console.log('result')
+              let stickyImgData = `${result.sprites.front_default}`
+              console.log('stickyImgData')
+              console.log(stickyImgData)
+              guessBucket.push(`${stickyImgData}`)
+              console.log(guessBucket)
+            })
+          }
+          let evolve1name = evolveData.chain.evolves_to[0].species.name
+          console.log('evolve1Name')
+          console.log(evolve1name); // wow 3 ajax calls in one. the best way to do this next part since we can't access       const db = require('../db') we're going to have to use ajax to update our data.   
+          let prePostUrl = `https://pokeapi.co/api/v2/pokemon/${evolve1name}`
+          $.ajax({
+            method: 'GET',
+            url: prePostUrl,
+            dataTypes: 'json',
+          }).done( (data) => {
+            console.log(data)
+            let ajaxname = data.name
+            let ajaxid = data.id
+            // let ajaxtype = data.types[0].name
+            console.log('ajaxtype')
+            // let ajaxtype = data.types[0].types.name
+            console.log(data.types[0].type.name)
+            let ajaxtype = data.types[0].type.name
+            $.ajax({          // noticing a problem where we're getting a 404 status code but we're able to get terminal output confirming we're hitting the same location as the pokemon.js post route.
+            type: "POST",
+            url: '/pokemon',   // was going to have a pokemon object outside of this. now that i know you could use specified data here.. i like the looseness that comes with dealing with 'json', .done()
+            data: {
+              pokeid: `${ajaxid}`,
+              name: `${ajaxname}`,
+              type: `${ajaxtype}`
+            }
+            // success: function(result) {  //nice to see a success object/what it would look like over here.  i still like the .done(result) more
+            //   console.log(result)
+            //   console.log('thats a fat one init')
+            // }
+          }) // ajax with post route is a no-go for now. this is a tool i would get a little familiarity on outside of an app that already has multijoined files 
+          // either way nice to hit our post route and get the console.logs from the pokemon.js post route from over here. 
+          })
+          if (evolveData.chain.evolves_to[0].species.name != null) {
+            console.log('evolveData.chain.evolves_to[0].species.name')
+            console.log(evolveData.chain.species.name)
+            console.log(evolveData.chain.species.url)
+            let url = evolveData.chain.species.url
+            console.log('url')
+            console.log(url)
+            let chainUrl = url.slice(url.length-3, url.length-1)
+            console.log('chainUrl and replace')
+            console.log(chainUrl)
+            console.log(chainUrl.replace(/[[\/]/, '')) // about time I do one from memory and understanding. you also dont need the .g because theres only one / character we'll have a problem with and thats only dependent on whether we have a 3 number id vs a 2 number id
+            let cleanChainUrl = chainUrl.replace(/[[\/]/, '')
+            console.log('cleanChainUrl')
+            console.log(cleanChainUrl)
+
+            console.log(`showPage:${showPagePokemon.id}, cleanChain${cleanChainUrl}`)
+            console.log('evolveData.chain.species.name')
+            let evolveUrl = evolveData.chain.evolves_to[0].species.url
+            console.log('evolveUrl')
+            console.log(evolveUrl)
+            evolveUrl2 = evolveUrl.slice(evolveUrl.length-3, evolveUrl.length-1)
+            let cleanEvolveUrl2 = evolveUrl2.replace(/[[\/]/, '')
+
+            console.log('cleanEvolveUrl2')
+            console.log(cleanEvolveUrl2)
+            console.log(evolveData.chain.evolves_to[0].species.url)
+            if (showPagePokemon.id < cleanChainUrl) {
+            console.log(`showPage:${showPagePokemon.id}, cleanEvolve${cleanEvolveUrl}`)
+              location.href = `http://localhost:7777/pokemon/show/${evolve1name}`  
+              // this feels like a lucky solution to get the id from pokemon and test that evolves_to[0].species endpoint. It's pretty messy to work with.
+            }
+            if (showPagePokemon.id < cleanEvolveUrl2) {
+              console.log("yeah the showpage id is less than the pokemon")
+                location.href = `${serverChop}/pokemon/show/${evolve1name}` // had this set up with localhost:8888 when i broke app and went to older copy to fix. I like having it correspond to the url from $(location) so its tied to the users machine. Not necessary but doesn't hurt. It's nice to have fiddled with $(location) to have even seen that you can access url, href, port, etc. 
+              // location.href = `http://localhost:7777/pokemon/show/${evolve1name}`
+              
+            }
+          }
+        })
+      })
+
+          })
+        } else if (guess === `${showPagePokemon.sprites.front_default}`) {
+
+          setTimeout(detachCandy, 2000/2) // hmm who know you could do this.
+        }
+      } else if (e.code.includes('Key')) {
+        console.log('were pressing a letter')
+      } else {
+        console.log('were pressing a numbr')
+      }
+    }
+    document.onkeyup = logkey     // this runs our log key which checks for e.code
+    }
+
+  pressOne()
+$.ajax({  
+  method: 'GET',
+  url: ajaxUrl2,
+  dataTypes: 'json',
+}).done( (typeData) => {
+  let damage = typeData.damage_relations    // how to count the number of elements at an api endpoint
+//   endpointBucket = new Array()         // this is to do all the damage endpoints at once lets try one at a time first.
+//  for (dmg in damage) {        // dmg placeholder to loop through the typeData.damage_relations object so we can store that outside of the for lo
+//   //  console.log(`${dmg}`)
+//   //  console.log(`damage[${dmg}]`)
+//    endpointBucket.push(`damage[${dmg}]`) // ... this api has same structure (array data between object data)
+//  }
+container1.mouseenter( function() { // surprised this still trips up the contContainer. 2)
+  container1.click( () => { //oh my this registers as a pokeContainer.click.. lets use our knowledge of control and layering further in to see if we can steal control back!
+    // console.log("click container1")
+  })
+})        
+let food = ['burger', 'fries', 'shake']
+let elementCount = [];  
+randomStr = "";
+// wholeCounter type function if % == 0 ;
+let containerCount = 0;
+let wholeContainerCounter = new Array() 
+$('.contContainer').on('click', function() {
+  counter ++
+  wholeContainerCounter.push(counter)
+  if (wholeContainerCounter.length % 2 == 0) {    // all these being reflex is a nice feeling.
+    console.log('weve got ourselves a 2')
+    timeoutArray.splice(0, timeoutArray.length) // truncate command for the *press1* so we can clear our array and re-look for it on click.
+    container1.show()
+    pokeContainer.show()
+    container3.hide()
+  } else {
+    container3.show()
+    container1.hide()
+    pokeContainer.hide()
+
+    const sayHello = () => {
+      console.log('sayHello() invoked')
+      let pathName = $(location)[0].pathname
+      let urlPokeName = pathName.slice(14, pathName.length)
+      console.log('urlPokeName')
+      console.log(urlPokeName) 
+      let threeLayerAjax = `https://pokeapi.co/api/v2/pokemon/${urlPokeName}`
+      $.ajax({
+        method: 'GET',
+        url: threeLayerAjax,
+        dataTypes: 'json',
+      }).done ( (data3) => {
+        let img = data3.sprites.front_default  // this is a url from the pokeapi. it will be used as the src for an <img src="randomPokeUrlFromPokeApi.co"
+              // appendPokemon()
+              let pokeImg = document.createElement("img");    // nice spent 20 minutes using a div with backgroundImage
+                 $(pokeImg).addClass('randomImg')
+                 $(pokeImg).attr('src', img) // aka pokemon.sprites.front_default
+                 $(pokeImg).css('position', 'absolute');
+                //  $(pokeImg).css('left', `${posx}`);
+                //  $(pokeImg).css('top', `${posy}`);
+                const setTheCss = () => {
+                  // $(pokeImg).css('left', `${posx}`);
+                  $(pokeImg).css('left', '100px');
+                  $(pokeImg).css('top', '100px');
+                  $('#container3').append($(pokeImg))
+                }
+                setTheCss()
+
+      })
+    }
+    sayHello()
+  }
+})
+  // $(event.target).css('border', '5px solid pink')
+// *******************   this is why we need the mutation observer or some other solution:    hmm another solution maybe run them in order [0] [1] [2] as functions so <li>[0] would correspond to the order of html and hopefully 
+// if ($('#dblFrom li').html() !== `${doubleFrom[1].name}`) { // this code works but only once. its checking the parents children for html. 
+// *                                  apparently once more <li> have been appended it doesn't perfectly satisfy if statement
+  //         dblFrom.append(dmgFromLi)
+  // *                             that causes the same data (but not the first one that satisfies the conditional to append over and over and over
+//       }
+recordArray = []
+textArray = []
+  const callObserver = () => {      // kind of scoping issue kind of async. I dont want this to be watching all the elements. but textArray.push[i].target is like digging through api it can run asynchronously/against way-of-JS running all code sequentially. SOLUTION:   maybe <script async defer     maybe wrap all this in a document.load and then throw this function as an await. we declare the Li within the ajax call so we are in a maze right now. Maybe toss all of the would-be-appended endpoint/dataLitypes into an array, and have 1 function call them all at once and put the wd40counter=0ifWholeCounter.length<1 and make it so you can only do 1 append per damageType vs per dataType.name. 
+  const liObserver = new MutationObserver(entries => {      // appreciate having some zoom-out and already considering if its better off having the liObserver out of the 2 ajax calls we are still contained within going from: parseName+pokemonEndpoint ---> grab data.type+rebuild ajaxUrl for typeEndpoint. May be nicer to have a more top view of all from mutation observer. 
+    const pushToArray = () => {
+      for (let i = 0; i < entries.length; i++) {      
+        // electric grass<-consLog(entries[i].target.innerText) but then textArray.push consLog(textArray)<-(2)['electric\ngrass', 'electric\ngrass']
+        // * PERFECT WAY TO EXPLAIN PARSING HTML. ugly data vs non-ugly data and that seemingly pretty data changes ugly when you see it actually structured in something liek an array.
+        recordArray.push([i])       // if you keep all these console.logs ON you can see 
+        // console.log(entries[i]) //           *** W O W that that works. *** this nullifies the wonder if we need a step out: (hmmmmm in the same way we'd be a step out for require(../ how the dots represent going a step out towards app/server.js) going deep in an ajax call or stepping context-layers away from $(event.target) by descending into events based off of other events. Hmm all to watch out for. 
+        // console.log(entries[i].target.innerText) //           *** W O W that that works. *** this nullifies the wonder if we need to be a step out: (hmmmmm in the same way we'd be a step out for require(../ how the dots represent going a step out towards app/server.js) going deep in an ajax call or stepping context-layers away from $(event.target) by descending into events based off of other events. Hmm all to watch out for. 
+        textArray.push(entries[i].target.innerText )  // .replace(/[[\]|n|]/g, '') before we do regex to delete the \n grass lets see if .includes with the word grass is enough to use the conditional around before we fully know we need to remove characters. Can see a programmer by now can become accruing-continuing-bucket of finding things out on the fly and always having those examples at forefront after using them enough.
+      }
+    }
+     pushToArray()
+     setTimeout(pushToArray, "1000") // wow this is hilariously primitive. this technically solves our problem down there if you look at container3.on('mouseenter')   
+    //  setTimeout(console.log(textArray), "1000")  //if you keep console.log on you see how long our for loop takes to run.
+      // console.log(entries)
+    })
+    let liObserverOptions = { characterData: true, childList: true, subtree: true }       
+    liObserver.observe(document.body, liObserverOptions)  // highly dislike having more trouble accessing specific elements but going through the roof like a diamond-thief from $(document.body) same level of to the basement reach with subtree+childList. really wanna link a react.js front end with mongoose spend a century on this and have justified the time. Officially too much time on this and prolly proved understanding of basic API/postgres/sequelize link here.
+  }
+  // callObserver()    
+  // damage relations functions.
+// container is being weird press refresh on browser to activate please!!!! I removed the if doubleFrom[3].name == 'dark' because it got in the way of us seeing some types on double damage from
+const dblDmgFrom = async () => {              // still within that:       /pokemon axios call and the /type one as well.
+  console.log('hey')
+  $('.doubleFrom').show()
+  $('#dblFrom').show()
+  $('#dblFromQ').show()
+  if ($("#dblFromQ").children().length) {
+  }
+  // console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length)
+  // console.log(`right after the element splice: ${elementCount}`)
+let doubleFrom = damage.double_damage_from
+// console.log('doubleFrom') 
+// console.log(doubleFrom) 
+const pushToArray = () => {
+  for (let i = 0; i < doubleFrom.length; i++) {
+    elementCount.push([i])
+  }
+}
+pushToArray()
+let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+if (countString.includes('3')) {
+  if (!doubleFrom[3].name == 'dark' || !doubleFrom[3].name == 'fairy') {  //original 
+      let dmgFromLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+    dmgFromLi3.innerText = `${doubleFrom[3].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#dblFrom').children().text().includes(`${doubleFrom[3].name}`)) {
+            dblFrom.append(dmgFromLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+          }
+    } 
+}
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+  // if (!doubleFrom[2].name == 'dark' || !doubleFrom[2].name == 'fairy') {  this code causes water not to pop up anymore for slowpoke.
+      let dmgFromLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+        if (!$('#dblFrom').children().text().includes(`${doubleFrom[2].name}`)) {
+            dblFrom.append(dmgFromLi2)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+          }
+    // } // if 
+    } 
+
+// problem were appending the same word to the container over and over again.
+
+if (countString.includes('1')) {
+    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+      let dmgFromLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      // console.log('double from 1');
+      // console.log(`${doubleFrom[1].name}`)
+    dmgFromLi1.innerText = `${doubleFrom[1].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      miniTextArray = [];
+
+      // if ($('#dblFrom > li').html() !== `${doubleFrom[1].name}`) {
+        if (!$('#dblFrom').children().text().includes(`${doubleFrom[1].name}`)) {
+            dblFrom.append(dmgFromLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+          }
+      
+    // } 
+  // console.log(doubleFrom[1])
+  // console.log(` include 1 dbl dmg from ${0+1}`)
+}
+console.log(doubleFrom)       // if you're using pokemon/show/mewtwo this code works by itself if you comment out the above code. 
+// the above code does the same for (data endpoint type -> damageRelations)   doubleDamageFrom[1] but is getting lost. it might be better to push our (i.e. doubleFrom[0] into an array and check the array instead. I got this idea from when I was doing the randomGhost function from the gengar button on index.ejs and a stackoverflow suggested to someone else: store your randomly placed locations in an array and check the array for your conditionals. )
+if (countString.includes('0')) {
+// if (!doubleFrom[0].name.includes('dark') || !doubleFrom[0].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+      let dmgFromLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      
+    dmgFromLi0.innerText = `${doubleFrom[0].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      // if ($('#dblFrom li').html() !== `${doubleFrom[0].name}`) {
+        // if ($('#dblFrom > li').siblings().html() !== `${doubleFrom[0].name}`) {   // SUPER glad to try a bunch of things before looking something up.   .contains() jquery documentation looks like it could be a huge help.
+        // if ($(document.body).children().html().contains(`${doubleFrom[0].name}`)) {  // this code kinda feels like a mutationObserverJr... thats what childList does... references html/objectParameters specs on the children hmm we can still check if the html even exists on the page
+          if (!$('#dblFrom').children().text().includes(`${doubleFrom[0].name}`)) {
+            dblFrom.append(dmgFromLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+          }
+}
+container3
+//     // if (elementCount.indexOf(0)) {  //lets us run the expression within but then .indexOf(4) allows us to run the expression within the if statement which doesn't make any sense.
+let firstCheck = elementCount[0]
+$('#container3 li').addClass('dblFrom') // nice, since this code is outside of our if(countString=5 -> countString=1) this class will apply to all elements and we can check for this class first thing every next function and use it to wipe out all the li and ul
+// i also got tripped up setting just $('li').addCLass('dblFrom') because i hid the other li using $('li')
+}
+// container is being weird press refresh on browser to activate please!!!! I removed the if doubleFrom[3].name == 'dark' because it got in the way of us seeing some types on double damage from
+
+const dblDmgTo = async () => {              // still within that:       /pokemon axios call and the /type one as well.
+    $('#dblTo').show()
+    $('#dblToQ').show()
+    
+  const hidePrevious = () => {
+    // $('#container3 ul').children().detach()
+    // $('#container3 ul').text('')
+    $('#dblFromQ').hide()
+    $('.dblFrom').hide()
+    // $('#dblFromQ')
+    // $('#container3').children().detach()  // this code is also affecting our ability to append a new child to the container since the status of all children will be .hide() Going around the obstacle and using these functions to create a class So we can delete them as they transition through seeing which pieces of data
+    // $('#container3 li').hide()     $('#container3').children().textContent ="" //trying to go through .children().text('hey') too
+ 
+  }
+  hidePrevious()
+  elementCount.splice(0, elementCount.length) //truncate. nicely within reflex. we're gonna use same array for all these functions and just keep clearingValues/truncating 
+  let doubleTo = damage.double_damage_to
+  const pushToArray = () => {
+    for (let i = 0; i < doubleTo.length; i++) {
+      elementCount.push([i])
+    }
+  }
+  pushToArray()
+  console.log(doubleTo)
+  let name = doubleTo[0].name
+  let name2 = doubleTo[1].name
+
+  let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+  console.log(' dmg To countString')
+  console.log(countString)
+  $('#dblToQ').show()
+  console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length)
+  // console.log(`right after the element splice: ${elementCount}`)
+console.log('damage and doubleTo')
+console.log(damage)
+
+if (countString.includes('3')) {
+  // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let dmgToLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+    dmgToLi3.innerText = `${doubleTo[3].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#dblTo').children().text().includes(`${doubleTo[3].name}`)) {
+            dblTo.append(dmgToLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+
+            console.log(`got a 3 its name: ${doubleTo[3].name}`)
+          }
+    // } 
+}
+
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+  console.log(`got a 2 its name: ${doubleTo[2].name}`)
+  let dmgToLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+    dmgToLi2.innerText = `${doubleTo[2].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#dblTo').children().text().includes(`${doubleTo[2].name}`)) {
+            dblTo.append(dmgToLi2)           // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+
+            console.log(`got a 2 its name: ${doubleTo[2].name}`)
+
+          }
+    // } // if 
+    } 
+// problem were appending the same word to the container over and over again.
+if (countString.includes('1')) {    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+    console.log('damage to1')
+    console.log(`got a 1 its name: ${doubleTo[1].name}`)
+        let dmgToLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+    dmgToLi1.innerText = `${doubleTo[1].name}`
+      if (!$('#dblTo').children().text().includes(`${doubleTo[1].name}`)) {
+            dblTo.append(dmgToLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+
+            console.log(`got a 1 its name: ${doubleTo[1].name}`)
+          }
+}
+
+if (countString.includes('0')) {
+    // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let dmgToLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+    dmgToLi0.innerText = `${doubleTo[0].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#dblTo').children().text().includes(`${doubleTo[0].name}`)) {
+            dblTo.append(dmgToLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+
+            console.log(`got a 3 its name: ${doubleTo[0].name}`)
+          }
+  console.log(`got a 0 its name: ${doubleTo[0].name}`)
+$('#container3 li').addClass('dblDmgTo')
+}
+} // damageToEnd invoked in the mouseenter function
+
+
+
+    
+const halfDmgFrom = async () => {              // still within that:       /pokemon axios call and the /type one as well.
+  $('.dblDmgTo').hide()
+
+  $('#dblTo').hide()
+  $('#dblToQ').hide()
+  $('#halfFrom').show()
+  $('#halfFromQ').show()
+  console.log('hey')
+  elementCount.splice(0, elementCount.length) //truncate. nicely within reflex. we're gonna use same array for all these functions and just keep clearingValues/truncating 
+
+  console.log('damage')
+  console.log(damage)
+  let halfFrom = damage.half_damage_from
+  console.log(halfFrom)
+
+  const pushToArray = () => {
+    for (let i = 0; i < halfFrom.length; i++) {
+      elementCount.push([i])
+    }
+  }
+  console.log('elementCount')
+  console.log(elementCount)
+  pushToArray()
+  let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+  // console.log(' dmg TOcountString')
+  console.log(countString)
+  // $('#dblToQ').show()
+  console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length) // this is our array truncate command. we need that because we're using this array to to compare values against. if every function calls this command we guarantee a clean surface (array) to work with 
+  // console.log(`right after the element splice: ${elementCount}`)
+console.log(damage)
+
+if (countString.includes('4')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+  console.log('4')
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfFromLi4 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfFromLi4.innerText = `${halfFrom[4].name}`
+      console.log(halfFromLi4)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfFrom').children().text().includes(`${halfFrom[4].name}`)) {
+            $('#halfFrom').append(halfFromLi4)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4 its name: ${halfFrom[4].name}`)
+          }
+  console.log(`got a 4th spot for half damage  its name: ${halfFrom[4].name}`)
+}
+if (countString.includes('3')) {
+  console.log('3')
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfFromLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfFromLi3.innerText = `${halfFrom[3].name}`
+      console.log(halfFromLi3)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfFrom').children().text().includes(`${halfFrom[3].name}`)) {
+            $('#halfFrom').append(halfFromLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 3 its name: ${halfFrom[3].name}`)
+          }
+  console.log(`got a 3th spot for half damage  its name: ${halfFrom[3].name}`)
+}
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+console.log('2')
+
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfFromLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfFromLi2.innerText = `${halfFrom[2].name}`
+      console.log(halfFromLi2)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfFrom').children().text().includes(`${halfFrom[2].name}`)) {
+            $('#halfFrom').append(halfFromLi2)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 2 its name: ${halfFrom[2].name}`)
+          }
+  console.log(`got a 2th spot for half damage  its name: ${halfFrom[2].name}`)
+} 
+// problem were appending the same word to the container over and over again.
+if (countString.includes('1')) {    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+console.log('1')
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfFromLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfFromLi1.innerText = `${halfFrom[1].name}`
+      console.log(halfFromLi1)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfFrom').children().text().includes(`${halfFrom[1].name}`)) {
+            $('#halfFrom').append(halfFromLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a  its name: ${halfFrom[1].name}`)
+          }
+  console.log(`got a 1th spot for half damage  its name: ${halfFrom[1].name}`) 
+}
+if (countString.includes('0')) {
+  console.log('0')
+       // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let halfFromLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfFromLi0.innerText = `${halfFrom[0].name}`
+      console.log(halfFromLi0)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfFrom').children().text().includes(`${halfFrom[0].name}`)) {
+            $('#halfFrom').append(halfFromLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 0 its name: ${halfFrom[0].name}`)
+          }
+  console.log(`got a 0th spot for half damage  its name: ${halfFrom[0].name}`)
+$('#container3 li').addClass('halfDmgFrom')
+}
+}
+// again sorry weve got a funkiness somewhere. The page doesn't load this fresh. for somes reason it only works with Ctrl + R 
+const halfDmgTo = async () => {              // still within that:       /pokemon axios call and the /type one as well.  
+  $('.halfDmgFrom').hide()
+  $('#halfFrom').hide()
+  $('#halfFromQ').hide()
+  $('#halfTo').show()
+  $('#halfToQ').show()
+  elementCount.splice(0, elementCount.length) //truncate. nicely within reflex. we're gonna use same array for all these functions and just keep clearingValues/truncating 
+
+  console.log('damage')
+  console.log(damage)
+  let halfTo = damage.half_damage_to
+  console.log(halfTo)
+
+  const pushToArray = () => {
+    for (let i = 0; i < halfTo.length; i++) {
+      elementCount.push([i])
+    }
+  }
+  console.log('elementCount')
+  console.log(elementCount)
+  pushToArray()
+  let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+  // console.log(' dmg TOcountString')
+  console.log(countString)
+  // $('#dblToQ').show()
+  console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length)
+  // console.log(`right after the element splice: ${elementCount}`)
+console.log(damage)
+
+if (countString.includes('5')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfToLi5 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi5.innerText = `${halfTo[5].name}`
+      console.log(halfToLi5)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[5].name}`)) {
+            $('#halfTo').append(halfToLi5)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 5 for half dammy to its name: ${halfTo[5].name}`)
+          }
+}
+
+if (countString.includes('4')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let halfToLi4 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi4.innerText = `${halfTo[4].name}`
+      console.log(halfToLi4)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[4].name}`)) {
+            $('#halfTo').append(halfToLi4)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4for half dammy to its name: ${halfTo[4].name}`)
+          }
+  console.log(`got a 4th spot for half damage  its name: ${halfTo[4].name}`)
+}
+
+if (countString.includes('3')) {
+  console.log('yea')
+      // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let halfToLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi3.innerText = `${halfTo[3].name}`
+      console.log(halfToLi3)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[3].name}`)) {
+            $('#halfTo').append(halfToLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4for half dammy to its name: ${halfTo[3].name}`)
+          }
+  console.log(`got a 3th spot for half damage  its name: ${halfTo[3].name}`)
+}
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+console.log('yea')
+console.log('yea')
+      // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let halfToLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi2.innerText = `${halfTo[2].name}`
+      console.log(halfToLi2)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[2].name}`)) {
+            $('#halfTo').append(halfToLi2)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4for half dammy to its name: ${halfTo[2].name}`)
+          }
+  console.log(`got a 2th spot for half damage  its name: ${halfTo[2].name}`)
+
+} 
+// problem were appending the same word to the container over and over again.
+if (countString.includes('1')) {    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+console.log('yea')
+console.log('yea')
+console.log('yea')
+      // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let halfToLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi1.innerText = `${halfTo[1].name}`
+      console.log(halfToLi1)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[1].name}`)) {
+            $('#halfTo').append(halfToLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4for half dammy to its name: ${halfTo[1].name}`)
+          }
+  console.log(`got a 2th spot for half damage  its name: ${halfTo[1].name}`)
+}
+if (countString.includes('0')) {
+  console.log('yea')
+        // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+          let halfToLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      halfToLi0.innerText = `${halfTo[0].name}`
+      console.log(halfToLi0)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#halfTo').children().text().includes(`${halfTo[0].name}`)) {
+            $('#halfTo').append(halfToLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 0 for half dammy to its name: ${halfTo[0].name}`)
+          }
+}
+$('#container3 li').addClass('halfDmgTo')
+} // damageToEnd invoked in the mouseenter function
+
+
+const noDmgFrom = async () => {              // still within that:       /pokemon axios call and the /type one as well.  
+$('.halfDmgTo').hide()
+  $('#halfTo').hide()
+  $('#halfToQ').hide()
+  $('#noneFrom').show()
+  $('#noneFromQ').show()
+  elementCount.splice(0, elementCount.length) //truncate. nicely within reflex. we're gonna use same array for all these functions and just keep clearingValues/truncating 
+  let noneFrom = damage.no_damage_from
+  let noneTo = damage.no_damage_to   // no_damage_from: []        actual console output. 
+                                      // i thought getting nothing back was a mistake. me getting empty array is corrrect that console output tells you what to expect whether its 3 objects: (3) [{…}, {…}, {…}] or what have you. it seems so obvious when all the objects are right there, and the [] being snuck away as what youll 
+  const pushToArray = () => {
+    for (let i = 0; i < noneFrom.length; i++) {
+      elementCount.push([i])
+    }
+  }
+  console.log('elementCount')
+  console.log(elementCount)
+  pushToArray()
+  let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+  // console.log(' dmg TOcountString')
+  console.log(countString)
+  // $('#dblToQ').show()
+  console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length)
+  // console.log(`right after the element splice: ${elementCount}`)
+console.log(damage)
+
+if (countString.includes('5')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let noneFromLi5 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi5.innerText = `${noneFrom[5].name}`
+      console.log(noneFromLi5)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[5].name}`)) {
+            $('#noneFrom').append(noneFromLi5)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 5 for half dammy to its name: ${noneFrom[5].name}`)
+          }
+}
+
+if (countString.includes('4')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+  console.log("yea44")
+       // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let noneFromLi4 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi4.innerText = `${noneFrom[4].name}`
+      console.log(noneFromLi4)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[4].name}`)) {
+            $('#noneFrom').append(noneFromL4)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 4 for half dammy to its name: ${noneFrom[4].name}`)
+          }
+
+}
+
+if (countString.includes('3')) {
+  console.log("yeah")
+   console.log("yea44")
+       // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+        let noneFromLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi3.innerText = `${noneFrom[3].name}`
+      console.log(noneFromLi3)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[3].name}`)) {
+            $('#noneFrom').append(noneFromLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 3 for half dammy to its name: ${noneFrom[3].name}`)
+          }
+}
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+// console.log("yeah2")
+let noneFromLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi2.innerText = `${noneFrom[2].name}`
+      // console.log(noneFromLi2)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[2].name}`)) {
+            $('#noneFrom').append(noneFromLi2)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 3 for half dammy to its name: ${noneFrom[2].name}`)
+          }
+} 
+// problem were appending the same word to the container over and over again.
+if (countString.includes('1')) {    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+// console.log("yeah")
+let noneFromLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi1.innerText = `${noneFrom[1].name}`
+      // console.log(noneFromLi1)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[1].name}`)) {
+            $('#noneFrom').append(noneFromLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 1 for half dammy to its name: ${noneFrom[1].name}`)
+          }
+}
+if (countString.includes('0')) {
+  // console.log("yeah")
+  let noneFromLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneFromLi0.innerText = `${noneFrom[0].name}`
+      // console.log(noneFromLi0)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneFrom').children().text().includes(`${noneFrom[0].name}`)) {
+            $('#noneFrom').append(noneFromLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 0 for half dammy to its name: ${noneFrom[0].name}`)
+          }
+}
+$('#container3 li').addClass('noDmgFrom')
+} // damageToEnd invoked in the mouseenter function
+
+
+const noDmgTo = async () => {              // still within that:       /pokemon axios call and the /type one as well.  
+  $('.noDmgTo').hide()
+    // $('#container3 li').detach()
+    //   20 minutes down not realizing [] a blank array was going to be my output.. now this tells me if you're gonna have a data endpoint. then console.log(damage) the root endpoint and look at the console itll detail what you can use endpoints for whether {dataFilledObjects} or [] nothing 
+  $('#noneFrom').hide()
+  $('#noneFromQ').hide()
+
+  $('#noneTo').show()
+  $('#noneToQ').show()
+
+  elementCount.splice(0, elementCount.length) // ^^ 
+  let noneFrom = damage.no_damage_from
+  let noneTo = damage.no_damage_to   // no_damage_from: []        actual console output. 
+  const pushToArray = () => {
+    for (let i = 0; i < noneTo.length; i++) {
+      elementCount.push([i])
+    }
+  }
+  pushToArray()
+  let countString = `${elementCount.toString().split(',').join(', ')}`  //array gets pushed up but w/o access .includes like let food = ['burger'] 
+  console.log(textArray) // interesting from our scoping situation with mutationObserver. the first hover on container cant pull it up but the second can.
+  elementCount.splice(0, elementCount.length)
+
+if (countString.includes('5')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+     // if (!doubleTo[3].name == 'dark' || doubleTo[3].name == 'fairy') {  //original 
+      let noneToLi5 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi5.innerText = `${noneTo[5].name}`
+      // console.log(noneToLi5)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[5].name}`)) {  
+            $('#noneTo').append(noneToLi5)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 5 for half dammy to its name: ${noneTo[5].name}`)
+          }
+}
+if (countString.includes('4')) {    // its nice to get a data-based peek at how they make the game fluctuate. 4 types that can do half-damage. really mixes things up. interesting cuz so far it seems no one is super effective against more than 2x 
+  let noneToLi4 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi4.innerText = `${noneTo[4].name}`
+      // console.log(noneToLi4)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[4].name}`)) {  
+            $('#noneTo').append(noneToLi4)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 4 for half dammy to its name: ${noneTo[4].name}`)
+          }
+
+}
+if (countString.includes('3')) {
+  let noneToLi3 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi3.innerText = `${noneTo[3].name}`
+      console.log(noneToLi3)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[3].name}`)) {  
+            $('#noneTo').append(noneToLi3)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 3 for half dammy to its name: ${noneTo[3].name}`)
+          }
+}
+// can also do if (doubleFrom[2].name != 'dark' || doubleFrom[2].name != 'ice' ... etc. )    
+if (countString.includes('2')) {    // hmm. i don't exactly understand why this code nulls the {name: 'ghost', url: 'pokeapi.co/api/v2/type/8/'}from console.log(doubleFrom[2])  
+let noneToLi2 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi2.innerText = `${noneTo[2].name}`
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[2].name}`)) {  
+            $('#noneTo').append(noneToLi2)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 2 for half dammy to its name: ${noneTo[2].name}`)
+          }
+} 
+// problem were appending the same word to the container over and over again.
+if (countString.includes('1')) {    // if (!doubleFrom[1].name.includes('dark') || !doubleFrom[1].name.includes('fairy')) {   // guessing there wouldn't be an < 151 original game pokemon
+let noneToLi1 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi1.innerText = `${noneTo[1].name}`
+      console.log(noneToLi1)
+    // if ($('ul li').textContent != `${doubleFrom[1].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[1].name}`)) {  
+            $('#noneTo').append(noneToLi1)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            // console.log(`got a 1 for half dammy to its name: ${noneTo[1].name}`)
+          }
+}
+if (countString.includes('0')) {
+  let noneToLi0 = document.createElement('li') // wonder why it's not auto-defaulting to fall under the CSS laws 
+      noneToLi0.innerText = `${noneTo[0].name}`
+      // console.log(noneToLi0)
+    // if ($('ul li').textContent != `${doubleFrom[0].name}`) {
+      if (!$('#noneTo').children().text().includes(`${noneTo[0].name}`)) {  
+            $('#noneTo').append(noneToLi0)         // hmm we can technically go the route we went when we appended an id to the energyCard and made a conditional around the energyCard. addClasses to the ul
+            console.log(`got a 0 for half dammy to its name: ${noneTo[0].name}`)
+          }
+}
+$('#container3 li').addClass("noDmgTo")
+} // damageToEnd invoked in the mouseenter function
+container3
+// const checkElementCount = () => {
+//   // if (elementCount.includes(0)) { 
+//     // if (elementCount.indexOf(0)) {  //lets us run the expression within but then .indexOf(4) allows us to run the expression within the if statement which doesn't make any sense.
+//     // console.log('now weve got it'); 
+//   }
+//  checkElementCount()
+let firstCheck = elementCount[0]
+// console.log(firstCheck);
+
+// console.log(container3) // nice. a quick look at container3 and w/ every ul.hide() there is innerText = "". (no innerText) time4some conditional
+// console.log(`damage length ${damage.double_damage_to.length+1}`)  // array based indexing we need the plus one since it startes from 0 and this is starting from 1.  
+// console.log(damage.double_damage_from)    // console.log(damage.double_damage_to) // console.log(damage.no_damage_from)
+// console.log(damage.half_damage_from) // console.log(damage.half_damage_to) // console.log(damage.no_damage_to)
+// dblDmgFrom()
+wholeCounter = []
+counter = 0;
+
+container3.on('mouseenter', async (event) => {
+  counter ++
+  wholeCounter.push(counter)
+  console.log(`this is wholeCount: ${wholeCounter.length}`)
+  // if (wholeCounter.length = 1) {
+  //   console.log("how is you")
+  //   // dblDmgFrom() // check/re-create dblDmgTo first , then check the container for the ul and then get to the next ul.
+  // }
+    if (wholeCounter.length === 1) {  
+      dblDmgFrom()
+      container3.children().css('opacity', '1.0')
+      // $('#container3').children().css('border', '10px solid pink')
+    }
+    if (wholeCounter.length === 2) {
+      dblDmgTo()
+    }
+    if (wholeCounter.length === 3) {
+      halfDmgFrom()
+    }
+    if (wholeCounter.length === 4) {
+      halfDmgTo()
+    }
+    if (wholeCounter.length === 5 ) {
+      noDmgFrom()
+    }
+    if (wholeCounter.length === 6 ) {
+      noDmgTo()
+    }
+    if (wholeCounter.length === 7 ) {
+      $('#container3 li').detach()
+      wholeCounter.splice(0, wholeCounter.length) 
+      counter++ 
+      wholeCounter.push(counter)
+      // $('#container3').children().show()
+      $('#noneToQ').hide()
+      dblDmgFrom()
+      // location.reload() // coming back to this one. 
+    }
+  console.log(wholeCounter.length)
+console.log(container3.children().html())
+// wholeCounter.splice(0, wholeCounter.length) //truncate. feels like using slice but opposite, looking for a conditional to make the array reset itself once we've exhausted travellingl through our functions. oof i appreciate knowing already that our click event should also truncate the array. instinct of: whats the quickest way to restore all defaults every single time any behavior is performed.
+await  callObserver()   // its a laughable solution but putting a timeout for pushing to the array and a secondLater timeout on even just a console.log() is letting us beat our forLoops asynchronous behavior (it's digging deep enough into a mutationRecord which would be the same exact thing for digging through pokeApi objects. )
+console.log(textArray)  // cant do textArray.values() either you get an arrayIterator it doesn't help us.
+}) 
+})  // inner ajax call end
+}) // outer ajax call end.
+
+</script>
+
+
+
+
+<!-- excerpts -->
+
+<!-- // double_damage_to: (3) [{…}, {…}, {…}] //   double_damage_from: (2) [{…}, {…}] //   20 minutes down not realizing [] a blank array was going to be my output.. now this tells me if you're gonna have a data endpoint. then console.log(damage) the root endpoint and look at the console itll detail what you can use endpoints for whether {dataFilledObjects} or [] nothing 
+// half_damage_to: (3) [{…}, {…}, {…}] ///   double_damage_from: (2) [{…}, {…}]
+// no_damage_to: [] //   double_damage_from: (2) [{…}, {…}] -->
+
+<!-- scrollBehavior type functions.  -->
+ <!-- console.log(e)   // this was working for magikarps and metapods super tiny 5 move containers, but not mew's (every move just about) container. I changed it to be a percentage based thing with some wiggle room. It's good to see all of those: [scrollHeight, offsetHeight, scrollTop] values right ifo face on console.log
+   if (myDiv.offsetHeight + myDiv.scrollTop == myDiv.scrollHeight) {  // can see this is almost saying scroll1 + scroll2 == scroll3. if the offset is greater than the entire scrollHeight: [iterate behavior]
+     console.log('scrolled to bottom')  
+   what i really wanted to do was:
+   1) separate array into multiple chunks with coffeescript. Count the commas with a regex, and then add 1 to get the number of moves [&& # of chunks]
+   2) [data/pokemon come in same order as db.pokemon.findALl()] append all names to array. grab last value from: [return array.length-1]
+   3) if observer was observing all the moves (not 1 massive moveString) use entry.target.innerText.slice(toRemoveNonPrettyChar) to check for strict equality against the last value of the array.
+   its still the same solution with the same end goal: initiate behavior upon full scroll. 
+     scrollCount++
+     scrollBucket.push(scrollCount)
+   }  else if (myDiv.scrollTop > 5) { /// sweet 
+      if (scrollCount > 0 ) {
+       console.log("hey look at you")
+     }
+   } -->
